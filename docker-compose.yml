@@ -23,7 +23,7 @@ services:
       MYSQL_USER: symfony
       MYSQL_PASSWORD: symfony
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./mysql_data:/var/lib/mysql
 
   mysql_test:
     image: mysql:8.3
