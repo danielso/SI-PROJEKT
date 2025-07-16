@@ -28,12 +28,18 @@
                 <option value="{{ category.id }}" {% if selectedCategory == category.id %}selected{% endif %}>{{ category.name }}</option>
             {% endfor %}
         </select>
+    </form>
 
-        <label for="tag" style="margin-left: 1rem;">Filtruj według tagu:</label>
+    <form method="get" action="{{ path('app_to_do_index') }}" style="margin-bottom: 1rem;">
+        <label for="tag">Filtruj według tagów:</label>
         <select name="tag" id="tag" onchange="this.form.submit()">
-            <!-- Opcje tagów -->
+            <option value="">Wszystkie</option>
+            {% for tag in tags %}
+                <option value="{{ tag.id }}" {% if selectedTag == tag.id %}selected{% endif %}>{{ tag.name }}</option>
+            {% endfor %}
         </select>
     </form>
+
 
     {% for task in to_do %}
         <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">

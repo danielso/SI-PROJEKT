@@ -67,6 +67,7 @@ class ToDoController extends AbstractController
         $toDoList = $qb->getQuery()->getResult();
 
         $categories = $categoryRepository->findBy(['user' => $user]);
+        $tags = $tagRepository->findAll();
 
         // Przekazujemy dane do widoku
         return $this->render('to_do/index.html.twig', [
