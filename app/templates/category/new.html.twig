@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nowa kategoria{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Dodaj nową kategorię</h1>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Zapisz</button>
+        </div>
+
+        <a href="{{ path('category_index') }}" class="btn btn-secondary">Anuluj</a>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

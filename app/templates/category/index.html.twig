@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Twoje kategorie{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Twoje kategorie</h1>
+
+        <div style="margin-bottom: 1rem;">
+            <a href="{{ path('home') }}" class="back-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none;">← Wróć do strony głównej</a>
+            <a href="{{ path('category_new') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">➕ Nowa kategoria</a>
+        </div>
+
+        {% if categories is not empty %}
+            {% for category in categories %}
+                <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                    <h3 style="margin: 0;">{{ category.name }}</h3>
+
+                    <div style="margin-top: 10px;">
+                        <a href="{{ path('category_edit', { id: category.id }) }}" style="margin-right: 0.5rem;">✏️ Edytuj</a>
+
+                        <form method="post"
+                              action="{{ path('category_delete', { id: category.id }) }}"
+                              style="display:inline;"
+                              onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                            <button style="background: none; border: none; color: red; cursor: pointer;">🗑 Usuń</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Nie masz jeszcze żadnych kategorii.</p>
+        {% endif %}
+    </div>
+{% endblock %}

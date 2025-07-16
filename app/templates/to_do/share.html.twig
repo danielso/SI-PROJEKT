@@ -1,0 +1,23 @@
+{# templates/to_do/share.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Udostępnione zadanie{% endblock %}
+
+{% block body %}
+    <h1>{{ to_do.title }}</h1>
+    <p><strong>Treść:</strong> {{ to_do.content }}</p>
+    <p><strong>Kategoria:</strong> {{ to_do.category ? to_do.category.name : 'Brak' }}</p>
+    <p><strong>Status:</strong> {{ to_do.isDone ? 'Zrobione' : 'Nieukończone' }}</p>
+    <p><strong>Tagi:</strong>
+        {% if to_do.tags is empty %}
+            <em>Brak</em>
+        {% else %}
+            {% for tag in to_do.tags %}
+                <span style="display: inline-block; background-color: #e0e0e0; padding: 0.2rem 0.5rem; margin-right: 0.3rem; border-radius: 5px;">
+                    {{ tag.name }}
+                </span>
+            {% endfor %}
+        {% endif %}
+    </p>
+{% endblock %}

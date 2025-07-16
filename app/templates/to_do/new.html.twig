@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nowe zadanie{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Dodaj nowe zadanie</h1>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.content) }}
+            {{ form_widget(form.content) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.category) }}
+            {{ form_widget(form.category) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.tags) }}
+            {{ form_widget(form.tags) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.isDone) }}
+            {{ form_widget(form.isDone) }}
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-success">Zapisz</button>
+        </div>
+
+        <a href="{{ path('app_to_do_index') }}" class="btn btn-secondary">Anuluj</a>
+
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

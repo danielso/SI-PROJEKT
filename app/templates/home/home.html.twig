@@ -1,0 +1,18 @@
+{# templates/home/home.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Strona Główna{% endblock %}
+
+{% block body %}
+    <h1>Witaj w aplikacji notatek i list ToDo</h1>
+    <p>Wybierz, co chcesz zrobić:</p>
+    <div style="margin-bottom: 1rem;">
+        <a href="{{ path('note_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">Zobacz notatki</a>
+        <a href="{{ path('app_to_do_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">Zobacz listy ToDo</a>
+        <a href="{{ path('profile_edit') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">Profil</a>
+
+        {% if is_admin %}
+            <a href="{{ path('user_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">Zarządzaj użytkownikami</a>
+        {% endif %}
+    </div>
+{% endblock %}

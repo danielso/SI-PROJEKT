@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Twoje notatki{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Twoje notatki</h1>
+
+        <div style="margin-bottom: 1rem;">
+            <a href="{{ path('home') }}" class="back-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">← Wróć do strony głównej</a>
+            <a href="{{ path('note_new') }}" class="add-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">➕ Dodaj nową notatkę</a>
+            <a href="{{ path('category_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">📁 Zarządzaj kategoriami</a>
+            <a href="{{ path('tag_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">🏷️ Zarządzaj tagami</a>
+        </div>
+
+        <form method="get" action="{{ path('note_index') }}" style="margin-bottom: 1rem;">
+            <label for="search">Wyszukaj notatki:</label>
+            <input type="text" id="search" name="search" value="{{ searchTerm }}" placeholder="Wpisz tytuł lub treść">
+            <button type="submit">Szukaj</button>
+        </form>
+
+
+        <form method="get" action="{{ path('note_index') }}" style="margin-bottom: 1rem;">
+            <label for="category">Filtruj według kategorii:</label>
+            <select name="category" id="category" onchange="this.form.submit()">
+                <option value="">Wszystkie</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selectedCategory == category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <form method="get" action="{{ path('note_index') }}" style="margin-bottom: 1rem;">
+            <label for="tag">Filtruj według tagów:</label>
+            <select name="tag" id="tag" onchange="this.form.submit()">
+                <option value="">Wszystkie</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}" {% if selectedTag == tag.id %}selected{% endif %}>{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+        {% if notes is empty %}
+            <p>Brak notatek.</p>
+        {% else %}
+            {% for note in notes %}
+                <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                    <h3>{{ note.title }}</h3>
+                    {% if note.image %}
+                        <img src="{{ asset('uploads/images/' ~ note.image) }}" alt="{{ note.title }}" style="max-width: 100%; height: auto; border-radius: 5px;">
+                    {% endif %}
+                    <p>{{ note.content|markdown_to_html }}</p>
+                    <p>Kategoria: {{ note.category ? note.category.name : 'Brak' }}</p>
+                    <p>Tagi:
+                        {% if note.tags is empty %}
+                            <em>Brak</em>
+                        {% else %}
+                            {% for tag in note.tags %}
+                                <span style="display: inline-block; background-color: #e0e0e0; padding: 0.2rem 0.5rem; margin-right: 0.3rem; border-radius: 5px;">
+                                    {{ tag.name }}
+                                </span>
+                            {% endfor %}
+                        {% endif %}
+                    </p>
+                    <small>{{ note.createdAt|date('Y-m-d H:i') }}</small>
+                    <div style="margin-top: 10px;">
+                        <a href="{{ path('note_edit', { id: note.id }) }}">✏️ Edytuj</a>
+                        <form action="{{ path('note_delete', { id: note.id }) }}" method="post" style="display:inline;" onsubmit="return confirm('Czy na pewno chcesz usunąć notatkę?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
+                            <button type="submit">🗑️ Usuń</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

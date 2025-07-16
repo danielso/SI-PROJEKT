@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Twoja lista do zrobienia{% endblock %}
+
+{% block body %}
+    <h1>Towoja lista do zrobienia</h1>
+
+    <div style="margin-bottom: 1rem;">
+        <a href="{{ path('home') }}" class="back-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">← Wróć do strony głównej</a>
+        <a href="{{ path('app_to_do_new') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">➕ Nowe zadanie</a>
+        <a href="{{ path('category_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">📁 Zarządzaj kategoriami</a>
+        <a href="{{ path('tag_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">🏷️ Zarządzaj tagami</a>
+
+    </div>
+
+    <form method="get" action="{{ path('app_to_do_index') }}" style="margin-bottom: 1rem;">
+        <label for="search">Wyszukaj zadania:</label>
+        <input type="text" id="search" name="search" value="{{ searchTerm }}" placeholder="Wpisz tytuł lub treść zadania">
+        <button type="submit">Szukaj</button>
+    </form>
+
+
+    <form method="get" action="{{ path('app_to_do_index') }}" style="margin-bottom: 1rem;">
+        <label for="category">Filtruj według kategorii:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="">Wszystkie</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if selectedCategory == category.id %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="tag" style="margin-left: 1rem;">Filtruj według tagu:</label>
+        <select name="tag" id="tag" onchange="this.form.submit()">
+            <!-- Opcje tagów -->
+        </select>
+    </form>
+
+    {% for task in to_do %}
+        <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+            <h3 style="margin-top: 0;">{{ task.title }}</h3>
+            {% if task.content %}
+                <p><strong>Treść:</strong> {{ task.content|markdown_to_html }}</p>
+            {% endif %}
+
+            <p><strong>Status:</strong> {{ task.isDone ? 'Zrobione' : 'Nieukończone' }}</p>
+
+            {% if task.category %}
+                <p><strong>Kategoria:</strong> {{ task.category.name }}</p>
+            {% else %}
+                <p><strong>Kategoria:</strong> <em>Brak</em></p>
+            {% endif %}
+            <p>Tagi:
+                {% if task.tags is empty %}
+                    <em>Brak</em>
+                {% else %}
+                    {% for tag in task.tags %}
+                        <span style="display: inline-block; background-color: #e0e0e0; padding: 0.2rem 0.5rem; margin-right: 0.3rem; border-radius: 5px;">
+                                    {{ tag.name }}
+                                </span>
+                    {% endfor %}
+                {% endif %}
+            </p>
+
+            <p><strong>Data utworzenia:</strong> {{ task.createdAt|date('Y-m-d H:i') }}</p>
+
+
+
+            <div style="margin-top: 0.5rem;">
+                <a href="{{ path('app_to_do_edit', {'id': task.id}) }}" style="margin-right: 0.5rem;">✏️ Edytuj</a>
+                <form method="post" action="{{ path('app_to_do_delete', {'id': task.id}) }}" style="display:inline;" onsubmit="return confirm('Jesteś pewien?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}">
+                    <button style="background: none; border: none; cursor: pointer;">🗑 Usuń</button>
+                </form>
+            </div>
+
+            {# Gdzieś w widoku, np. w to_do/index.html.twig #}
+
+            {% if task.shareToken %}
+                <a href="{{ path('app_to_do_share', {'token': task.shareToken}) }}">Udostępnij zadanie</a>
+            {% else %}
+                <p>Brak tokena do udostępnienia.</p>
+            {% endif %}
+
+        </div>
+    {% else %}
+        <p>Brak zadań do wyświetlenia.</p>
+    {% endfor %}
+
+
+{% endblock %}

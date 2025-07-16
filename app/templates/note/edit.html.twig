@@ -1,0 +1,51 @@
+{# templates/note/edit.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Edytuj Notatkę{% endblock %}
+
+{% block body %}
+    <h1>Edytuj notatkę</h1>
+
+    {# Wyświetlenie formularza Symfony #}
+    {{ form_start(form) }}
+
+    <div>
+        {# Pole tytuł #}
+        {{ form_row(form.title) }}
+    </div>
+
+    <div>
+        {# Pole treść #}
+        {{ form_row(form.content) }}
+    </div>
+
+    <div>
+        {# Pole obrazu - obsługuje przesyłanie pliku #}
+        {{ form_row(form.image) }}
+    </div>
+
+    <div>
+        {# Wybór kategorii #}
+        {{ form_row(form.category) }}
+    </div>
+
+    <div>
+        {# Pole na nową kategorię (opcjonalne) #}
+        {{ form_row(form.newCategory) }}
+    </div>
+
+    <div>
+        {# Pole tagów (opcjonalne) #}
+        {{ form_row(form.tags) }}
+    </div>
+
+    <div>
+        {# Przycisk zapisania zmian #}
+        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+    </div>
+
+    {{ form_end(form) }}
+
+    <p><a href="{{ path('note_index') }}">&larr; Wróć do listy notatek</a></p>
+{% endblock %}

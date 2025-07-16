@@ -1,0 +1,15 @@
+{# templates/user/profile.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil użytkownika{% endblock %}
+
+{% block body %}
+    <h1>Profil użytkownika</h1>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Rola:</strong> {{ user.roles|join(', ') }}</p>
+
+    <div>
+        <a href="{{ path('home') }}">Powrót do strony głównej</a>
+    </div>
+{% endblock %}
