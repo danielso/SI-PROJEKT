@@ -11,15 +11,29 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
+/**
+ * Controller for handling user authentication (login and logout).
+ */
 class SecurityController extends AbstractController
 {
     private $userRepository;
 
+    /**
+     * SecurityController constructor.
+     *
+     * @param UserRepository $userRepository The user repository.
+     */
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * Handles user login.
+     *
+     * @param AuthenticationUtils $authenticationUtils The authentication utils service.
+     * @return Response The response object.
+     */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -42,6 +56,11 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * Handles user logout.
+     *
+     * @throws \LogicException Always thrown as Symfony intercepts the logout process.
+     */
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

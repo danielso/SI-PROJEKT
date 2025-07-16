@@ -21,9 +21,10 @@ class ProfileController extends AbstractController
     /**
      * Edits the admin profile.
      *
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @param UserPasswordHasherInterface $hasher
+     * @param Request $request                   The HTTP request.
+     * @param EntityManagerInterface $em         The entity manager.
+     * @param UserPasswordHasherInterface $hasher The password hasher.
+     *
      * @return Response
      */
     #[Route('/profile/edit', name: 'profile_edit')]
@@ -58,9 +59,10 @@ class ProfileController extends AbstractController
     /**
      * Changes the admin password.
      *
-     * @param Request $request
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param EntityManagerInterface $em
+     * @param Request $request                   The HTTP request.
+     * @param UserPasswordHasherInterface $passwordHasher The password hasher.
+     * @param EntityManagerInterface $em         The entity manager.
+     *
      * @return Response
      */
     #[Route('/admin/change-password', name: 'admin_change_password')]

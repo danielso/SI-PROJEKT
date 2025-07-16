@@ -14,15 +14,31 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ToDoForm;
 
+/**
+ * Controller for managing To-Do tasks (CRUD operations).
+ */
 class ToDoController extends AbstractController
 {
     private $toDoRepository;
 
+    /**
+     * ToDoController constructor.
+     *
+     * @param ToDoRepository $toDoRepository The ToDo repository.
+     */
     public function __construct(ToDoRepository $toDoRepository)
     {
         $this->toDoRepository = $toDoRepository;
     }
 
+    /**
+     * Displays a list of To-Do tasks.
+     *
+     * @param Request $request
+     * @param CategoryRepository $categoryRepository
+     * @param TagRepository $tagRepository
+     * @return Response
+     */
     #[Route('/to/do', name: 'app_to_do_index', methods: ['GET'])]
     public function index(Request $request, CategoryRepository $categoryRepository, TagRepository $tagRepository): Response
     {
@@ -80,8 +96,14 @@ class ToDoController extends AbstractController
         ]);
     }
 
-
-
+    /**
+     * Creates a new To-Do task.
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param CategoryRepository $categoryRepository
+     * @return Response
+     */
     #[Route('/to/do/new', name: 'app_to_do_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
@@ -156,7 +178,12 @@ class ToDoController extends AbstractController
         ]);
     }
 
-
+    /**
+     * Displays a single To-Do task.
+     *
+     * @param ToDo $toDo The To-Do task.
+     * @return Response
+     */
     #[Route('/{id}/edit', name: 'app_to_do_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ToDo $toDo, EntityManagerInterface $entityManager): Response
     {
@@ -181,6 +208,14 @@ class ToDoController extends AbstractController
         ]);
     }
 
+    /**
+     * Deletes a To-Do task.
+     *
+     * @param Request $request
+     * @param ToDo $toDo The To-Do task to delete.
+     * @param EntityManagerInterface $entityManager The entity manager.
+     * @return Response
+     */
     #[Route('/{id}', name: 'app_to_do_delete', methods: ['POST'])]
     public function delete(Request $request, ToDo $toDo, EntityManagerInterface $entityManager): Response
     {
@@ -198,6 +233,15 @@ class ToDoController extends AbstractController
         return $this->redirectToRoute('app_to_do_index');
     }
 
+    /**
+     * Shares a To-Do task using a token.
+     *
+     * @param Request $request
+     * @param string $token The share token.
+     * @param ToDoRepository $toDoRepository The ToDo repository.
+     * @param EntityManagerInterface $entityManager The entity manager.
+     * @return Response
+     */
     #[Route('/to/do/share/{token}', name: 'app_to_do_share', methods: ['GET', 'POST'])]
     public function share(Request $request, string $token, ToDoRepository $toDoRepository, EntityManagerInterface $entityManager): Response
     {

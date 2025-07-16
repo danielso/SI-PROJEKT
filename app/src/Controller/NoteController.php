@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\EntityType;
 
+/**
+ * Controller for managing notes (CRUD operations).
+ */
 class NoteController extends AbstractController
 {
     private $noteRepository;
@@ -27,6 +30,14 @@ class NoteController extends AbstractController
         $this->noteRepository = $noteRepository;  // Przypisanie repozytorium do zmiennej
     }
 
+    /**
+     * Displays the form to create a new note and handles its submission.
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param CategoryRepository $categoryRepository
+     * @return Response
+     */
     #[Route('/note/new', name: 'note_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
     {
@@ -35,7 +46,7 @@ class NoteController extends AbstractController
         $note->setCreatedAt(new \DateTimeImmutable());
 
         $form = $this->createForm(NoteType::class, $note, [
-            'user' => $this->getUser(), // Przekazujemy użytkownika do formularza
+            'user' => $this->getUser(),
         ]);
         $form->handleRequest($request);
 
@@ -68,7 +79,9 @@ class NoteController extends AbstractController
             if ($tagsString) {
                 $tagNames = array_map('trim', explode(',', $tagsString));
                 foreach ($tagNames as $tagName) {
-                    if (!$tagName) continue;
+                    if (!$tagName) {
+                        continue;
+                    }
 
                     $tag = $em->getRepository(Tag::class)->findOneBy(['name' => $tagName]);
                     if (!$tag) {
@@ -83,8 +96,8 @@ class NoteController extends AbstractController
             // Obsługuje plik graficzny
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                dump($imageFile); // Sprawdzamy, czy plik rzeczywiście jest dostępny
-                $imageName = md5(uniqid()) . '.' . $imageFile->guessExtension();
+                dump($imageFile);
+                $imageName = md5(uniqid()).'.'.$imageFile->guessExtension();
                 $imageFile->move(
                     $this->getParameter('uploads_directory'),  // Katalog przechowania pliku
                     $imageName
@@ -93,7 +106,6 @@ class NoteController extends AbstractController
             } else {
                 dump('No image file uploaded');
             }
-
 
             $em->persist($note);
             $em->flush();
@@ -106,6 +118,16 @@ class NoteController extends AbstractController
         ]);
     }
 
+    /**
+     * Edits an existing note.
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param CategoryRepository $categoryRepository
+     * @param NoteRepository $noteRepository
+     * @param int $id
+     * @return Response
+     */
     #[Route('/note/{id}/edit', name: 'note_edit')]
     public function edit(Request $request, EntityManagerInterface $em, CategoryRepository $categoryRepository, NoteRepository $noteRepository, int $id): Response
     {
@@ -128,17 +150,15 @@ class NoteController extends AbstractController
             dump($note);
 
             // Obsługuje plik graficzny
-            $imageFile = $form->get('image')->getData();  // Pobieramy przesłany plik
+            $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                // Sprawdzenie, czy istnieje stary obrazek i jego usunięcie
                 $oldImage = $note->getImage();
                 if ($oldImage) {
-                    // Usuń stary plik (upewnij się, że masz poprawną ścieżkę do pliku)
-                    unlink($this->getParameter('uploads_directory') . '/' . $oldImage);
+                    unlink($this->getParameter('uploads_directory').'/'.$oldImage);
                 }
 
                 // Zapisanie nowego pliku
-                $imageName = md5(uniqid()) . '.' . $imageFile->guessExtension();
+                $imageName = md5(uniqid()).'.'.$imageFile->guessExtension();
                 $imageFile->move(
                     $this->getParameter('uploads_directory'),
                     $imageName
@@ -161,21 +181,25 @@ class NoteController extends AbstractController
 
             $em->flush();
 
-            // Po zapisaniu przekierowujemy na widok listy notatek
             return $this->redirectToRoute('note_index');
         } else {
             dump($form->getErrors(true));
         }
 
-        // Jeśli formularz nie jest wysłany lub nie jest ważny, renderuje widok z formularzem
         return $this->render('note/edit.html.twig', [
             'form' => $form->createView(),
             'note' => $note,
         ]);
     }
 
-
-    // Usuwanie notatki
+    /**
+     * Deletes a note.
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param int $id
+     * @return Response
+     */
     #[Route('/note/{id}/delete', name: 'note_delete', methods: ['POST'])]
     public function delete(Request $request, EntityManagerInterface $em, int $id): Response
     {
@@ -195,11 +219,19 @@ class NoteController extends AbstractController
         return $this->redirectToRoute('note_index');
     }
 
-    // Wyświetlanie listy notatek
+    /**
+     * Displays a list of notes and handles filtering.
+     *
+     * @param Request $request
+     * @param NoteRepository $noteRepository
+     * @param CategoryRepository $categoryRepository
+     * @param \App\Repository\TagRepository $tagRepository
+     * @return Response
+     */
     #[Route('/notes', name: 'note_index')]
     public function index(Request $request, NoteRepository $noteRepository, CategoryRepository $categoryRepository, \App\Repository\TagRepository $tagRepository): Response
     {
-        $user = $this->getUser();  // Pobieramy zalogowanego użytkownika
+        $user = $this->getUser();  // Pobiera zalogowanego użytkownika
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }

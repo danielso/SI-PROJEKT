@@ -11,8 +11,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Controller for user registration and related functionalities.
+ */
 class RegistrationController extends AbstractController
 {
+    /**
+     * Handles user registration.
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @return Response
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {

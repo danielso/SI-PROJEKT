@@ -12,9 +12,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * CategoryController to manage categories for the logged-in user.
+ */
 #[Route('/category')]
 final class CategoryController extends AbstractController
 {
+
+    /**
+     * Display all categories of the logged-in user.
+     *
+     * @param CategoryRepository $categoryRepository
+     * @return Response
+     */
     #[Route('/', name: 'category_index', methods: ['GET'])]
     public function index(CategoryRepository $categoryRepository): Response
     {
@@ -32,6 +42,14 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Create a new category for the logged-in user.
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Security $security
+     * @return Response
+     */
     #[Route('/new', name: 'category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em, Security $security): Response
     {
@@ -62,6 +80,14 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Edit an existing category.
+     *
+     * @param Request $request
+     * @param Category $category
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Category $category, EntityManagerInterface $em): Response
     {
@@ -87,6 +113,14 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Delete a category.
+     *
+     * @param Request $request
+     * @param Category $category
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/{id}', name: 'category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $em): Response
     {
@@ -97,7 +131,7 @@ final class CategoryController extends AbstractController
         }
 
         // Użyjemy metody request->request->get('_token') do pobrania tokenu CSRF
-        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $em->remove($category);
             $em->flush();
         }

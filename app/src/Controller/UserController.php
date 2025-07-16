@@ -12,19 +12,32 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * Controller for managing users (CRUD operations).
+ */
 class UserController extends AbstractController
 {
     private UserPasswordHasherInterface $passwordHasher;
     private EntityManagerInterface $entityManager;
 
-    // Wstrzykiwanie UserPasswordHasherInterface i EntityManagerInterface
+    /**
+     * UserController constructor.
+     *
+     * @param UserPasswordHasherInterface $passwordHasher The password hasher.
+     * @param EntityManagerInterface $entityManager The entity manager.
+     */
     public function __construct(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager)
     {
         $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
     }
 
-    // Trasa dla przeglądu wszystkich użytkowników
+    /**
+     * Displays a list of all users.
+     *
+     * @param UserRepository $userRepository The user repository.
+     * @return Response The response object.
+     */
     #[Route('/admin/users', name: 'user_index')]
     public function index(UserRepository $userRepository): Response
     {
@@ -34,6 +47,14 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * Edits a user.
+     *
+     * @param Request $request The HTTP request.
+     * @param User $user The user to edit.
+     * @param UserRepository $userRepository The user repository.
+     * @return Response The response object.
+     */
     #[Route('/admin/users/{id}/edit', name: 'user_edit')]
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -67,6 +88,14 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * Deletes a user.
+     *
+     * @param Request $request The HTTP request.
+     * @param User $user The user to delete.
+     * @param UserRepository $userRepository The user repository.
+     * @return Response The response object.
+     */
     #[Route('/admin/users/{id}/delete', name: 'user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
