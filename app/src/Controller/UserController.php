@@ -24,7 +24,7 @@ class UserController extends AbstractController
      * UserController constructor.
      *
      * @param UserPasswordHasherInterface $passwordHasher The password hasher.
-     * @param EntityManagerInterface $entityManager The entity manager.
+     * @param EntityManagerInterface      $entityManager  The entity manager.
      */
     public function __construct(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager)
     {
@@ -36,12 +36,14 @@ class UserController extends AbstractController
      * Displays a list of all users.
      *
      * @param UserRepository $userRepository The user repository.
+     *
      * @return Response The response object.
      */
     #[Route('/admin/users', name: 'user_index')]
     public function index(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();  // Pobranie wszystkich użytkowników
+
         return $this->render('user/index.html.twig', [
             'users' => $users,
         ]);
@@ -50,9 +52,10 @@ class UserController extends AbstractController
     /**
      * Edits a user.
      *
-     * @param Request $request The HTTP request.
-     * @param User $user The user to edit.
+     * @param Request        $request        The HTTP request.
+     * @param User           $user           The user to edit.
      * @param UserRepository $userRepository The user repository.
+     *
      * @return Response The response object.
      */
     #[Route('/admin/users/{id}/edit', name: 'user_edit')]
@@ -79,6 +82,7 @@ class UserController extends AbstractController
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Dane użytkownika zostały zaktualizowane!');
+
             return $this->redirectToRoute('user_index');
         }
 
@@ -91,9 +95,10 @@ class UserController extends AbstractController
     /**
      * Deletes a user.
      *
-     * @param Request $request The HTTP request.
-     * @param User $user The user to delete.
+     * @param Request        $request        The HTTP request.
+     * @param User           $user           The user to delete.
      * @param UserRepository $userRepository The user repository.
+     *
      * @return Response The response object.
      */
     #[Route('/admin/users/{id}/delete', name: 'user_delete', methods: ['POST'])]
@@ -101,7 +106,7 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');  // Tylko administratorzy mogą usuwać użytkowników
 
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $userRepository->remove($user);
             $this->addFlash('success', 'Użytkownik został usunięty!');
         }

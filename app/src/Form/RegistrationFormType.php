@@ -12,8 +12,17 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Form type for user registration.
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * Builds the registration form.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options for the form
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -22,8 +31,8 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter your email']),
-                    new Length(['min' => 6, 'max' => 180])
-                ]
+                    new Length(['min' => 6, 'max' => 180]),
+                ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -39,6 +48,11 @@ class RegistrationFormType extends AbstractType
             ]);
     }
 
+    /**
+     * Configures the options for the form.
+     *
+     * @param OptionsResolver $resolver The resolver for options
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

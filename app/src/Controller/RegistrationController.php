@@ -19,9 +19,10 @@ class RegistrationController extends AbstractController
     /**
      * Handles user registration.
      *
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
+     * @param Request                     $request
+     * @param EntityManagerInterface      $entityManager
      * @param UserPasswordHasherInterface $passwordHasher
+     *
      * @return Response
      */
     #[Route('/register', name: 'app_register')]
@@ -32,17 +33,15 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Zapisujemy dane z formularza, aby ustawić hasło
-            $plainPassword = $form->get('plainPassword')->getData(); // Pobieramy hasło z formularza
-            $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword); // Hashujemy hasło
-            $user->setPassword($hashedPassword);  // Ustawiamy hasło użytkownika
-            $user->setRoles(['ROLE_USER']);  // Nadawanie domyślnej roli użytkownika
+            $plainPassword = $form->get('plainPassword')->getData();
+            $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+            $user->setPassword($hashedPassword);
+            $user->setRoles(['ROLE_USER']);
 
             // Zapisujemy użytkownika w bazie danych
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Przekierowanie na stronę logowania po udanej rejestracji
             return $this->redirectToRoute('app_login');
         }
 

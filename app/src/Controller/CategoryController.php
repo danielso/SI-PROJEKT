@@ -23,6 +23,7 @@ final class CategoryController extends AbstractController
      * Display all categories of the logged-in user.
      *
      * @param CategoryRepository $categoryRepository
+     *
      * @return Response
      */
     #[Route('/', name: 'category_index', methods: ['GET'])]
@@ -31,7 +32,7 @@ final class CategoryController extends AbstractController
         // Pobieramy aktualnie zalogowanego użytkownika
         $user = $this->getUser();
         if (!$user) {
-            return $this->redirectToRoute('app_login');  // Jeśli użytkownik nie jest zalogowany, przekieruj na stronę logowania
+            return $this->redirectToRoute('app_login');
         }
 
         // Pobieramy kategorie tylko dla zalogowanego użytkownika
@@ -45,9 +46,10 @@ final class CategoryController extends AbstractController
     /**
      * Create a new category for the logged-in user.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param EntityManagerInterface $em
-     * @param Security $security
+     * @param Security               $security
+     *
      * @return Response
      */
     #[Route('/new', name: 'category_new', methods: ['GET', 'POST'])]
@@ -55,15 +57,13 @@ final class CategoryController extends AbstractController
     {
         $category = new Category();
 
-        // Pobranie aktualnie zalogowanego użytkownika
         $user = $security->getUser();
 
         if (!$user) {
-            // Jeśli użytkownik nie jest zalogowany, przekieruj na stronę logowania lub wyświetl błąd
-            return $this->redirectToRoute('app_login'); // lub inna trasa do logowania
+            return $this->redirectToRoute('app_login');
         }
 
-        $category->setUser($user);  // Przypisanie właściciela kategorii (jeśli użytkownik jest zalogowany)
+        $category->setUser($user);
 
         $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
@@ -83,9 +83,10 @@ final class CategoryController extends AbstractController
     /**
      * Edit an existing category.
      *
-     * @param Request $request
-     * @param Category $category
+     * @param Request                $request
+     * @param Category               $category
      * @param EntityManagerInterface $em
+     *
      * @return Response
      */
     #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'])]
@@ -116,15 +117,15 @@ final class CategoryController extends AbstractController
     /**
      * Delete a category.
      *
-     * @param Request $request
-     * @param Category $category
+     * @param Request                $request
+     * @param Category               $category
      * @param EntityManagerInterface $em
+     *
      * @return Response
      */
     #[Route('/{id}', name: 'category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $em): Response
     {
-        // Sprawdzamy, czy użytkownik jest właścicielem kategorii
         $user = $this->getUser();
         if ($category->getUser() !== $user) {
             throw $this->createAccessDeniedException('Nie masz uprawnień do usunięcia tej kategorii.');

@@ -26,7 +26,7 @@ class HomeController extends AbstractController
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
 
         return $this->render('home/home.html.twig', [
-            'is_admin' => $isAdmin,  // Przekazujemy zmienną do widoku
+            'is_admin' => $isAdmin,
         ]);
     }
 }

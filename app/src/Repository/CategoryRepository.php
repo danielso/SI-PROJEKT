@@ -13,6 +13,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
+    /**
+     * Konstruktor klasy CategoryRepository.
+     *
+     * @param ManagerRegistry $registry Rejestr menedżera jednostek
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Category::class);
@@ -21,6 +26,7 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * Znajdź kategorie przypisane do użytkownika
      * @param $user
+     *
      * @return Category[]
      */
     public function findByUser($user): array

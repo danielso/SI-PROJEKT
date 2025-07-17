@@ -13,22 +13,28 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ToDoRepository extends ServiceEntityRepository
 {
+    /**
+     * ToDoRepository constructor.
+     *
+     * @param ManagerRegistry $registry The registry to manage the ToDo entity.
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ToDo::class);
     }
 
     /**
-     * Znajdź zadania przypisane do użytkownika
+     *
      * @param $user
+     *
      * @return ToDo[]
      */
     public function findByUser($user): array
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.user = :user') // Filtruj na podstawie użytkownika
+            ->andWhere('t.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('t.createdAt', 'DESC') // Sortowanie po dacie utworzenia
+            ->orderBy('t.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

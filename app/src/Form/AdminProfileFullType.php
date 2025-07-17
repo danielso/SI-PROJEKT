@@ -11,8 +11,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\User;
 
+/**
+ * FormType for managing the admin profile form, including email and password fields.
+ */
 class AdminProfileFullType extends AbstractType
 {
+    /**
+     * Builds the form for editing the admin profile.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array                $options Options for the form.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -33,6 +42,11 @@ class AdminProfileFullType extends AbstractType
             ]);
     }
 
+    /**
+     * Configures the options for the form.
+     *
+     * @param OptionsResolver $resolver The options resolver.
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

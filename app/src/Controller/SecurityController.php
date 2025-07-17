@@ -32,12 +32,12 @@ class SecurityController extends AbstractController
      * Handles user login.
      *
      * @param AuthenticationUtils $authenticationUtils The authentication utils service.
+     *
      * @return Response The response object.
      */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // Jeśli użytkownik jest już zalogowany, przekieruj na stronę home
         if ($this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('home');
         }
@@ -45,7 +45,7 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // Sprawdzenie, czy wyjątek jest typu "Twoje konto zostało zablokowane"
+        // Sprawdzenie, czy zablokowany
         if ($error instanceof CustomUserMessageAuthenticationException) {
             $this->addFlash('error', $error->getMessage());
         }

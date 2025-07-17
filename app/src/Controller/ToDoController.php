@@ -34,9 +34,10 @@ class ToDoController extends AbstractController
     /**
      * Displays a list of To-Do tasks.
      *
-     * @param Request $request
+     * @param Request            $request
      * @param CategoryRepository $categoryRepository
-     * @param TagRepository $tagRepository
+     * @param TagRepository      $tagRepository
+     *
      * @return Response
      */
     #[Route('/to/do', name: 'app_to_do_index', methods: ['GET'])]
@@ -77,7 +78,7 @@ class ToDoController extends AbstractController
         // Filtracja po wyszukiwanie w tytule i treści
         if ($searchTerm) {
             $qb->andWhere('LOWER(t.title) LIKE :searchTerm OR LOWER(t.content) LIKE :searchTerm')
-                ->setParameter('searchTerm', '%' . strtolower($searchTerm) . '%');
+                ->setParameter('searchTerm', '%'.strtolower($searchTerm).'%');
         }
 
         $toDoList = $qb->getQuery()->getResult();
@@ -99,9 +100,10 @@ class ToDoController extends AbstractController
     /**
      * Creates a new To-Do task.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param EntityManagerInterface $entityManager
-     * @param CategoryRepository $categoryRepository
+     * @param CategoryRepository     $categoryRepository
+     *
      * @return Response
      */
     #[Route('/to/do/new', name: 'app_to_do_new', methods: ['GET', 'POST'])]
@@ -141,7 +143,9 @@ class ToDoController extends AbstractController
         if ($tagsString) {
             $tagNames = array_map('trim', explode(',', $tagsString));
             foreach ($tagNames as $tagName) {
-                if (!$tagName) continue;
+                if (!$tagName) {
+                    continue;
+                }
 
                 $tag = $entityManager->getRepository(Tag::class)->findOneBy(['name' => $tagName]);
                 if (!$tag) {
@@ -170,6 +174,13 @@ class ToDoController extends AbstractController
         ]);
     }
 
+    /**
+     * Displays a single To-Do task.
+     *
+     * @param ToDo $toDo The To-Do task to display.
+     *
+     * @return Response
+     */
     #[Route('/to/do/{id}', name: 'app_to_do_show')]
     public function show(ToDo $toDo): Response
     {
@@ -179,9 +190,12 @@ class ToDoController extends AbstractController
     }
 
     /**
-     * Displays a single To-Do task.
+     * Edits an existing To-Do task.
      *
-     * @param ToDo $toDo The To-Do task.
+     * @param Request                $request
+     * @param ToDo                   $toDo          The To-Do task to edit.
+     * @param EntityManagerInterface $entityManager The entity manager.
+     *
      * @return Response
      */
     #[Route('/{id}/edit', name: 'app_to_do_edit', methods: ['GET', 'POST'])]
@@ -211,9 +225,10 @@ class ToDoController extends AbstractController
     /**
      * Deletes a To-Do task.
      *
-     * @param Request $request
-     * @param ToDo $toDo The To-Do task to delete.
+     * @param Request                $request
+     * @param ToDo                   $toDo          The To-Do task to delete.
      * @param EntityManagerInterface $entityManager The entity manager.
+     *
      * @return Response
      */
     #[Route('/{id}', name: 'app_to_do_delete', methods: ['POST'])]
@@ -225,7 +240,7 @@ class ToDoController extends AbstractController
             throw $this->createAccessDeniedException('Nie masz uprawnień do usunięcia tego zadania.');
         }
 
-        if ($this->isCsrfTokenValid('delete' . $toDo->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$toDo->getId(), $request->request->get('_token'))) {
             $entityManager->remove($toDo);
             $entityManager->flush();
         }
@@ -236,28 +251,29 @@ class ToDoController extends AbstractController
     /**
      * Shares a To-Do task using a token.
      *
-     * @param Request $request
-     * @param string $token The share token.
-     * @param ToDoRepository $toDoRepository The ToDo repository.
-     * @param EntityManagerInterface $entityManager The entity manager.
+     * @param Request                $request
+     * @param string                 $token          The share token.
+     * @param ToDoRepository         $toDoRepository The ToDo repository.
+     * @param EntityManagerInterface $entityManager  The entity manager.
+     *
      * @return Response
      */
     #[Route('/to/do/share/{token}', name: 'app_to_do_share', methods: ['GET', 'POST'])]
     public function share(Request $request, string $token, ToDoRepository $toDoRepository, EntityManagerInterface $entityManager): Response
     {
-        // Pobierz zadanie na podstawie tokenu
+        // Pobiera zadanie na podstawie tokenu
         $toDo = $toDoRepository->findOneBy(['shareToken' => $token]);
 
         if (!$toDo) {
             throw $this->createNotFoundException('Zadanie nie zostało znalezione.');
         }
 
-        // Jeśli użytkownik chce edytować zadanie
         $form = $this->createForm(ToDoForm::class, $toDo);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
             return $this->redirectToRoute('app_to_do_index');
         }
 

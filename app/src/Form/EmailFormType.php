@@ -10,8 +10,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * FormType for managing the email field in user-related forms.
+ */
 class EmailFormType extends AbstractType
 {
+    /**
+     * Builds the form to collect email information from the user.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array                $options Options for the form.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('email', EmailType::class, [

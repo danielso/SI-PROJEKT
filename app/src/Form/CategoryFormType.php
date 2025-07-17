@@ -12,8 +12,17 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * FormType for managing the category form (CRUD operations).
+ */
 class CategoryFormType extends AbstractType
 {
+    /**
+     * Builds the form for creating or editing a category.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array                $options Options for the form.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -22,6 +31,11 @@ class CategoryFormType extends AbstractType
             ]);
     }
 
+    /**
+     * Configures the options for the category form.
+     *
+     * @param OptionsResolver $resolver The options resolver.
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

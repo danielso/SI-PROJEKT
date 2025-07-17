@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\EntityType;
 
 /**
  * Controller for managing notes (CRUD operations).
@@ -24,18 +23,23 @@ class NoteController extends AbstractController
 {
     private $noteRepository;
 
-    // Wstrzykujemy NoteRepository do konstruktor
+    /**
+     * NoteController constructor.
+     *
+     * @param NoteRepository $noteRepository The note repository.
+     */
     public function __construct(NoteRepository $noteRepository)
     {
-        $this->noteRepository = $noteRepository;  // Przypisanie repozytorium do zmiennej
+        $this->noteRepository = $noteRepository;
     }
 
     /**
      * Displays the form to create a new note and handles its submission.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param EntityManagerInterface $em
-     * @param CategoryRepository $categoryRepository
+     * @param CategoryRepository     $categoryRepository
+     *
      * @return Response
      */
     #[Route('/note/new', name: 'note_new', methods: ['GET', 'POST'])]
@@ -51,7 +55,6 @@ class NoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Przypisanie użytkownika do notatki
             $user = $this->getUser();
             if ($user) {
                 $note->setUser($user);
@@ -121,11 +124,12 @@ class NoteController extends AbstractController
     /**
      * Edits an existing note.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param EntityManagerInterface $em
-     * @param CategoryRepository $categoryRepository
-     * @param NoteRepository $noteRepository
-     * @param int $id
+     * @param CategoryRepository     $categoryRepository
+     * @param NoteRepository         $noteRepository
+     * @param int                    $id
+     *
      * @return Response
      */
     #[Route('/note/{id}/edit', name: 'note_edit')]
@@ -137,7 +141,6 @@ class NoteController extends AbstractController
             throw $this->createNotFoundException('Nie znaleziono notatki.');
         }
 
-        // Sprawdzenie, czy użytkownik jest właścicielem notatki
         $user = $this->getUser();
         if ($note->getUser() !== $user) {
             throw $this->createAccessDeniedException('Nie masz uprawnień do edycji tej notatki.');
@@ -195,9 +198,10 @@ class NoteController extends AbstractController
     /**
      * Deletes a note.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param EntityManagerInterface $em
-     * @param int $id
+     * @param int                    $id
+     *
      * @return Response
      */
     #[Route('/note/{id}/delete', name: 'note_delete', methods: ['POST'])]
@@ -206,7 +210,6 @@ class NoteController extends AbstractController
 
         $note = $this->noteRepository->find($id);
 
-        //czy użytkownik jest właścicielem notatki
         $user = $this->getUser();
         if (!$note || $note->getUser() !== $user) {
             throw $this->createAccessDeniedException('Nie masz uprawnień do edycji tej notatki.');
@@ -222,16 +225,17 @@ class NoteController extends AbstractController
     /**
      * Displays a list of notes and handles filtering.
      *
-     * @param Request $request
-     * @param NoteRepository $noteRepository
-     * @param CategoryRepository $categoryRepository
+     * @param Request                       $request
+     * @param NoteRepository                $noteRepository
+     * @param CategoryRepository            $categoryRepository
      * @param \App\Repository\TagRepository $tagRepository
+     *
      * @return Response
      */
     #[Route('/notes', name: 'note_index')]
     public function index(Request $request, NoteRepository $noteRepository, CategoryRepository $categoryRepository, \App\Repository\TagRepository $tagRepository): Response
     {
-        $user = $this->getUser();  // Pobiera zalogowanego użytkownika
+        $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
@@ -263,7 +267,7 @@ class NoteController extends AbstractController
         // Filtracja po wyszukiwanie w tytule i treści
         if ($searchTerm) {
             $qb->andWhere('LOWER(n.title) LIKE :searchTerm OR LOWER(n.content) LIKE :searchTerm')
-                ->setParameter('searchTerm', '%' . strtolower($searchTerm) . '%');
+                ->setParameter('searchTerm', '%'.strtolower($searchTerm).'%');
         }
 
         $notes = $qb->getQuery()->getResult();

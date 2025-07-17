@@ -1,45 +1,41 @@
-   1) src/Controller/CategoryController.php (concat_space)
+   1) src/Controller/CategoryController.php (class_attributes_separation, no_superfluous_phpdoc_tags, phpdoc_trim)
    2) src/Controller/HomeController.php (no_superfluous_phpdoc_tags, phpdoc_trim)
-   3) src/Controller/NoteController.php (class_attributes_separation, single_line_comment_spacing, control_structure_braces, concat_space, braces_position, statement_indentation, no_unused_imports)
-   4) src/Controller/ProfileController.php (class_attributes_separation, no_superfluous_phpdoc_tags, phpdoc_trim, no_unused_imports)
-   5) src/Controller/SecurityController.php (blank_lines_before_namespace)
-   6) src/Controller/ToDoController.php (class_attributes_separation, single_line_comment_spacing, control_structure_braces, concat_space, braces_position, statement_indentation, blank_line_before_statement)
-   7) src/Controller/UserController.php (concat_space, blank_line_before_statement)
-   8) src/Entity/Category.php (phpdoc_annotation_without_dot, phpdoc_separation, blank_line_before_statement)
-   9) src/Entity/Note.php (single_quote, blank_line_before_statement)
-  10) src/Entity/Tag.php (single_quote, blank_line_before_statement)
-  11) src/Entity/ToDo.php (single_quote, blank_line_before_statement)
-  12) src/Entity/User.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_separation, blank_line_before_statement)
-  13) src/Entity/UserRole.php (visibility_required, phpdoc_annotation_without_dot, blank_line_after_opening_tag)
-  14) src/Form/CategoryFormType.php (no_unused_imports)
-  15) src/Form/EmailFormType.php (no_unused_imports)
-  16) src/Form/NoteType.php (class_attributes_separation, phpdoc_annotation_without_dot, phpdoc_align)
-  17) src/Form/RegistrationFormType.php (trailing_comma_in_multiline)
-  18) src/Form/TagFormType.php (trailing_comma_in_multiline)
-  19) src/Form/ToDoForm.php (blank_line_before_statement)
-  20) src/Repository/CategoryRepository.php (no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_separation)
-  21) src/Repository/NoteRepository.php (no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_separation)
-  22) src/Repository/ToDoRepository.php (no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_separation)
-  23) src/Repository/UserRepository.php (phpdoc_align)
-  24) src/Security/BlockedUserChecker.php (blank_lines_before_namespace)
+   3) src/Controller/NoteController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, single_line_comment_spacing, phpdoc_trim)
+   4) src/Controller/ProfileController.php (class_attributes_separation, phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim, no_unused_imports)
+   5) src/Controller/RegistrationController.php (no_superfluous_phpdoc_tags, phpdoc_trim)
+   6) src/Controller/SecurityController.php (phpdoc_annotation_without_dot, blank_lines_before_namespace)
+   7) src/Controller/TagController.php (phpdoc_annotation_without_dot)
+   8) src/Controller/ToDoController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, single_line_comment_spacing, phpdoc_trim)
+   9) src/Controller/UserController.php (phpdoc_annotation_without_dot)
+  10) src/Entity/Category.php (phpdoc_annotation_without_dot)
+  11) src/Entity/Note.php (phpdoc_annotation_without_dot, single_quote)
+  12) src/Entity/Tag.php (phpdoc_annotation_without_dot, single_quote, no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_trim)
+  13) src/Entity/ToDo.php (phpdoc_annotation_without_dot, single_quote, no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_trim)
+  14) src/Entity/User.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim)
+  15) src/Entity/UserRole.php (visibility_required, phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  16) src/Form/AdminProfileFullType.php (phpdoc_annotation_without_dot)
+  17) src/Form/CategoryFormType.php (phpdoc_annotation_without_dot, no_unused_imports)
+  18) src/Form/EmailFormType.php (phpdoc_annotation_without_dot, no_unused_imports)
+  19) src/Form/NoteType.php (class_attributes_separation, phpdoc_annotation_without_dot)
+  20) src/Form/PasswordTypeForm.php (phpdoc_annotation_without_dot)
+  21) src/Form/TagFormType.php (phpdoc_annotation_without_dot)
+  22) src/Form/ToDoForm.php (phpdoc_annotation_without_dot)
+  23) src/Form/UserFormType.php (phpdoc_annotation_without_dot)
+  24) src/Repository/CategoryRepository.php (no_superfluous_phpdoc_tags, phpdoc_summary)
+  25) src/Repository/NoteRepository.php (no_superfluous_phpdoc_tags, phpdoc_summary)
+  26) src/Repository/TagRepository.php (phpdoc_annotation_without_dot)
+  27) src/Repository/ToDoRepository.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim)
+  28) src/Security/BlockedUserChecker.php (blank_lines_before_namespace)
 
-Found 24 of 34 files that can be fixed in 1.924 seconds, 18.00 MB memory used
+Found 28 of 34 files that can be fixed in 2.962 seconds, 18.00 MB memory used
 
 FILE: /home/wwwroot/app/src/Controller/CategoryController.php
------------------------------------------------------------------------------
-FOUND 6 ERRORS AND 1 WARNING AFFECTING 7 LINES
------------------------------------------------------------------------------
-   3 | WARNING | [ ] The license block has to be present at the top
-     |         |                     of every PHP file, before the namespace
-  16 | ERROR   | [ ] Missing doc comment for class CategoryController
-  19 | ERROR   | [ ] Missing doc comment for function index()
-  36 | ERROR   | [ ] Missing doc comment for function new()
-  66 | ERROR   | [ ] Missing doc comment for function edit()
-  91 | ERROR   | [ ] Missing doc comment for function delete()
- 100 | ERROR   | [x] Concat operator must not be surrounded by spaces
------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Controller/HomeController.php
@@ -51,268 +47,87 @@ FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
 -----------------------------------------------------------------------
 
 
-FILE: /home/wwwroot/app/src/Controller/NoteController.php
-----------------------------------------------------------------------------
-FOUND 15 ERRORS AFFECTING 11 LINES
-----------------------------------------------------------------------------
-  20 | ERROR | [ ] Missing doc comment for class NoteController
-  25 | ERROR | [ ] You must use "/**" style comments for a function comment
-  31 | ERROR | [ ] Missing doc comment for function new()
-  71 | ERROR | [x] Inline control structures are not allowed
-  87 | ERROR | [x] Concat operator must not be surrounded by spaces
-  87 | ERROR | [x] Concat operator must not be surrounded by spaces
- 110 | ERROR | [ ] Missing doc comment for function edit()
- 137 | ERROR | [x] Concat operator must not be surrounded by spaces
- 137 | ERROR | [x] Concat operator must not be surrounded by spaces
- 141 | ERROR | [x] Concat operator must not be surrounded by spaces
- 141 | ERROR | [x] Concat operator must not be surrounded by spaces
- 180 | ERROR | [ ] You must use "/**" style comments for a function comment
- 200 | ERROR | [ ] You must use "/**" style comments for a function comment
- 234 | ERROR | [x] Concat operator must not be surrounded by spaces
- 234 | ERROR | [x] Concat operator must not be surrounded by spaces
-----------------------------------------------------------------------------
-PHPCBF CAN FIX THE 9 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-----------------------------------------------------------------------------
-
-
 FILE: /home/wwwroot/app/src/Controller/ProfileController.php
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-FOUND 6 ERRORS AND 1 WARNING AFFECTING 6 LINES
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 24 | ERROR   | [x] Expected 21 spaces after parameter type; 1 found
- 25 | ERROR   | [x] Expected 6 spaces after parameter type; 1 found
- 26 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-    |         |     blank line
- 61 | ERROR   | [x] Expected 21 spaces after parameter type; 1 found
- 63 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-    |         |     blank line
- 63 | ERROR   | [x] Expected 6 spaces after parameter type; 1 found
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 6 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Controller/RegistrationController.php
-------------------------------------------------------------------------
-FOUND 2 ERRORS AND 1 WARNING AFFECTING 3 LINES
-------------------------------------------------------------------------
-  3 | WARNING | The license block has to be present at the top
-    |         |                 of every PHP file, before the namespace
- 14 | ERROR   | Missing doc comment for class RegistrationController
- 17 | ERROR   | Missing doc comment for function register()
-------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Controller/SecurityController.php
-----------------------------------------------------------------------
-FOUND 4 ERRORS AFFECTING 4 LINES
-----------------------------------------------------------------------
- 14 | ERROR | Missing doc comment for class SecurityController
- 18 | ERROR | Missing doc comment for function __construct()
- 24 | ERROR | Missing doc comment for function login()
- 46 | ERROR | Missing doc comment for function logout()
-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Controller/TagController.php
-------------------------------------------------------------------------
-FOUND 5 ERRORS AND 1 WARNING AFFECTING 6 LINES
-------------------------------------------------------------------------
-  3 | WARNING | The license block has to be present at the top
-    |         |                 of every PHP file, before the namespace
- 15 | ERROR   | Missing doc comment for class TagController
- 18 | ERROR   | Missing doc comment for function index()
- 26 | ERROR   | Missing doc comment for function new()
- 45 | ERROR   | Missing doc comment for function edit()
- 63 | ERROR   | Missing doc comment for function delete()
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Controller/ToDoController.php
------------------------------------------------------------------------------
-FOUND 13 ERRORS AND 1 WARNING AFFECTING 13 LINES
------------------------------------------------------------------------------
-   3 | WARNING | [ ] The license block has to be present at the top
-     |         |                     of every PHP file, before the namespace
-  17 | ERROR   | [ ] Missing doc comment for class ToDoController
-  21 | ERROR   | [ ] Missing doc comment for function __construct()
-  27 | ERROR   | [ ] Missing doc comment for function index()
-  64 | ERROR   | [x] Concat operator must not be surrounded by spaces
-  64 | ERROR   | [x] Concat operator must not be surrounded by spaces
-  86 | ERROR   | [ ] Missing doc comment for function new()
- 122 | ERROR   | [x] Inline control structures are not allowed
- 152 | ERROR   | [ ] Missing doc comment for function show()
- 161 | ERROR   | [ ] Missing doc comment for function edit()
- 185 | ERROR   | [ ] Missing doc comment for function delete()
- 193 | ERROR   | [x] Concat operator must not be surrounded by spaces
- 202 | ERROR   | [ ] Missing doc comment for function share()
- 217 | ERROR   | [x] Missing blank line before return statement
------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 5 MARKED SNIFF VIOLATIONS AUTOMATICALLY
------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Controller/UserController.php
------------------------------------------------------------------------------
-FOUND 8 ERRORS AND 1 WARNING AFFECTING 9 LINES
------------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 15 | ERROR   | [ ] Missing doc comment for class UserController
- 21 | ERROR   | [ ] You must use "/**" style comments for a function comment
- 29 | ERROR   | [ ] You must use "/**" style comments for a function comment
- 32 | ERROR   | [x] Missing blank line before return statement
- 38 | ERROR   | [ ] Missing doc comment for function edit()
- 61 | ERROR   | [x] Missing blank line before return statement
- 71 | ERROR   | [ ] Missing doc comment for function delete()
- 75 | ERROR   | [x] Concat operator must not be surrounded by spaces
------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 3 MARKED SNIFF VIOLATIONS AUTOMATICALLY
------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Entity/Category.php
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-FOUND 8 ERRORS AND 1 WARNING AFFECTING 9 LINES
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-   3 | WARNING | [ ] The license block has to be present at the top
-     |         |                     of every PHP file, before the namespace
-  74 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |         |     blank line
-  80 | ERROR   | [x] Missing blank line before return statement
-  96 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |         |     blank line
- 102 | ERROR   | [x] Missing blank line before return statement
- 108 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |         |     blank line
- 124 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |         |     blank line
- 142 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |         |     blank line
- 158 | ERROR   | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |         |     blank line
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 8 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Entity/Note.php
-------------------------------------------------------------------------------
-FOUND 29 ERRORS AND 1 WARNING AFFECTING 30 LINES
-------------------------------------------------------------------------------
-   3 | WARNING | [ ] The license block has to be present at the top
-     |         |                     of every PHP file, before the namespace
-  12 | ERROR   | [ ] Missing doc comment for class Note
-  42 | ERROR   | [ ] Missing doc comment for function getImage()
-  47 | ERROR   | [ ] Missing doc comment for function setImage()
-  50 | ERROR   | [x] Missing blank line before return statement
-  53 | ERROR   | [ ] Missing doc comment for function getId()
-  58 | ERROR   | [ ] Missing doc comment for function getTitle()
-  63 | ERROR   | [ ] Missing doc comment for function setTitle()
-  66 | ERROR   | [x] Missing blank line before return statement
-  69 | ERROR   | [ ] Missing doc comment for function getContent()
-  74 | ERROR   | [ ] Missing doc comment for function setContent()
-  77 | ERROR   | [x] Missing blank line before return statement
-  80 | ERROR   | [ ] Missing doc comment for function getCreatedAt()
-  85 | ERROR   | [ ] Missing doc comment for function setCreatedAt()
-  88 | ERROR   | [x] Missing blank line before return statement
-  91 | ERROR   | [ ] Missing doc comment for function getUpdatedAt()
-  96 | ERROR   | [ ] Missing doc comment for function setUpdatedAt()
-  99 | ERROR   | [x] Missing blank line before return statement
- 102 | ERROR   | [ ] Missing doc comment for function getCategory()
- 107 | ERROR   | [ ] Missing doc comment for function setCategory()
- 110 | ERROR   | [x] Missing blank line before return statement
- 118 | ERROR   | [ ] Missing doc comment for function __construct()
- 124 | ERROR   | [ ] You must use "/**" style comments for a function comment
- 129 | ERROR   | [ ] Missing doc comment for function addTag()
- 134 | ERROR   | [x] Missing blank line before return statement
- 137 | ERROR   | [ ] Missing doc comment for function removeTag()
- 140 | ERROR   | [x] Missing blank line before return statement
- 144 | ERROR   | [ ] You must use "/**" style comments for a function comment
- 149 | ERROR   | [ ] Missing doc comment for function setUser()
- 152 | ERROR   | [x] Missing blank line before return statement
-------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 9 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------
+FOUND 2 ERRORS AND 1 WARNING AFFECTING 3 LINES
+-------------------------------------------------------------------------
+   3 | WARNING | The license block has to be present at the top
+     |         |                 of every PHP file, before the namespace
+ 203 | ERROR   | Missing doc comment for function __construct()
+ 208 | ERROR   | Missing doc comment for function getTags()
+-------------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Entity/Tag.php
-----------------------------------------------------------------------------
-FOUND 8 ERRORS AND 1 WARNING AFFECTING 9 LINES
-----------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 11 | ERROR   | [ ] Missing doc comment for class Tag
- 27 | ERROR   | [ ] Missing doc comment for function __construct()
- 33 | ERROR   | [ ] Missing doc comment for function getId()
- 38 | ERROR   | [ ] Missing doc comment for function getName()
- 43 | ERROR   | [ ] Missing doc comment for function setName()
- 46 | ERROR   | [x] Missing blank line before return statement
- 49 | ERROR   | [ ] Missing doc comment for function getNotes()
- 54 | ERROR   | [ ] Missing doc comment for function getToDos()
-----------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-----------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Entity/ToDo.php
-------------------------------------------------------------------------------
-FOUND 33 ERRORS AND 1 WARNING AFFECTING 34 LINES
-------------------------------------------------------------------------------
-   3 | WARNING | [ ] The license block has to be present at the top
-     |         |                     of every PHP file, before the namespace
-  11 | ERROR   | [ ] Missing doc comment for class ToDo
-  47 | ERROR   | [ ] You must use "/**" style comments for a function comment
-  52 | ERROR   | [ ] Missing doc comment for function setShareToken()
-  59 | ERROR   | [ ] Missing doc comment for function getUser()
-  64 | ERROR   | [ ] Missing doc comment for function setUser()
-  67 | ERROR   | [x] Missing blank line before return statement
-  70 | ERROR   | [ ] Missing doc comment for function getId()
-  75 | ERROR   | [ ] Missing doc comment for function getContent()
-  80 | ERROR   | [ ] Missing doc comment for function setContent()
-  83 | ERROR   | [x] Missing blank line before return statement
-  86 | ERROR   | [ ] Missing doc comment for function isDone()
-  91 | ERROR   | [ ] Missing doc comment for function setIsDone()
-  94 | ERROR   | [x] Missing blank line before return statement
-  97 | ERROR   | [ ] Missing doc comment for function getTitle()
- 102 | ERROR   | [ ] Missing doc comment for function setTitle()
- 105 | ERROR   | [x] Missing blank line before return statement
- 108 | ERROR   | [ ] Missing doc comment for function getCreatedAt()
- 113 | ERROR   | [ ] Missing doc comment for function setCreatedAt()
- 116 | ERROR   | [x] Missing blank line before return statement
- 119 | ERROR   | [ ] Missing doc comment for function getUpdatedAt()
- 124 | ERROR   | [ ] Missing doc comment for function setUpdatedAt()
- 127 | ERROR   | [x] Missing blank line before return statement
- 130 | ERROR   | [ ] Missing doc comment for function getCategory()
- 135 | ERROR   | [ ] Missing doc comment for function setCategory()
- 138 | ERROR   | [x] Missing blank line before return statement
- 146 | ERROR   | [ ] Missing doc comment for function __construct()
- 152 | ERROR   | [ ] You must use "/**" style comments for a function comment
- 157 | ERROR   | [ ] Missing doc comment for function setTags()
- 160 | ERROR   | [x] Missing blank line before return statement
- 163 | ERROR   | [ ] Missing doc comment for function addTag()
- 168 | ERROR   | [x] Missing blank line before return statement
- 171 | ERROR   | [ ] Missing doc comment for function removeTag()
- 174 | ERROR   | [x] Missing blank line before return statement
-------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 10 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Entity/User.php
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-FOUND 3 ERRORS AFFECTING 3 LINES
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  70 | ERROR | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |       |     blank line
-  76 | ERROR | [x] Missing blank line before return statement
- 197 | ERROR | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-     |       |     blank line
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 3 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Entity/UserRole.php
@@ -325,180 +140,95 @@ FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
 
 
 FILE: /home/wwwroot/app/src/Form/AdminProfileFullType.php
-------------------------------------------------------------------------
-FOUND 3 ERRORS AND 1 WARNING AFFECTING 4 LINES
-------------------------------------------------------------------------
-  3 | WARNING | The license block has to be present at the top
-    |         |                 of every PHP file, before the namespace
- 14 | ERROR   | Missing doc comment for class AdminProfileFullType
- 16 | ERROR   | Missing doc comment for function buildForm()
- 36 | ERROR   | Missing doc comment for function configureOptions()
-------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/CategoryFormType.php
-----------------------------------------------------------------------
-FOUND 3 ERRORS AFFECTING 3 LINES
-----------------------------------------------------------------------
- 15 | ERROR | Missing doc comment for class CategoryFormType
- 17 | ERROR | Missing doc comment for function buildForm()
- 25 | ERROR | Missing doc comment for function configureOptions()
-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Form/EmailFormType.php
-------------------------------------------------------------------------
-FOUND 2 ERRORS AND 1 WARNING AFFECTING 3 LINES
-------------------------------------------------------------------------
-  3 | WARNING | The license block has to be present at the top
-    |         |                 of every PHP file, before the namespace
- 13 | ERROR   | Missing doc comment for class EmailFormType
- 15 | ERROR   | Missing doc comment for function buildForm()
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Form/NoteType.php
-----------------------------------------------------------------------------
-FOUND 1 ERROR AND 1 WARNING AFFECTING 2 LINES
-----------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 26 | ERROR   | [x] Expected 16 spaces after parameter type; 1 found
-----------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-----------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Form/PasswordTypeForm.php
-------------------------------------------------------------------------
-FOUND 4 ERRORS AND 1 WARNING AFFECTING 5 LINES
-------------------------------------------------------------------------
-  3 | WARNING | The license block has to be present at the top
-    |         |                 of every PHP file, before the namespace
- 12 | ERROR   | Missing doc comment for class PasswordTypeForm
- 14 | ERROR   | Missing doc comment for function buildForm()
- 39 | ERROR   | Missing doc comment for function configureOptions()
- 44 | ERROR   | Missing doc comment for function getBlockPrefix()
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Form/RegistrationFormType.php
-----------------------------------------------------------------------------
-FOUND 5 ERRORS AND 1 WARNING AFFECTING 6 LINES
-----------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 15 | ERROR   | [ ] Missing doc comment for class RegistrationFormType
- 17 | ERROR   | [ ] Missing doc comment for function buildForm()
- 20 | ERROR   | [x] Add a comma after each item in a multi-line array
- 23 | ERROR   | [x] Add a comma after each item in a multi-line array
- 42 | ERROR   | [ ] Missing doc comment for function configureOptions()
-----------------------------------------------------------------------------
-PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-----------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Form/TagFormType.php
-----------------------------------------------------------------------------
-FOUND 4 ERRORS AND 1 WARNING AFFECTING 5 LINES
-----------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 11 | ERROR   | [ ] Missing doc comment for class TagFormType
- 13 | ERROR   | [ ] Missing doc comment for function buildForm()
- 15 | ERROR   | [x] Add a comma after each item in a multi-line array
- 20 | ERROR   | [ ] Missing doc comment for function configureOptions()
-----------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-----------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Form/ToDoForm.php
-----------------------------------------------------------------------------
-FOUND 4 ERRORS AND 1 WARNING AFFECTING 5 LINES
-----------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 14 | ERROR   | [ ] Missing doc comment for class ToDoForm
- 16 | ERROR   | [ ] Missing doc comment for function buildForm()
- 32 | ERROR   | [x] Missing blank line before return statement
- 52 | ERROR   | [ ] Missing doc comment for function configureOptions()
-----------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-----------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Form/UserFormType.php
-------------------------------------------------------------------------
-FOUND 3 ERRORS AND 1 WARNING AFFECTING 4 LINES
-------------------------------------------------------------------------
-  3 | WARNING | The license block has to be present at the top
-    |         |                 of every PHP file, before the namespace
- 15 | ERROR   | Missing doc comment for class UserFormType
- 17 | ERROR   | Missing doc comment for function buildForm()
- 46 | ERROR   | Missing doc comment for function configureOptions()
-------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Repository/CategoryRepository.php
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-FOUND 2 ERRORS AFFECTING 2 LINES
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- 16 | ERROR | [ ] Missing doc comment for function __construct()
- 23 | ERROR | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-    |       |     blank line
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Repository/NoteRepository.php
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-FOUND 2 ERRORS AFFECTING 2 LINES
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- 16 | ERROR | [ ] Missing doc comment for function __construct()
- 23 | ERROR | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-    |       |     blank line
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Repository/TagRepository.php
-------------------------------------------------------------------------
-FOUND 2 ERRORS AND 1 WARNING AFFECTING 3 LINES
-------------------------------------------------------------------------
-  3 | WARNING | The license block has to be present at the top
-    |         |                 of every PHP file, before the namespace
-  9 | ERROR   | Missing doc comment for class TagRepository
- 11 | ERROR   | Missing doc comment for function __construct()
-------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Repository/ToDoRepository.php
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-FOUND 2 ERRORS AFFECTING 2 LINES
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- 16 | ERROR | [ ] Missing doc comment for function __construct()
- 23 | ERROR | [x] Group annotations together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single
-    |       |     blank line
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Repository/UserRepository.php
-----------------------------------------------------------------------------
-FOUND 1 ERROR AND 1 WARNING AFFECTING 2 LINES
-----------------------------------------------------------------------------
-  3 | WARNING | [ ] The license block has to be present at the top
-    |         |                     of every PHP file, before the namespace
- 31 | ERROR   | [x] Expected 29 spaces after parameter type; 30 found
-----------------------------------------------------------------------------
-PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
-----------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
-Time: 4.12 secs; Memory: 10MB
+Time: 4.54 secs; Memory: 10MB
 
  ----------- ------------ -------------------------------------------------- ------------------------------------------ 
   State       Domain       Id                                                 Message Preview (en)                      
@@ -527,7 +257,7 @@ Time: 4.12 secs; Memory: 10MB
  ----------- ------------ -------------------------------------------------- ------------------------------------------ ------------------------------------------ 
 
 [notice] Migrating up to DoctrineMigrations\Version20250629113848
-[notice] finished in 3554.8ms, used 24M memory, 7 migrations executed, 24 sql queries
+[notice] finished in 3654.9ms, used 24M memory, 7 migrations executed, 24 sql queries
 
  [OK] Successfully migrated to version: DoctrineMigrations\Version20250629113848                                        
 

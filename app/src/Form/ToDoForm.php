@@ -11,8 +11,17 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * Form type for creating and editing ToDo tasks.
+ */
 class ToDoForm extends AbstractType
 {
+    /**
+     * Builds the form for creating or editing a ToDo task.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array                $options The options for the form.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -29,6 +38,7 @@ class ToDoForm extends AbstractType
                 'query_builder' => function ($categoryRepository) use ($options) {
                     // Uzyskujemy repozytorium z opcji formularza
                     $user = $options['user'];  // Pobieramy użytkownika z opcji formularza
+
                     return $categoryRepository->createQueryBuilder('c')
                         ->where('c.user = :user')  // Filtrowanie kategorii dla użytkownika
                         ->setParameter('user', $user);
@@ -49,6 +59,11 @@ class ToDoForm extends AbstractType
             ]);
     }
 
+    /**
+     * Configures the options for the ToDo form.
+     *
+     * @param OptionsResolver $resolver The resolver for form options.
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

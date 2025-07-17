@@ -72,11 +72,13 @@ class Category
      * Sets the name of the category.
      *
      * @param string $name The name of the category.
+     *
      * @return $this
      */
     public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -94,11 +96,13 @@ class Category
      * Sets the user for the category.
      *
      * @param User $user The user to associate with the category.
+     *
      * @return $this
      */
     public function setUser(User $user): static
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -106,6 +110,7 @@ class Category
      * Adds a note to the category.
      *
      * @param Note $note The note to add.
+     *
      * @return $this
      */
     public function addNote(Note $note): static
@@ -122,12 +127,12 @@ class Category
      * Removes a note from the category.
      *
      * @param Note $note The note to remove.
+     *
      * @return $this
      */
     public function removeNote(Note $note): static
     {
         if ($this->notes->removeElement($note)) {
-            // set the owning side to null (unless already changed)
             if ($note->getCategory() === $this) {
                 $note->setCategory(null);
             }
@@ -140,6 +145,7 @@ class Category
      * Adds a to-do to the category.
      *
      * @param ToDo $toDo The to-do to add.
+     *
      * @return $this
      */
     public function addToDo(ToDo $toDo): static
@@ -156,12 +162,12 @@ class Category
      * Removes a to-do from the category.
      *
      * @param ToDo $toDo The to-do to remove.
+     *
      * @return $this
      */
     public function removeToDo(ToDo $toDo): static
     {
         if ($this->toDos->removeElement($toDo)) {
-            // set the owning side to null (unless already changed)
             if ($toDo->getCategory() === $this) {
                 $toDo->setCategory(null);
             }

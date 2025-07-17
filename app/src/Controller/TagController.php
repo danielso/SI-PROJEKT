@@ -21,6 +21,7 @@ class TagController extends AbstractController
      * Displays a list of all tags.
      *
      * @param TagRepository $tagRepository The tag repository.
+     *
      * @return Response The response object.
      */
     #[Route('/', name: 'tag_index', methods: ['GET'])]
@@ -34,8 +35,9 @@ class TagController extends AbstractController
     /**
      * Creates a new tag.
      *
-     * @param Request $request The HTTP request.
-     * @param EntityManagerInterface $em The entity manager.
+     * @param Request                $request The HTTP request.
+     * @param EntityManagerInterface $em      The entity manager.
+     *
      * @return Response The response object.
      */
     #[Route('/new', name: 'tag_new', methods: ['GET', 'POST'])]
@@ -60,9 +62,10 @@ class TagController extends AbstractController
     /**
      * Edits an existing tag.
      *
-     * @param Request $request The HTTP request.
-     * @param Tag $tag The tag to edit.
-     * @param EntityManagerInterface $em The entity manager.
+     * @param Request                $request The HTTP request.
+     * @param Tag                    $tag     The tag to edit.
+     * @param EntityManagerInterface $em      The entity manager.
+     *
      * @return Response The response object.
      */
     #[Route('/{id}/edit', name: 'tag_edit', methods: ['GET', 'POST'])]
@@ -86,9 +89,10 @@ class TagController extends AbstractController
     /**
      * Deletes a tag.
      *
-     * @param Request $request The HTTP request.
-     * @param Tag $tag The tag to delete.
-     * @param EntityManagerInterface $em The entity manager.
+     * @param Request                $request The HTTP request.
+     * @param Tag                    $tag     The tag to delete.
+     * @param EntityManagerInterface $em      The entity manager.
+     *
      * @return Response The response object.
      */
     #[Route('/{id}', name: 'tag_delete', methods: ['POST'])]

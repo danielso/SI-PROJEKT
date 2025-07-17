@@ -68,11 +68,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Sets the blocked status of the user.
      *
      * @param bool $isBlocked The status to set for the user's blocked state.
+     *
      * @return $this
      */
     public function setBlocked(bool $isBlocked): self
     {
         $this->isBlocked = $isBlocked;
+
         return $this;
     }
 
@@ -195,6 +197,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Sets the blocked status of the user.
      *
      * @param bool $isBlocked The blocked status to set.
+     *
      * @return void
      */
     public function setIsBlocked(bool $isBlocked): void

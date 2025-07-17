@@ -13,6 +13,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NoteRepository extends ServiceEntityRepository
 {
+    /**
+     * Konstruktor klasy NoteRepository.
+     *
+     * @param ManagerRegistry $registry Rejestr menedżera jednostek
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Note::class);
@@ -21,6 +26,7 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Znajdź notatki przypisane do użytkownika
      * @param $user
+     *
      * @return Note[]
      */
     public function findByUser($user): array

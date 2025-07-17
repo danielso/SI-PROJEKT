@@ -9,11 +9,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;  // Dodajemy CheckboxType
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Form type for managing user details.
+ */
 class UserFormType extends AbstractType
 {
+    /**
+     * Builds the form for editing a user.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array                $options The options for the form.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -43,6 +52,11 @@ class UserFormType extends AbstractType
             ]);
     }
 
+    /**
+     * Configures the options for the User form.
+     *
+     * @param OptionsResolver $resolver The resolver for form options.
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

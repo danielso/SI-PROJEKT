@@ -1,0 +1,9 @@
+validators:
+  Masz już kategorię o tej nazwie.: "You already have a category with this name."
+  form.email.not_blank: "Please enter your email."
+  form.email.invalid: "Please enter a valid email address."
+  form.password.not_blank: "Please enter your password."
+  form.password.min_length: "Your password must be at least 6 characters long."
+  Please enter your email: "Please enter your email."
+  Please enter your password: "Please enter your password."
+  Your password must be at least 6 characters long: "Your password must be at least 6 characters long."

@@ -9,8 +9,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * FormType for handling password and confirmation fields in user-related forms.
+ */
 class PasswordTypeForm extends AbstractType
 {
+    /**
+     * Builds the form to collect and confirm the user's password.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array                $options Options for the form.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -36,11 +45,21 @@ class PasswordTypeForm extends AbstractType
             ]);
     }
 
+    /**
+     * Configures the options for the form.
+     *
+     * @param OptionsResolver $resolver The resolver to configure the options.
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([]);
     }
 
+    /**
+     * Returns the block prefix for the form.
+     *
+     * @return string The form block prefix.
+     */
     public function getBlockPrefix(): string
     {
         return 'edit_password';

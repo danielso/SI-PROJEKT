@@ -1,0 +1,9 @@
+validators:
+  Masz już kategorię o tej nazwie.: "Masz już kategorię o tej nazwie."
+  form.email.not_blank: "Proszę wprowadzić adres e-mail."
+  form.email.invalid: "Proszę wprowadzić poprawny adres e-mail."
+  form.password.not_blank: "Proszę wprowadzić hasło."
+  form.password.min_length: "Hasło musi mieć co najmniej 6 znaków."
+  Please enter your email: "Proszę wprowadzić adres e-mail."
+  Please enter your password: "Proszę wprowadzić hasło."
+  Your password must be at least 6 characters long: "Hasło musi mieć co najmniej 6 znaków."

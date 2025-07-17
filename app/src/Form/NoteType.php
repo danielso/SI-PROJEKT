@@ -23,7 +23,7 @@ class NoteType extends AbstractType
      * Builds the form for creating or editing a note.
      *
      * @param FormBuilderInterface $builder The form builder.
-     * @param array $options Additional options for the form.
+     * @param array                $options Additional options for the form.
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
