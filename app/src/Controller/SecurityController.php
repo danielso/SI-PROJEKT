@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser() instanceof UserInterface) {
-           return $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
         }
 
         $lastUsername = $authenticationUtils->getLastUsername();
