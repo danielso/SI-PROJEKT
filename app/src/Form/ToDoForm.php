@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Form type for creating and editing ToDo tasks.
@@ -26,36 +27,38 @@ class ToDoForm extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Tytuł',  // Tytuł zadania
+                'label' => 'Tytuł',
             ])
             ->add('isDone')
+
             ->add('content', TextareaType::class, [
                 'required' => false,
-                'label' => 'Treść',
+                'label' => 'Treść' ,
             ])
+
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'query_builder' => function ($categoryRepository) use ($options) {
-                    // Uzyskujemy repozytorium z opcji formularza
-                    $user = $options['user'];  // Pobieramy użytkownika z opcji formularza
-
-                    return $categoryRepository->createQueryBuilder('c')
-                        ->where('c.user = :user')  // Filtrowanie kategorii dla użytkownika
-                        ->setParameter('user', $user);
-                },
-                'choice_label' => 'name', // Ustalamy, co będzie widoczne na liście
+                'choice_label' => 'name',
                 'required' => false,
+                'placeholder' => 'Wybierz kategorię',
             ])
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
+
+            // Nowa kategoria
+            ->add('newCategory', TextType::class, [
+                'label' => 'Nowa Kategoria',
+                'required' => false,
+                'attr' => ['placeholder' => 'Wpisz nazwę nowej kategorii'],
+                'mapped' => false,
             ])
-            ->add('updatedAt', null, [
-                'widget' => 'single_text',
-            ])
+
             ->add('tags', TextType::class, [
                 'mapped' => false,
                 'required' => false,
                 'label' => 'Tagi (oddzielone przecinkami)',
+            ])
+
+            ->add('save', SubmitType::class, [
+                'label' => 'Zapisz',
             ]);
     }
 
@@ -68,7 +71,7 @@ class ToDoForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ToDo::class,
-            'user' => null, // Domyślnie ustawiamy user na null
+            'user' => null,
         ]);
     }
 }

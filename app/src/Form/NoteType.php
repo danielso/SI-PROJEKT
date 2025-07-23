@@ -39,9 +39,9 @@ class NoteType extends AbstractType
             // Dodajemy pole do wyboru pliku
             ->add('image', FileType::class, [
                 'label' => 'Dodaj obrazek',
-                'required' => false,  // To pole jest opcjonalne
-                'mapped' => false,    // Nie mapujemy tego pola do encji Note
-                'attr' => ['accept' => 'image/*'], // Akceptujemy tylko obrazy
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['accept' => 'image/*'],
             ])
 
             // Kategoria
@@ -49,7 +49,7 @@ class NoteType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'required' => false,
-                'placeholder' => 'Wybierz kategorię',  // Tekst wyświetlany, gdy nic nie jest wybrane
+                'placeholder' => 'Wybierz kategorię',
             ])
 
             // Nowa kategoria
@@ -66,7 +66,6 @@ class NoteType extends AbstractType
                 'required' => false,
                 'label' => 'Tagi (oddzielone przecinkami)',
             ])
-            // Przycisk zapisz
             ->add('save', SubmitType::class, [
                 'label' => 'Zapisz',
             ]);
@@ -81,8 +80,8 @@ class NoteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Note::class,  // Powiązanie z encją Note
-            'user' => null,  // Dodajemy opcję 'user', którą będzie można przekazać z kontrolera
+            'data_class' => Note::class,
+            'user' => null,
         ]);
     }
 }

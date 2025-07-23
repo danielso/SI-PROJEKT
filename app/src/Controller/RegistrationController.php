@@ -30,9 +30,8 @@ class RegistrationController extends AbstractController
     {
         dump("Register Controller called");
 
-        // Jeżeli użytkownik jest już zalogowany, przekieruj go do strony głównej lub innej strony.
         if ($this->getUser()) {
-            return $this->redirectToRoute('home');  // Lub inna strona, w zależności od Twojej logiki
+            return $this->redirectToRoute('home');
         }
 
         $user = new User();
@@ -45,7 +44,7 @@ class RegistrationController extends AbstractController
             $user->setPassword($hashedPassword);
             $user->setRoles(['ROLE_USER']);
 
-            // Zapisujemy użytkownika w bazie danych
+            // Zapisuje użytkownika w bazie danych
             $entityManager->persist($user);
             $entityManager->flush();
 

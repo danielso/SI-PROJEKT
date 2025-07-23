@@ -31,7 +31,7 @@ class UserFormType extends AbstractType
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Hasło',
-                'required' => false, // Hasło jest opcjonalne przy edytowaniu konta
+                'required' => false,
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rola',
@@ -40,12 +40,12 @@ class UserFormType extends AbstractType
                     'Administrator' => 'ROLE_ADMIN',
                 ],
                 'multiple' => true,
-                'expanded' => true,  // Użycie checkboxów
+                'expanded' => true,
             ])
             ->add('isBlocked', CheckboxType::class, [
                 'label' => 'Zablokowany',
                 'required' => false,
-                'mapped' => false, // To pole nie będzie mapowane bezpośrednio do encji (kontroler będzie zarządzać tym polem)
+                'mapped' => false,
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Zapisz zmiany',

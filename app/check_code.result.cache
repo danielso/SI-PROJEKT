@@ -2,8 +2,8 @@
    2) src/Controller/HomeController.php (no_superfluous_phpdoc_tags, phpdoc_trim)
    3) src/Controller/NoteController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, single_line_comment_spacing, phpdoc_trim)
    4) src/Controller/ProfileController.php (class_attributes_separation, phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim, no_unused_imports)
-   5) src/Controller/RegistrationController.php (no_superfluous_phpdoc_tags, phpdoc_trim)
-   6) src/Controller/SecurityController.php (phpdoc_annotation_without_dot, blank_lines_before_namespace)
+   5) src/Controller/RegistrationController.php (single_quote, no_superfluous_phpdoc_tags, phpdoc_trim)
+   6) src/Controller/SecurityController.php (phpdoc_annotation_without_dot, statement_indentation)
    7) src/Controller/TagController.php (phpdoc_annotation_without_dot)
    8) src/Controller/ToDoController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, single_line_comment_spacing, phpdoc_trim)
    9) src/Controller/UserController.php (phpdoc_annotation_without_dot)
@@ -27,7 +27,7 @@
   27) src/Repository/ToDoRepository.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim)
   28) src/Security/BlockedUserChecker.php (blank_lines_before_namespace)
 
-Found 28 of 34 files that can be fixed in 2.962 seconds, 18.00 MB memory used
+Found 28 of 34 files that can be fixed in 2.234 seconds, 18.00 MB memory used
 
 FILE: /home/wwwroot/app/src/Controller/CategoryController.php
 -----------------------------------------------------------------------
@@ -63,6 +63,18 @@ FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
  3 | WARNING | The license block has to be present at the top
    |         |                 of every PHP file, before the namespace
 -----------------------------------------------------------------------
+
+
+FILE: /home/wwwroot/app/src/Controller/SecurityController.php
+-------------------------------------------------------------------------------------
+FOUND 1 ERROR AND 1 WARNING AFFECTING 2 LINES
+-------------------------------------------------------------------------------------
+  3 | WARNING | [ ] The license block has to be present at the top
+    |         |                     of every PHP file, before the namespace
+ 41 | ERROR   | [x] Line indented incorrectly; expected at least 12 spaces, found 11
+-------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Controller/TagController.php
@@ -102,14 +114,12 @@ FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
 
 
 FILE: /home/wwwroot/app/src/Entity/Note.php
--------------------------------------------------------------------------
-FOUND 2 ERRORS AND 1 WARNING AFFECTING 3 LINES
--------------------------------------------------------------------------
-   3 | WARNING | The license block has to be present at the top
-     |         |                 of every PHP file, before the namespace
- 203 | ERROR   | Missing doc comment for function __construct()
- 208 | ERROR   | Missing doc comment for function getTags()
--------------------------------------------------------------------------
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 3 | WARNING | The license block has to be present at the top
+   |         |                 of every PHP file, before the namespace
+-----------------------------------------------------------------------
 
 
 FILE: /home/wwwroot/app/src/Entity/Tag.php
@@ -228,7 +238,7 @@ FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
    |         |                 of every PHP file, before the namespace
 -----------------------------------------------------------------------
 
-Time: 4.54 secs; Memory: 10MB
+Time: 3.54 secs; Memory: 10MB
 
  ----------- ------------ -------------------------------------------------- ------------------------------------------ 
   State       Domain       Id                                                 Message Preview (en)                      
@@ -257,7 +267,7 @@ Time: 4.54 secs; Memory: 10MB
  ----------- ------------ -------------------------------------------------- ------------------------------------------ ------------------------------------------ 
 
 [notice] Migrating up to DoctrineMigrations\Version20250629113848
-[notice] finished in 3654.9ms, used 24M memory, 7 migrations executed, 24 sql queries
+[notice] finished in 2983.3ms, used 24M memory, 7 migrations executed, 24 sql queries
 
  [OK] Successfully migrated to version: DoctrineMigrations\Version20250629113848                                        
 

@@ -7,15 +7,12 @@
 
     {{ form_start(form) }}
 
-    <!-- Kolejność pól zgodnie z wymaganiami -->
     {{ form_row(form.title) }}
     {{ form_row(form.content) }}
     {{ form_row(form.category) }}
-    {{ form_row(form.newCategory) }}  {# Nowa kategoria #}
+    {{ form_row(form.newCategory) }}
     {{ form_row(form.tags) }}
 
-    <!-- Przycisk Zapisz -->
-    {{ form_row(form.save) }}
 
     {{ form_end(form) }}
 

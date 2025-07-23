@@ -74,11 +74,10 @@ class UserController extends AbstractController
                 $user->setPassword($hashedPassword);
             }
 
-            // Pobieramy dane o blokadzie konta z formularza
+            // Pobieranie danych o blokadzie konta
             $isBlocked = $form->get('isBlocked')->getData();
-            $user->setIsBlocked($isBlocked);  // Ustawiamy status blokady użytkownika
+            $user->setIsBlocked($isBlocked);
 
-            // Zapisujemy zmiany w bazie
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Dane użytkownika zostały zaktualizowane!');

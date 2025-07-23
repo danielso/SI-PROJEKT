@@ -22,7 +22,6 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        // Sprawdzamy, czy użytkownik jest administratorem
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
 
         return $this->render('home/home.html.twig', [

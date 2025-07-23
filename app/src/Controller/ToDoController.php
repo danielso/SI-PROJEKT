@@ -60,7 +60,7 @@ class ToDoController extends AbstractController
         // Pobieramy parametry z URL
         $categoryId = $request->query->get('category');
         $tagId = $request->query->get('tag');
-        $searchTerm = $request->query->get('search');  //fraza wyszukiwania
+        $searchTerm = $request->query->get('search');
 
         // Filtracja po kategorii
         if ($categoryId) {
@@ -137,6 +137,9 @@ class ToDoController extends AbstractController
             $entityManager->flush();
             $toDo->setCategory($category);
         }
+
+        $toDo->setCreatedAt(new \DateTimeImmutable());
+        $toDo->setUpdatedAt(new \DateTimeImmutable());
 
         // Przetwarzanie tagów
         $tagsString = $form->get('tags')->getData();

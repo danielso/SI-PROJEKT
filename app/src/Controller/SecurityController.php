@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // Sprawdzenie, czy zablokowany
+        // Sprawdzenie czy zablokowany
         if ($error instanceof CustomUserMessageAuthenticationException) {
             $this->addFlash('error', $error->getMessage());
         }

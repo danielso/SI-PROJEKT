@@ -80,7 +80,6 @@ class ProfileController extends AbstractController
 
             $this->addFlash('success', 'Hasło zostało zmienione.');
 
-            // Add blank line before return statement
             return $this->redirectToRoute('admin_change_password');
         }
 

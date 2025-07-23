@@ -94,7 +94,6 @@ final class CategoryController extends AbstractController
     {
         $user = $this->getUser();
 
-        // Sprawdzamy, czy użytkownik jest właścicielem kategorii
         if ($category->getUser() !== $user) {
             throw $this->createAccessDeniedException('Nie masz uprawnień do edycji tej kategorii.');
         }
@@ -131,7 +130,7 @@ final class CategoryController extends AbstractController
             throw $this->createAccessDeniedException('Nie masz uprawnień do usunięcia tej kategorii.');
         }
 
-        // Użyjemy metody request->request->get('_token') do pobrania tokenu CSRF
+        //request->request->get('_token') token CSRF
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $em->remove($category);
             $em->flush();

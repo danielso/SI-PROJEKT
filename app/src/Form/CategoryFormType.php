@@ -1,7 +1,5 @@
 <?php
 
-// src/Form/CategoryFormType.php
-
 namespace App\Form;
 
 use App\Entity\Category;
