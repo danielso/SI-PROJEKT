@@ -43,6 +43,6 @@ class BlockedUserChecker implements UserCheckerInterface
      */
     public function checkPostAuth(UserInterface $user): void
     {
-        // Możesz dodać logikę, która wykona się po autentykacji, jeśli chcesz
+
     }
 }
