@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nowy Tag{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Dodaj nowy tag</h1>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Zapisz</button>
+        </div>
+
+        <a href="{{ path('tag_index') }}" class="btn btn-secondary">Anuluj</a>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

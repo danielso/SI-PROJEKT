@@ -9,7 +9,10 @@
     <div class="form-group">
         {{ form_label(form.email) }}
         {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.email) }}
     </div>
+
+
 
     <div class="form-group">
         {{ form_label(form.newPassword.first) }}

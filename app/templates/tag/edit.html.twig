@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edytuj Tagi{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Edytuj Tag: {{ tag.name }}</h1>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Zapisz zmiany</button>
+        </div>
+
+        <a href="{{ path('tag_index') }}" class="btn btn-secondary">Anuluj</a>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
