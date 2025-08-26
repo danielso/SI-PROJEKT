@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Form;
 
@@ -29,10 +32,9 @@ class PasswordTypeForm extends AbstractType
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank(['message' => 'form.password.not_blank']),
+                    new NotBlank(),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'form.password.min_length',
                         'max' => 4096,
                     ]),
                 ],

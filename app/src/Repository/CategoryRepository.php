@@ -1,12 +1,14 @@
 <?php
-
-// src/Repository/CategoryRepository.php
+/**
+ * @license MIT
+ */
 
 namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -22,20 +24,33 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
-
     /**
-     * Znajdź kategorie przypisane do użytkownika
-     * @param $user
+     * @param User $user
      *
-     * @return Category[]
+     * @return array<int, array{0: Category, todoCount: int|string, noteCount: int|string}>
      */
-    public function findByUser($user): array
+    public function findAllForUserWithCounts(User $user): array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.user = :user') // Filtruj na podstawie użytkownika
-            ->setParameter('user', $user)
-            ->orderBy('c.name', 'ASC') // Sortowanie po nazwie
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->addSelect(
+                '(SELECT COUNT(t2.id)
+                   FROM App\Entity\ToDo t2
+                  WHERE t2.category = c
+                    AND (t2.user = :u OR :u MEMBER OF t2.collaborators)
+                ) AS todoCount'
+            )
+            ->addSelect(
+                '(SELECT COUNT(n2.id)
+                   FROM App\Entity\Note n2
+                  WHERE n2.category = c
+                    AND n2.user = :u
+                ) AS noteCount'
+            )
+            ->andWhere('c.user = :u')
+            ->setParameter('u', $user)
+            ->orderBy('c.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
     }
 }

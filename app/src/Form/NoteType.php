@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Form;
 
@@ -36,7 +39,7 @@ class NoteType extends AbstractType
                 'attr' => ['rows' => 10],
             ])
 
-            // Dodajemy pole do wyboru pliku
+            //pole do wyboru pliku
             ->add('image', FileType::class, [
                 'label' => 'Dodaj obrazek',
                 'required' => false,

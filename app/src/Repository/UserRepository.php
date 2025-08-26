@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Repository;
 
@@ -68,15 +71,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Counts the number of users with the 'ROLE_ADMIN'.
      *
-     * @return int The number of admins
+     * @return int The number of admins.
      */
     public function countAdmins(): int
     {
-        return $this->createQueryBuilder('u')
-            ->select('count(u.id)')
-            ->where('u.roles LIKE :role')
-            ->setParameter('role', '%ROLE_ADMIN%')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT COUNT(*) FROM users WHERE JSON_CONTAINS(roles, :needle) = 1';
+
+        return (int) $conn->fetchOne($sql, ['needle' => json_encode(['ROLE_ADMIN'])]);
     }
 }

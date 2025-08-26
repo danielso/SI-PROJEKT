@@ -1,49 +1,55 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AdminProfileFullType;
 use App\Form\AdminPasswordChangeType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\ProfileServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Controller for managing admin profile and password change functionalities.
+ * Controller responsible for profile management
  */
 class ProfileController extends AbstractController
 {
     /**
-     * Edits the admin profile.
+     * ProfileController constructor.
      *
-     * @param Request                     $request The HTTP request.
-     * @param EntityManagerInterface      $em      The entity manager.
-     * @param UserPasswordHasherInterface $hasher  The password hasher.
+     * @param ProfileServiceInterface $profile Service handling profile operations.
+     */
+    public function __construct(private readonly ProfileServiceInterface $profile)
+    {
+    }
+
+    /**
+     * Displays and processes the profile edit form for the currently logged-in user.
+     *
+     * Requires ROLE_USER.
+     *
+     * @param Request $request
      *
      * @return Response
      */
+    #[IsGranted('ROLE_USER')]
     #[Route('/profile/edit', name: 'profile_edit')]
-    public function editProfile(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    public function editProfile(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(AdminProfileFullType::class, $user);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('newPassword')->getData();
-            if ($newPassword) {
-                $hashedPassword = $hasher->hashPassword($user, $newPassword);
-                $user->setPassword($hashedPassword);
-            }
-
-            $em->flush();
+            $this->profile->updateProfile($user, $newPassword ?: null);
 
             $this->addFlash('success', 'Dane zostały zaktualizowane.');
 
@@ -55,19 +61,20 @@ class ProfileController extends AbstractController
         ]);
     }
 
-
     /**
-     * Changes the admin password.
+     * Displays and processes the admin password change form.
      *
-     * @param Request                     $request        The HTTP request.
-     * @param UserPasswordHasherInterface $passwordHasher The password hasher.
-     * @param EntityManagerInterface      $em             The entity manager.
+     * Requires ROLE_ADMIN.
+     *
+     * @param Request $request
      *
      * @return Response
      */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/change-password', name: 'admin_change_password')]
-    public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
+    public function changePassword(Request $request): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         $form = $this->createForm(AdminPasswordChangeType::class);
@@ -75,8 +82,7 @@ class ProfileController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('newPassword')->getData();
-            $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
-            $em->flush();
+            $this->profile->changePassword($user, $newPassword);
 
             $this->addFlash('success', 'Hasło zostało zmienione.');
 

@@ -1,283 +1,56 @@
-   1) src/Controller/CategoryController.php (class_attributes_separation, no_superfluous_phpdoc_tags, single_line_comment_spacing, phpdoc_trim)
-   2) src/Controller/HomeController.php (no_superfluous_phpdoc_tags, phpdoc_trim)
-   3) src/Controller/NoteController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, single_line_comment_spacing, phpdoc_trim)
-   4) src/Controller/ProfileController.php (class_attributes_separation, phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim, no_unused_imports)
-   5) src/Controller/RegistrationController.php (single_quote, no_superfluous_phpdoc_tags, phpdoc_trim)
-   6) src/Controller/SecurityController.php (phpdoc_annotation_without_dot)
-   7) src/Controller/TagController.php (phpdoc_annotation_without_dot)
-   8) src/Controller/ToDoController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, single_line_comment_spacing, phpdoc_trim)
-   9) src/Controller/UserController.php (phpdoc_annotation_without_dot)
-  10) src/Entity/Category.php (phpdoc_annotation_without_dot)
-  11) src/Entity/Note.php (phpdoc_annotation_without_dot, single_quote)
-  12) src/Entity/Tag.php (phpdoc_annotation_without_dot, single_quote, no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_trim)
-  13) src/Entity/ToDo.php (phpdoc_annotation_without_dot, single_quote, no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_trim)
-  14) src/Entity/User.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim)
+   1) src/Controller/CategoryController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+   2) src/Controller/HomeController.php (no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+   3) src/Controller/NoteController.php (class_attributes_separation, phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim, no_unused_imports)
+   4) src/Controller/ProfileController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_summary, phpdoc_trim)
+   5) src/Controller/RegistrationController.php (single_quote, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+   6) src/Controller/SecurityController.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+   7) src/Controller/TagController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+   8) src/Controller/ToDoController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim, no_blank_lines_after_phpdoc)
+   9) src/Controller/UserController.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  10) src/Entity/Category.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag, no_blank_lines_after_phpdoc)
+  11) src/Entity/Note.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag, no_blank_lines_after_phpdoc)
+  12) src/Entity/Tag.php (phpdoc_annotation_without_dot, single_quote, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim, no_blank_lines_after_phpdoc)
+  13) src/Entity/ToDo.php (phpdoc_annotation_without_dot, single_quote, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_summary, phpdoc_trim)
+  14) src/Entity/User.php (class_attributes_separation, phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
   15) src/Entity/UserRole.php (visibility_required, phpdoc_annotation_without_dot, blank_line_after_opening_tag)
-  16) src/Form/AdminProfileFullType.php (phpdoc_annotation_without_dot)
-  17) src/Form/CategoryFormType.php (phpdoc_annotation_without_dot, no_unused_imports)
-  18) src/Form/EmailFormType.php (phpdoc_annotation_without_dot, no_unused_imports)
-  19) src/Form/NoteType.php (class_attributes_separation, phpdoc_annotation_without_dot)
-  20) src/Form/PasswordTypeForm.php (phpdoc_annotation_without_dot)
-  21) src/Form/TagFormType.php (phpdoc_annotation_without_dot)
-  22) src/Form/ToDoForm.php (phpdoc_annotation_without_dot, no_whitespace_before_comma_in_array)
-  23) src/Form/UserFormType.php (phpdoc_annotation_without_dot)
-  24) src/Repository/CategoryRepository.php (no_superfluous_phpdoc_tags, phpdoc_summary)
-  25) src/Repository/NoteRepository.php (no_superfluous_phpdoc_tags, phpdoc_summary)
-  26) src/Repository/TagRepository.php (phpdoc_annotation_without_dot)
-  27) src/Repository/ToDoRepository.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, phpdoc_trim)
-  28) src/Security/BlockedUserChecker.php (blank_lines_before_namespace)
+  16) src/Form/AdminProfileFullType.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag, no_unused_imports)
+  17) src/Form/CategoryFormType.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag, no_unused_imports)
+  18) src/Form/EmailFormType.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag, no_unused_imports)
+  19) src/Form/NoteType.php (class_attributes_separation, phpdoc_annotation_without_dot, single_line_comment_spacing, blank_line_after_opening_tag)
+  20) src/Form/PasswordTypeForm.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  21) src/Form/RegistrationFormType.php (fully_qualified_strict_types, blank_line_after_opening_tag)
+  22) src/Form/TagFormType.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  23) src/Form/ToDoForm.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag, no_whitespace_before_comma_in_array)
+  24) src/Form/UserFormType.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  25) src/Repository/CategoryRepository.php (class_attributes_separation, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  26) src/Repository/NoteRepository.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  27) src/Repository/TagRepository.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  28) src/Repository/ToDoRepository.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  29) src/Repository/UserRepository.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  30) src/Security/BlockedUserChecker.php (blank_lines_before_namespace)
+  31) src/Service/CategoryService.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  32) src/Service/CategoryServiceInterface.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim, no_blank_lines_after_phpdoc)
+  33) src/Service/NoteService.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  34) src/Service/NoteServiceInterface.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  35) src/Service/ProfileService.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim, no_blank_lines_after_phpdoc)
+  36) src/Service/ProfileServiceInterface.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim, no_blank_lines_after_phpdoc)
+  37) src/Service/RegisterService.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  38) src/Service/RegisterServiceInterface.php (phpdoc_annotation_without_dot, blank_line_after_opening_tag)
+  39) src/Service/TagService.php (class_attributes_separation, phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  40) src/Service/TagServiceInterface.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  41) src/Service/ToDoService.php (function_declaration, phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_separation, phpdoc_trim, phpdoc_trim_consecutive_blank_line_separation)
+  42) src/Service/ToDoServiceInterface.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_trim)
+  43) src/Service/UserService.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_separation)
+  44) src/Service/UserServiceInterface.php (phpdoc_annotation_without_dot, no_superfluous_phpdoc_tags, blank_line_after_opening_tag, phpdoc_separation)
 
-Found 28 of 34 files that can be fixed in 2.156 seconds, 18.00 MB memory used
+Found 44 of 48 files that can be fixed in 3.279 seconds, 18.00 MB memory used
+ ------- -------- ---- ---------------------- 
+  State   Domain   Id   Message Preview (en)  
+ ------- -------- ---- ---------------------- 
 
-FILE: /home/wwwroot/app/src/Controller/CategoryController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
+ ------- -------- ---- ---------------------- ------------------------------- 
+  State   Domain   Id   Message Preview (pl)   Fallback Message Preview (en)  
+ ------- -------- ---- ---------------------- ------------------------------- 
 
-
-FILE: /home/wwwroot/app/src/Controller/HomeController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Controller/ProfileController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Controller/RegistrationController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Controller/SecurityController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Controller/TagController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Controller/ToDoController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Controller/UserController.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Entity/Category.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Entity/Note.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Entity/Tag.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Entity/ToDo.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Entity/UserRole.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 2 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/AdminProfileFullType.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/CategoryFormType.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/EmailFormType.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/NoteType.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/PasswordTypeForm.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/RegistrationFormType.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/TagFormType.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/ToDoForm.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Form/UserFormType.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Repository/TagRepository.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-
-FILE: /home/wwwroot/app/src/Repository/UserRepository.php
------------------------------------------------------------------------
-FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
------------------------------------------------------------------------
- 3 | WARNING | The license block has to be present at the top
-   |         |                 of every PHP file, before the namespace
------------------------------------------------------------------------
-
-Time: 2.13 secs; Memory: 10MB
-
- ----------- ------------ -------------------------------------------------- ------------------------------------------ 
-  State       Domain       Id                                                 Message Preview (en)                      
- ----------- ------------ -------------------------------------------------- ------------------------------------------ 
-   missing    validators   Masz już kategorię o tej nazwie.                   Masz już kategorię o tej nazwie.          
-   missing    validators   form.email.not_blank                               form.email.not_blank                      
-   missing    validators   form.email.invalid                                 form.email.invalid                        
-   missing    validators   form.password.not_blank                            form.password.not_blank                   
-   missing    validators   form.password.min_length                           form.password.min_length                  
-   missing    validators   Please enter your email                            Please enter your email                   
-   missing    validators   Please enter your password                         Please enter your password                
-   missing    validators   Your password must be at least 6 characters long   Your password must be at least 6 char...  
- ----------- ------------ -------------------------------------------------- ------------------------------------------ 
-
- ----------- ------------ -------------------------------------------------- ------------------------------------------ ------------------------------------------ 
-  State       Domain       Id                                                 Message Preview (pl)                       Fallback Message Preview (en)             
- ----------- ------------ -------------------------------------------------- ------------------------------------------ ------------------------------------------ 
-   missing    validators   Masz już kategorię o tej nazwie.                   Masz już kategorię o tej nazwie.           Masz już kategorię o tej nazwie.          
-   missing    validators   form.email.not_blank                               form.email.not_blank                       form.email.not_blank                      
-   missing    validators   form.email.invalid                                 form.email.invalid                         form.email.invalid                        
-   missing    validators   form.password.not_blank                            form.password.not_blank                    form.password.not_blank                   
-   missing    validators   form.password.min_length                           form.password.min_length                   form.password.min_length                  
-   missing    validators   Please enter your email                            Please enter your email                    Please enter your email                   
-   missing    validators   Please enter your password                         Please enter your password                 Please enter your password                
-   missing    validators   Your password must be at least 6 characters long   Your password must be at least 6 char...   Your password must be at least 6 char...  
- ----------- ------------ -------------------------------------------------- ------------------------------------------ ------------------------------------------ 
-
-[notice] Migrating up to DoctrineMigrations\Version20250629113848
-[notice] finished in 3267.6ms, used 24M memory, 7 migrations executed, 24 sql queries
-
- [OK] Successfully migrated to version: DoctrineMigrations\Version20250629113848                                        
-
-
+[notice] Migrating up to DoctrineMigrations\Version20250824211455
    > purging database
-   > loading App\DataFixtures\AppFixtures
-   > loading App\DataFixtures\UserFixtures

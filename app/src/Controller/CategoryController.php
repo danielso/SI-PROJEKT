@@ -1,76 +1,74 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryFormType;
-use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\CategoryServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 /**
- * CategoryController to manage categories for the logged-in user.
+ * Controller responsible for Category CRUD actions using the service layer.
  */
 #[Route('/category')]
 final class CategoryController extends AbstractController
 {
+    /**
+     * CategoryController constructor.
+     *
+     * @param CategoryServiceInterface $categoryService Service handling category operations.
+     */
+    public function __construct(private readonly CategoryServiceInterface $categoryService)
+    {
+    }
 
     /**
-     * Display all categories of the logged-in user.
-     *
-     * @param CategoryRepository $categoryRepository
+     * Displays a list of categories for the current user.
      *
      * @return Response
      */
     #[Route('/', name: 'category_index', methods: ['GET'])]
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(): Response
     {
-        // Pobieramy aktualnie zalogowanego użytkownika
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Pobieramy kategorie tylko dla zalogowanego użytkownika
-        $categories = $categoryRepository->findBy(['user' => $user]);
+        $rows = $this->categoryService->getListForUserWithCounts($user);
 
         return $this->render('category/index.html.twig', [
-            'categories' => $categories,
+            'rows' => $rows,
         ]);
     }
 
     /**
-     * Create a new category for the logged-in user.
+     * Creates a new category for the current user.
      *
-     * @param Request                $request
-     * @param EntityManagerInterface $em
-     * @param Security               $security
+     * @param Request $request
      *
      * @return Response
      */
     #[Route('/new', name: 'category_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em, Security $security): Response
+    public function new(Request $request): Response
     {
-        $category = new Category();
-
-        $user = $security->getUser();
-
+        $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        $category->setUser($user);
-
+        $category = new Category();
         $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($category);
-            $em->flush();
+            $this->categoryService->create($category, $user);
 
             return $this->redirectToRoute('category_index');
         }
@@ -81,28 +79,26 @@ final class CategoryController extends AbstractController
     }
 
     /**
-     * Edit an existing category.
+     * Edits an existing category.
      *
-     * @param Request                $request
-     * @param Category               $category
-     * @param EntityManagerInterface $em
+     * @param Request  $request
+     * @param Category $category
      *
      * @return Response
      */
     #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Category $category, EntityManagerInterface $em): Response
+    public function edit(Request $request, Category $category): Response
     {
         $user = $this->getUser();
-
-        if ($category->getUser() !== $user) {
-            throw $this->createAccessDeniedException('Nie masz uprawnień do edycji tej kategorii.');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
         }
 
         $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
+            $this->categoryService->update($category, $user);
 
             return $this->redirectToRoute('category_index');
         }
@@ -114,26 +110,23 @@ final class CategoryController extends AbstractController
     }
 
     /**
-     * Delete a category.
+     * Deletes a category after CSRF validation.
      *
-     * @param Request                $request
-     * @param Category               $category
-     * @param EntityManagerInterface $em
+     * @param Request  $request
+     * @param Category $category
      *
      * @return Response
      */
     #[Route('/{id}', name: 'category_delete', methods: ['POST'])]
-    public function delete(Request $request, Category $category, EntityManagerInterface $em): Response
+    public function delete(Request $request, Category $category): Response
     {
         $user = $this->getUser();
-        if ($category->getUser() !== $user) {
-            throw $this->createAccessDeniedException('Nie masz uprawnień do usunięcia tej kategorii.');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
         }
 
-        //request->request->get('_token') token CSRF
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $em->remove($category);
-            $em->flush();
+            $this->categoryService->delete($category, $user);
         }
 
         return $this->redirectToRoute('category_index');

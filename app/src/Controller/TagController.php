@@ -1,11 +1,13 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Controller;
 
 use App\Entity\Tag;
 use App\Form\TagFormType;
-use App\Repository\TagRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\TagServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,89 +20,109 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractController
 {
     /**
-     * Displays a list of all tags.
+     * TagController constructor.
      *
-     * @param TagRepository $tagRepository The tag repository.
+     * @param TagServiceInterface $tags Service handling tag operations.
+     */
+    public function __construct(private readonly TagServiceInterface $tags)
+    {
+    }
+
+    /**
+     * Displays a list of all tags with usage counts for the current user.
      *
-     * @return Response The response object.
+     * @return Response
      */
     #[Route('/', name: 'tag_index', methods: ['GET'])]
-    public function index(TagRepository $tagRepository): Response
+    public function index(): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $rows = $this->tags->getAllWithCountsForUser($user);
+
         return $this->render('tag/index.html.twig', [
-            'tags' => $tagRepository->findAll(),
+            'rows' => $rows,
         ]);
     }
 
     /**
      * Creates a new tag.
      *
-     * @param Request                $request The HTTP request.
-     * @param EntityManagerInterface $em      The entity manager.
+     * @param Request $request
      *
-     * @return Response The response object.
+     * @return Response
      */
     #[Route('/new', name: 'tag_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request): Response
     {
-        $tag = new Tag();
+        $tag  = new Tag();
         $form = $this->createForm(TagFormType::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($tag);
-            $em->flush();
+            try {
+                $this->tags->create($tag);
+                $this->addFlash('success', 'Tag utworzony.');
 
-            return $this->redirectToRoute('tag_index');
+                return $this->redirectToRoute('tag_index');
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('tag/new.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * Edits an existing tag.
      *
-     * @param Request                $request The HTTP request.
-     * @param Tag                    $tag     The tag to edit.
-     * @param EntityManagerInterface $em      The entity manager.
+     * @param Request $request
+     * @param Tag     $tag
      *
-     * @return Response The response object.
+     * @return Response
      */
     #[Route('/{id}/edit', name: 'tag_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Tag $tag, EntityManagerInterface $em): Response
+    public function edit(Request $request, Tag $tag): Response
     {
         $form = $this->createForm(TagFormType::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
+            try {
+                $this->tags->update($tag);
+                $this->addFlash('success', 'Tag zaktualizowany.');
 
-            return $this->redirectToRoute('tag_index');
+                return $this->redirectToRoute('tag_index');
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('tag/edit.html.twig', [
-            'form' => $form,
-            'tag' => $tag,
+            'form' => $form->createView(),
+            'tag'  => $tag,
         ]);
     }
 
     /**
-     * Deletes a tag.
+     * Deletes a tag after CSRF validation.
      *
-     * @param Request                $request The HTTP request.
-     * @param Tag                    $tag     The tag to delete.
-     * @param EntityManagerInterface $em      The entity manager.
+     * @param Request $request
+     * @param Tag     $tag
      *
-     * @return Response The response object.
+     * @return Response
      */
     #[Route('/{id}', name: 'tag_delete', methods: ['POST'])]
-    public function delete(Request $request, Tag $tag, EntityManagerInterface $em): Response
+    public function delete(Request $request, Tag $tag): Response
     {
         if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->getPayload()->getString('_token'))) {
-            $em->remove($tag);
-            $em->flush();
+            $this->tags->delete($tag);
+            $this->addFlash('success', 'Tag usunięty.');
         }
 
         return $this->redirectToRoute('tag_index');
