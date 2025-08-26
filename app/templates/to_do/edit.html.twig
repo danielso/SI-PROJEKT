@@ -37,12 +37,38 @@
         {{ form_row(form.isDone) }}
     </div>
 
-    <div>
-        {# Przycisk zapisania zmian #}
-        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
-    </div>
 
     {{ form_end(form) }}
 
-    <p><a href="{{ path('note_index') }}">&larr; Wróć do listy notatek</a></p>
+    <hr>
+    {% if app.user and to_do.user and app.user.id == to_do.user.id %}
+    <h3>Współtwórcy</h3>
+
+    {% if to_do.collaborators|length %}
+        <ul>
+            {% for u in to_do.collaborators %}
+                <li>
+                    {{ u.email }}
+                    <form method="post"
+                          action="{{ path('app_to_do_collaborator_remove', {id: to_do.id, userId: u.id}) }}"
+                          style="display:inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('rmcollab' ~ to_do.id ~ '-' ~ u.id) }}">
+                        <button class="btn btn-sm btn-outline-danger">Usuń</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak współpracowników.</p>
+    {% endif %}
+
+    <form method="post" action="{{ path('app_to_do_collaborator_add', {id: to_do.id}) }}" style="margin-top:8px">
+        <input type="email" name="email" placeholder="E-mail użytkownika" required>
+        <input type="hidden" name="_token" value="{{ csrf_token('addcollab' ~ to_do.id) }}">
+        <button class="btn btn-sm btn-outline-success">Dodaj współpracownika</button>
+    </form>
+    {% endif %}
+
+
+    <p><a href="{{ path('app_to_do_index') }}">&larr; Wróć do listy notatek</a></p>
 {% endblock %}
