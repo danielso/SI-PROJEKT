@@ -1,4 +1,8 @@
 <?php
+/**
+ * @license MIT
+ */
+
 namespace App\Entity;
 
 /**
@@ -18,11 +22,10 @@ class UserRole
      */
     public static function label(string $role): string
     {
-        // Możesz dodać dodatkowe role w tej funkcji w przyszłości
         return match ($role) {
-            self::ROLE_USER => 'label.role_user',  // Klucz do tłumaczenia: ROLE_USER
-            self::ROLE_ADMIN => 'label.role_admin',  // Klucz do tłumaczenia: ROLE_ADMIN
-            default => 'label.role_unknown',  // Klucz dla nieznanych ról
+            self::ROLE_USER => 'label.role_user',
+            self::ROLE_ADMIN => 'label.role_admin',
+            default => 'label.role_unknown',
         };
     }
 }

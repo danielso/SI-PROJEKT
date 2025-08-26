@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Form;
 
@@ -45,7 +48,6 @@ class UserFormType extends AbstractType
             ->add('isBlocked', CheckboxType::class, [
                 'label' => 'Zablokowany',
                 'required' => false,
-                'mapped' => false,
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Zapisz zmiany',

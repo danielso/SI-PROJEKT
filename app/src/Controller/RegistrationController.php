@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Controller;
 
@@ -44,7 +47,6 @@ class RegistrationController extends AbstractController
             $user->setPassword($hashedPassword);
             $user->setRoles(['ROLE_USER']);
 
-            // Zapisuje użytkownika w bazie danych
             $entityManager->persist($user);
             $entityManager->flush();
 

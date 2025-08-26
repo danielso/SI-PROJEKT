@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Form;
 
@@ -27,8 +30,8 @@ class EmailFormType extends AbstractType
             'label' => 'label.email',
             'required' => true,
             'constraints' => [
-                new NotBlank(['message' => 'form.email.not_blank']),
-                new Email(['message' => 'form.email.invalid']),
+                new NotBlank(),
+                new Email(),
             ],
         ]);
     }

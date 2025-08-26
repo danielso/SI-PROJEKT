@@ -1,9 +1,11 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -11,8 +13,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Class representing a category that can contain notes and to-dos.
  */
-#[UniqueEntity(fields: ['name', 'user'], message: 'Masz już kategorię o tej nazwie.')]
+#[UniqueEntity(fields: ['name', 'user'])]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Table(
+    name: 'category',
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(name: 'uniq_category_user_name', columns: ['user_id', 'name']),
+    ],
+)]
 class Category
 {
     #[ORM\Id]
@@ -26,27 +34,10 @@ class Category
     /**
      * @var Collection<int, Note>
      */
-    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'category')]
-    private Collection $notes;
 
-    /**
-     * @var Collection<int, ToDo>
-     */
-    #[ORM\OneToMany(targetEntity: ToDo::class, mappedBy: 'category')]
-    private Collection $toDos;
-
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
-
-    /**
-     * Initializes the Category entity with empty collections for notes and to-dos.
-     */
-    public function __construct()
-    {
-        $this->notes = new ArrayCollection();
-        $this->toDos = new ArrayCollection();
-    }
 
     /**
      * Gets the ID of the category.
@@ -102,76 +93,6 @@ class Category
     public function setUser(User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Adds a note to the category.
-     *
-     * @param Note $note The note to add.
-     *
-     * @return $this
-     */
-    public function addNote(Note $note): static
-    {
-        if (!$this->notes->contains($note)) {
-            $this->notes->add($note);
-            $note->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Removes a note from the category.
-     *
-     * @param Note $note The note to remove.
-     *
-     * @return $this
-     */
-    public function removeNote(Note $note): static
-    {
-        if ($this->notes->removeElement($note)) {
-            if ($note->getCategory() === $this) {
-                $note->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Adds a to-do to the category.
-     *
-     * @param ToDo $toDo The to-do to add.
-     *
-     * @return $this
-     */
-    public function addToDo(ToDo $toDo): static
-    {
-        if (!$this->toDos->contains($toDo)) {
-            $this->toDos->add($toDo);
-            $toDo->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Removes a to-do from the category.
-     *
-     * @param ToDo $toDo The to-do to remove.
-     *
-     * @return $this
-     */
-    public function removeToDo(ToDo $toDo): static
-    {
-        if ($this->toDos->removeElement($toDo)) {
-            if ($toDo->getCategory() === $this) {
-                $toDo->setCategory(null);
-            }
-        }
 
         return $this;
     }

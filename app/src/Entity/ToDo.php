@@ -1,18 +1,31 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Repository\ToDoRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: ToDoRepository::class)]
+#[ORM\Table(
+    name: 'to_do',
+    indexes: [
+        new ORM\Index(name: 'idx_todo_user_created', columns: ['user_id', 'created_at']),
+        new ORM\Index(name: 'idx_todo_category', columns: ['category_id']),
+        new ORM\Index(name: 'idx_todo_updated', columns: ['updated_at']),
+    ]
+)]
 
 /**
  * Class ToDo
  *
  * Represents a to-do task, which can be categorized and tagged, and associated with a user.
  */
-#[ORM\Entity(repositoryClass: ToDoRepository::class)]
 class ToDo
 {
     #[ORM\Id]
@@ -35,17 +48,53 @@ class ToDo
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'toDos')]
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
     private ?Category $category = null;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
-    #[ORM\JoinColumn(nullable: false)] // Ustawienie, żeby użytkownik był wymagany
+
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(type: "string", length: 255, unique: true, nullable: true, name: "share_token")]
     #[Assert\Length(max: 255)]
     private ?string $shareToken = null;
+
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'toDos', fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinTable(
+        name: 'todo_tags',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'to_do_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ],
+        inverseJoinColumns: [
+            new ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ]
+    )]
+    private Collection $tags;
+
+    #[ORM\ManyToMany(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinTable(
+        name: 'todo_collab',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'to_do_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ],
+        inverseJoinColumns: [
+            new ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ]
+    )]
+    private Collection $collaborators;
+
+    /**
+     * ToDo constructor.
+     *
+     * Initializes the collection for tags.
+     */
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
+    }
 
     /**
      * Gets the share token of the to-do task.
@@ -249,20 +298,6 @@ class ToDo
         return $this;
     }
 
-    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'toDos')]
-    #[ORM\JoinTable(name: 'todo_tags')] // Opcjonalnie, nazwa tabeli łączącej
-    private Collection $tags;
-
-    /**
-     * ToDo constructor.
-     *
-     * Initializes the collection for tags.
-     */
-    public function __construct()
-    {
-        $this->tags = new ArrayCollection();
-    }
-
     /**
      * Gets the tags associated with the to-do task.
      *
@@ -315,5 +350,57 @@ class ToDo
         $this->tags->removeElement($tag);
 
         return $this;
+    }
+
+    /**
+     * Returns the collection of collaborators (users) assigned to this task.
+     *
+     * @return Collection<int, User>
+     */
+    public function getCollaborators(): Collection
+    {
+        return $this->collaborators;
+    }
+
+    /**
+     * Adds a collaborator to this to-do.
+     *
+     * @param User $user The user to add as a collaborator.
+     *
+     * @return self
+     */
+    public function addCollaborator(User $user): self
+    {
+        if (!$this->collaborators->contains($user)) {
+            $this->collaborators->add($user);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Removes a collaborator from this to-do.
+     *
+     * @param User $user The user to remove from collaborators.
+     *
+     * @return self
+     */
+    public function removeCollaborator(User $user): self
+    {
+        $this->collaborators->removeElement($user);
+
+        return $this;
+    }
+
+    /**
+     * Checks whether the given user is a collaborator of this to-do.
+     *
+     * @param User $user The user to check.
+     *
+     * @return bool True if the user is a collaborator, false otherwise.
+     */
+    public function isCollaborator(User $user): bool
+    {
+        return $this->collaborators->contains($user);
     }
 }

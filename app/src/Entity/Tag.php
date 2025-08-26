@@ -1,18 +1,24 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Entity;
 
 use App\Repository\TagRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Tag
- *
- * Represents a tag entity that can be associated with multiple notes and to-do tasks.
+ * Entity representing a tag that can be attached to notes or to-dos.
  */
+
 #[ORM\Entity(repositoryClass: TagRepository::class)]
+#[ORM\Table(
+    name: 'tag',
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(name: 'uniq_tag_name', columns: ['name']),
+    ]
+)]
 class Tag
 {
     #[ORM\Id]
@@ -22,23 +28,6 @@ class Tag
 
     #[ORM\Column(type: "string", length: 255)]
     private ?string $name = null;
-
-    #[ORM\ManyToMany(targetEntity: Note::class, mappedBy: "tags")]
-    private Collection $notes;
-
-    #[ORM\ManyToMany(targetEntity: ToDo::class, mappedBy: "tags")]
-    private Collection $toDos;
-
-    /**
-     * Tag constructor.
-     *
-     * Initializes the collections for notes and to-dos.
-     */
-    public function __construct()
-    {
-        $this->notes = new ArrayCollection();
-        $this->toDos = new ArrayCollection();
-    }
 
     /**
      * Gets the ID of the tag.
@@ -72,25 +61,5 @@ class Tag
         $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * Gets the notes associated with this tag.
-     *
-     * @return Collection The collection of notes associated with the tag.
-     */
-    public function getNotes(): Collection
-    {
-        return $this->notes;
-    }
-
-    /**
-     * Gets the to-dos associated with this tag.
-     *
-     * @return Collection The collection of to-dos associated with the tag.
-     */
-    public function getToDos(): Collection
-    {
-        return $this->toDos;
     }
 }

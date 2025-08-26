@@ -1,7 +1,6 @@
 <?php
-
 /**
- * User entity.
+ * @license MIT
  */
 
 namespace App\Entity;
@@ -18,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -51,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isBlocked = false; // Domyślnie użytkownik nie jest zablokowany
+    private bool $isBlocked = false;
 
     // Getter i Setter
     /**
@@ -134,8 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = UserRole::ROLE_USER; // Użycie stałej z klasy UserRole
+        $roles[] = UserRole::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -179,7 +178,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
@@ -203,5 +201,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsBlocked(bool $isBlocked): void
     {
         $this->isBlocked = $isBlocked;
+    }
+    /**
+     * Checks whether the user has the given role.
+     *
+     * @param string $role Role name, e.g. "ROLE_ADMIN".
+     *
+     * @return bool True when the role is assigned to the user, false otherwise.
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRoles(), true);
     }
 }

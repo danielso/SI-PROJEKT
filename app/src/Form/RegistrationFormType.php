@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Form;
 
@@ -11,6 +14,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Form type for user registration.
@@ -30,19 +34,20 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Email',
                 'required' => true,
                 'constraints' => [
-                    new NotBlank(['message' => 'Please enter your email']),
-                    new Length(['min' => 6, 'max' => 180]),
+                    new Assert\NotBlank(),
+                    new Assert\Email(),
+                    new Assert\Length(['min' => 6, 'max' => 180]),
+
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Confirm Password'],
-                'invalid_message' => 'Passwords don\'t match',
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank(['message' => 'Please enter your password']),
-                    new Length(['min' => 6, 'minMessage' => 'Your password must be at least 6 characters long']),
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min' => 6, 'max' => 4096]),
                 ],
                 'required' => true,
             ]);

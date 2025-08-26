@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Form;
 
@@ -20,6 +23,11 @@ class AdminProfileFullType extends AbstractType
 {
     private EntityManagerInterface $em;
 
+    /**
+     * AdminProfileFullType constructor.
+     *
+     * @param EntityManagerInterface $em Entity manager, available for potential custom validators or lookups.
+     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -42,14 +50,6 @@ class AdminProfileFullType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Email(),
-                    new Assert\Callback(function ($email, ExecutionContextInterface $context) use ($user) {
-                        $existingUser = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
-                        if ($existingUser && $existingUser->getId() !== $user->getId()) {
-                            $context->buildViolation('Ten email jest już zajęty!')
-                                ->atPath('email')
-                                ->addViolation();
-                        }
-                    }),
                 ],
             ])
             ->add('newPassword', RepeatedType::class, [
@@ -58,7 +58,6 @@ class AdminProfileFullType extends AbstractType
                 'required' => false,
                 'first_options'  => ['label' => 'Nowe hasło'],
                 'second_options' => ['label' => 'Powtórz hasło'],
-                'invalid_message' => 'Hasła muszą się zgadzać.',
             ]);
     }
 

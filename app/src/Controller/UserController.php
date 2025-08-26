@@ -1,88 +1,81 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserFormType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;  // Importujemy EntityManagerInterface
+use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
- * Controller for managing users (CRUD operations).
+ * Controller for managing users (admin CRUD operations).
  */
 class UserController extends AbstractController
 {
-    private UserPasswordHasherInterface $passwordHasher;
-    private EntityManagerInterface $entityManager;
-
     /**
      * UserController constructor.
      *
-     * @param UserPasswordHasherInterface $passwordHasher The password hasher.
-     * @param EntityManagerInterface      $entityManager  The entity manager.
+     * @param UserServiceInterface $userService Service handling user admin logic.
      */
-    public function __construct(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager)
+    public function __construct(private readonly UserServiceInterface $userService)
     {
-        $this->passwordHasher = $passwordHasher;
-        $this->entityManager = $entityManager;
     }
 
     /**
      * Displays a list of all users.
      *
-     * @param UserRepository $userRepository The user repository.
+     * @param UserRepository $userRepository
      *
-     * @return Response The response object.
+     * @return Response
      */
     #[Route('/admin/users', name: 'user_index')]
     public function index(UserRepository $userRepository): Response
     {
-        $users = $userRepository->findAll();  // Pobranie wszystkich użytkowników
-
         return $this->render('user/index.html.twig', [
-            'users' => $users,
+            'users' => $userRepository->findAll(),
         ]);
     }
 
     /**
-     * Edits a user.
+     * Edits a user (admin only).
      *
-     * @param Request        $request        The HTTP request.
-     * @param User           $user           The user to edit.
-     * @param UserRepository $userRepository The user repository.
+     * @param Request        $request
+     * @param User           $user
+     * @param UserRepository $userRepository
      *
-     * @return Response The response object.
+     * @return Response
      */
     #[Route('/admin/users/{id}/edit', name: 'user_edit')]
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');  // Tylko administratorzy mogą edytować
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $wasAdmin = $user->hasRole('ROLE_ADMIN');
 
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Haszowanie hasła
-            $password = $form->get('password')->getData();
-            if ($password) {
-                $hashedPassword = $this->passwordHasher->hashPassword($user, $password);
-                $user->setPassword($hashedPassword);
+            $newPassword = $form->get('password')->getData();
+            $isBlocked   = $form->has('isBlocked') ? (bool) $form->get('isBlocked')->getData() : null;
+
+            try {
+                $this->userService->update($user, $wasAdmin, $newPassword ?: null, $isBlocked);
+                $this->addFlash('success', 'Dane użytkownika zostały zaktualizowane!');
+
+                return $this->redirectToRoute('user_index');
+            } catch (\LogicException $e) {
+                $this->addFlash('error', $e->getMessage());
+
+                return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
             }
-
-            // Pobieranie danych o blokadzie konta
-            $isBlocked = $form->get('isBlocked')->getData();
-            $user->setIsBlocked($isBlocked);
-
-            $this->entityManager->flush();
-
-            $this->addFlash('success', 'Dane użytkownika zostały zaktualizowane!');
-
-            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -92,22 +85,25 @@ class UserController extends AbstractController
     }
 
     /**
-     * Deletes a user.
+     * Deletes a user (admin only) after CSRF validation.
      *
-     * @param Request        $request        The HTTP request.
-     * @param User           $user           The user to delete.
-     * @param UserRepository $userRepository The user repository.
+     * @param Request $request
+     * @param User    $user
      *
-     * @return Response The response object.
+     * @return Response
      */
     #[Route('/admin/users/{id}/delete', name: 'user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, UserRepository $userRepository): Response
+    public function delete(Request $request, User $user): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');  // Tylko administratorzy mogą usuwać użytkowników
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $userRepository->remove($user);
-            $this->addFlash('success', 'Użytkownik został usunięty!');
+            try {
+                $this->userService->delete($user);
+                $this->addFlash('success', 'Użytkownik został usunięty!');
+            } catch (\LogicException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
         }
 
         return $this->redirectToRoute('user_index');

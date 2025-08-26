@@ -27,7 +27,7 @@ class BlockedUserChecker implements UserCheckerInterface
     public function checkPreAuth(UserInterface $user): void
     {
         if ($user instanceof User) {
-            if ($user->getIsBlocked()) {
+            if ($user->isBlocked()) {
                 throw new CustomUserMessageAuthenticationException('Twoje konto zostało zablokowane.');
             }
         }
@@ -43,6 +43,5 @@ class BlockedUserChecker implements UserCheckerInterface
      */
     public function checkPostAuth(UserInterface $user): void
     {
-
     }
 }

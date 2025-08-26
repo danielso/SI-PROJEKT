@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Entity;
 
@@ -9,9 +12,17 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Represents a note entity that can have content, title, tags, and an associated category.
+ * Entity representing a user note with title, content, category, tags and timestamps.
  */
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
+#[ORM\Table(
+    name: 'note',
+    indexes: [
+        new ORM\Index(name: 'idx_note_user_created', columns: ['user_id', 'created_at']),
+        new ORM\Index(name: 'idx_note_category', columns: ['category_id']),
+        new ORM\Index(name: 'idx_note_updated', columns: ['updated_at']),
+    ]
+)]
 class Note
 {
     #[ORM\Id]
@@ -31,16 +42,39 @@ class Note
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notes')]
-    #[ORM\JoinColumn(onDelete: "SET NULL", nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
     private ?Category $category = null;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
-    #[ORM\JoinColumn(nullable: false)] // Ustawienie, żeby użytkownik był wymagany
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $image = null;
+    /**
+     * @var Collection<int, Tag>
+     */
+
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'notes', fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinTable(
+        name: 'note_tags',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'note_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ],
+        inverseJoinColumns: [
+            new ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ]
+    )]
+    private Collection $tags;
+
+    /**
+     * Initializes the tags collection.
+     */
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * Get the image file name for the note.
@@ -194,18 +228,6 @@ class Note
         $this->category = $category;
 
         return $this;
-    }
-
-    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'notes')]
-    #[ORM\JoinTable(name: 'note_tags')]
-    private Collection $tags;
-
-    /**
-     * Initializes the tags collection.
-     */
-    public function __construct()
-    {
-        $this->tags = new ArrayCollection();
     }
 
     /**
