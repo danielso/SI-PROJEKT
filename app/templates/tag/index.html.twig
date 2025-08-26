@@ -1,3 +1,4 @@
+{# templates/tag/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Zarządzaj tagami{% endblock %}
@@ -11,27 +12,35 @@
             <a href="{{ path('tag_new') }}" class="add-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">➕ Dodaj nowy tag</a>
         </div>
 
-        {% if tags is empty %}
+        {% if rows is empty %}
             <p>Brak tagów do wyświetlenia.</p>
         {% else %}
-            <table style="width: 100%; border-collapse: collapse;">
+            <table>
                 <thead>
-                <tr style="background-color: #f2f2f2;">
-                    <th style="padding: 10px; text-align: left;">Nazwa tagu</th>
-                    <th style="padding: 10px;">Akcje</th>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>ToDo</th>
+                    <th>Notatki</th>
+                    <th>Akcje</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for tag in tags %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">{{ tag.name }}</td>
-                        <td style="padding: 10px;">
-                            <a href="{{ path('tag_edit', { id: tag.id }) }}">✏️ Edytuj</a>
-
-                            <form action="{{ path('tag_delete', { id: tag.id }) }}" method="post" style="display:inline;" onsubmit="return confirm('Czy na pewno chcesz usunąć ten tag?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tag.id) }}">
-                                <button type="submit" style="background:none; border:none; color: #d9534f; cursor:pointer;">🗑️ Usuń</button>
-                            </form>
+                {% for row in rows %}
+                    {% set tag = row[0] %}
+                    <tr>
+                        <td>{{ tag.name }}</td>
+                        <td>{{ row.todoCount }}</td>
+                        <td>{{ row.noteCount }}</td>
+                        <td>
+                            <a href="{{ path('tag_edit', {id: tag.id}) }}">✏️</a>
+                            {% if row.todoCount == 0 and row.noteCount == 0 %}
+                                <form method="post" action="{{ path('tag_delete', {id: tag.id}) }}" style="display:inline" onsubmit="return confirm('Usunąć tag?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tag.id) }}">
+                                    <button>🗑</button>
+                                </form>
+                            {% else %}
+                                <span title="Tag używany – nie można usunąć">🔒</span>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

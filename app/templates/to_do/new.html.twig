@@ -7,20 +7,14 @@
         <h1>Dodaj nowe zadanie</h1>
 
         {{ form_start(form) }}
-
         {{ form_row(form.title) }}
         {{ form_row(form.content) }}
         {{ form_row(form.category) }}
         {{ form_row(form.newCategory) }}
         {{ form_row(form.tags) }}
         {{ form_row(form.isDone) }}
-
-
-        {{ form_end(form) }}
-
-        <a href="{{ path('app_to_do_index') }}" class="btn btn-secondary">Anuluj</a>
-
-
         {{ form_end(form) }}
     </div>
+
+    <p><a href="{{ path('app_to_do_index') }}">&larr; Wróć do listy zadań</a></p>
 {% endblock %}

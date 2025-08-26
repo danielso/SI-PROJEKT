@@ -20,5 +20,23 @@
         <a href="{{ path('tag_index') }}" class="btn btn-secondary">Anuluj</a>
 
         {{ form_end(form) }}
+        <h3>Współpracownicy</h3>
+        <form method="post" action="{{ path('app_to_do_collaborator_add', {id: to_do.id}) }}">
+            <input type="email" name="email" placeholder="email współpracownika" required>
+            <button type="submit">Dodaj</button>
+        </form>
+
+        <ul>
+            {% for u in to_do.collaborators %}
+                <li>
+                    {{ u.email }}
+                    <form method="post" action="{{ path('app_to_do_collaborator_remove', {id: to_do.id, userId: u.id}) }}" style="display:inline">
+                        <button type="submit">Usuń</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><em>Brak współpracowników</em></li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

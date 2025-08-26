@@ -44,6 +44,11 @@
     {% for task in to_do %}
         <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
             <h3 style="margin-top: 0;">{{ task.title }}</h3>
+            {% if task.user and app.user and app.user.id != task.user.id %}
+                <div style="margin:12px 0; padding:8px 12px; background:#eef5ff; border:1px solid #cfe2ff; border-radius:6px;">
+                    Udostępnione przez <strong>{{ task.user.email }}</strong>
+                </div>
+            {% endif %}
             {% if task.content %}
                 <p><strong>Treść:</strong> {{ task.content|markdown_to_html }}</p>
             {% endif %}
@@ -79,7 +84,6 @@
                 </form>
             </div>
 
-            {# Gdzieś w widoku, np. w to_do/index.html.twig #}
 
             {% if task.shareToken %}
                 <a href="{{ path('app_to_do_share', {'token': task.shareToken}) }}">Udostępnij zadanie</a>
