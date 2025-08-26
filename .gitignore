@@ -3,3 +3,6 @@ var
 vendor
 .php_cs.cache
 .phpunit.result.cache
+*.zip
+*.7z
+*.rar
