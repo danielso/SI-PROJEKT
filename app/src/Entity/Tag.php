@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -7,11 +8,11 @@ namespace App\Entity;
 
 use App\Repository\TagRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entity representing a tag that can be attached to notes or to-dos.
  */
-
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(
     name: 'tag',
@@ -23,16 +24,18 @@ class Tag
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $name = null;
 
     /**
      * Gets the ID of the tag.
      *
-     * @return int|null The ID of the tag.
+     * @return int|null the ID of the tag
      */
     public function getId(): ?int
     {
@@ -42,7 +45,7 @@ class Tag
     /**
      * Gets the name of the tag.
      *
-     * @return string|null The name of the tag.
+     * @return string|null the name of the tag
      */
     public function getName(): ?string
     {
@@ -52,7 +55,7 @@ class Tag
     /**
      * Sets the name of the tag.
      *
-     * @param string $name The name of the tag.
+     * @param string $name the name of the tag
      *
      * @return self
      */

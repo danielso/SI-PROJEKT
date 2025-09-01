@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -6,10 +7,10 @@
 namespace App\Repository;
 
 use App\Entity\Note;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Note>
@@ -19,7 +20,7 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Constructor.
      *
-     * @param ManagerRegistry $registry Manager registry.
+     * @param ManagerRegistry $registry manager registry.
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -29,8 +30,8 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Builds a query listing notes for the given user with optional filters.
      *
-     * @param User                                                                           $user    The user whose notes to list.
-     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters Optional filters.
+     * @param User                                                                           $user    the user whose notes to list.
+     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters optional filters.
      *
      * @return QueryBuilder
      */
@@ -69,5 +70,39 @@ class NoteRepository extends ServiceEntityRepository
         }
 
         return $qb;
+    }
+
+    /**
+     * Saves Note.
+     *
+     * @param Note $note  notatka do zapisania.
+     * @param bool $flush czy wykonać natychmiastowy flush.
+     *
+     * @return void
+     */
+    public function save(Note $note, bool $flush = false): void
+    {
+        $em = $this->getEntityManager();
+        $em->persist($note);
+        if ($flush) {
+            $em->flush();
+        }
+    }
+
+    /**
+     * Deletes Note.
+     *
+     * @param Note $note  notatka do usunięcia.
+     * @param bool $flush czy wykonać natychmiastowy flush.
+     *
+     * @return void
+     */
+    public function remove(Note $note, bool $flush = false): void
+    {
+        $em = $this->getEntityManager();
+        $em->remove($note);
+        if ($flush) {
+            $em->flush();
+        }
     }
 }

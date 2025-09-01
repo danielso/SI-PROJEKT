@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -6,8 +7,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordType;
 use App\Form\UserFormType;
+use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use App\Service\RegisterServiceInterface;
 use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,35 +26,64 @@ class UserController extends AbstractController
     /**
      * UserController constructor.
      *
-     * @param UserServiceInterface $userService Service handling user admin logic.
+     * @param UserServiceInterface $userService service handling user admin logic.
      */
     public function __construct(private readonly UserServiceInterface $userService)
     {
     }
 
     /**
-     * Displays a list of all users.
+     * Displays a list of all users (admin only).
      *
-     * @param UserRepository $userRepository
-     *
-     * @return Response
+     * @return Response Rendered list page.
      */
-    #[Route('/admin/users', name: 'user_index')]
-    public function index(UserRepository $userRepository): Response
+    #[Route('/admin/users', name: 'user_index', methods: ['GET'])]
+    public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $this->userService->listAll(),
+        ]);
+    }
+
+    /**
+     * Creates a new user (admin only).
+     *
+     * @param Request                  $request  HTTP request with form data.
+     * @param RegisterServiceInterface $register registration domain service.
+     *
+     * @return Response Rendered create form or redirect on success.
+     */
+    #[Route('/admin/users/new', name: 'user_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, RegisterServiceInterface $register): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plain = (string) $form->get('plainPassword')->getData();
+            $register->register($user, $plain);
+
+            return $this->redirectToRoute('user_index');
+        }
+
+        return $this->render('user/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * Edits a user (admin only).
      *
-     * @param Request        $request
-     * @param User           $user
-     * @param UserRepository $userRepository
+     * @param Request        $request        HTTP request with form data.
+     * @param User           $user           user being edited.
+     * @param UserRepository $userRepository user repository.
      *
-     * @return Response
+     * @return Response Rendered edit form or redirect on success.
      */
     #[Route('/admin/users/{id}/edit', name: 'user_edit')]
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
@@ -63,12 +96,10 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $newPassword = $form->get('password')->getData();
-            $isBlocked   = $form->has('isBlocked') ? (bool) $form->get('isBlocked')->getData() : null;
+            $isBlocked = $form->has('isBlocked') ? (bool) $form->get('isBlocked')->getData() : null;
 
             try {
-                $this->userService->update($user, $wasAdmin, $newPassword ?: null, $isBlocked);
-                $this->addFlash('success', 'Dane użytkownika zostały zaktualizowane!');
+                $this->userService->update($user, $wasAdmin, null, $isBlocked);
 
                 return $this->redirectToRoute('user_index');
             } catch (\LogicException $e) {
@@ -87,12 +118,12 @@ class UserController extends AbstractController
     /**
      * Deletes a user (admin only) after CSRF validation.
      *
-     * @param Request $request
-     * @param User    $user
+     * @param Request $request HTTP request with CSRF token.
+     * @param User    $user    user being deleted.
      *
-     * @return Response
+     * @return Response Redirect to index after deletion.
      */
-    #[Route('/admin/users/{id}/delete', name: 'user_delete', methods: ['POST'])]
+    #[Route('/admin/users/{id}/delete', name: 'user_delete', methods: ['DELETE'])]
     public function delete(Request $request, User $user): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -100,12 +131,39 @@ class UserController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             try {
                 $this->userService->delete($user);
-                $this->addFlash('success', 'Użytkownik został usunięty!');
             } catch (\LogicException $e) {
                 $this->addFlash('error', $e->getMessage());
             }
         }
 
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * Changes a user's password (admin only).
+     *
+     * @param Request $request HTTP request with form data.
+     * @param User    $user    target user entity.
+     *
+     * @return Response Rendered password form or redirect on success.
+     */
+    #[Route('/admin/users/{id}/password', name: 'user_change_password', methods: ['GET', 'POST'])]
+    public function changePassword(Request $request, User $user): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(ChangePasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plain = (string) $form->get('newPassword')->getData();
+
+            return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
+        }
+
+        return $this->render('user/change_password.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
     }
 }

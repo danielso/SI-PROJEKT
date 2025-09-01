@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="pl" target-language="pl" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="action.edit_password">
+        <source>action.edit_password</source>
+        <target>Zmień hasło</target>
+      </trans-unit>
+      <trans-unit id="action.save">
+        <source>action.save</source>
+        <target>Zapisz</target>
+      </trans-unit>
+      <trans-unit id="title.user_list">
+         <source>title.user_list</source>
+         <target>Lista użytkowników</target>
+      </trans-unit>
+      <trans-unit id="label.status">
+         <source>label.status</source>
+         <target>Status</target>
+      </trans-unit>
+      <trans-unit id="label.title">
+        <source>label.title</source>
+        <target>Tytuł</target>
+      </trans-unit>
+      <trans-unit id="label.category">
+        <source>label.category</source>
+        <target>Kategoria</target>
+      </trans-unit>
+      <trans-unit id="label.choose_category">
+        <source>label.choose_category</source>
+        <target>Wybierz kategorię</target>
+      </trans-unit>
+      <trans-unit id="label.new_category_placeholder">
+        <source>label.new_category_placeholder</source>
+        <target>Wpisz nazwę nowej kategorii</target>
+      </trans-unit>
+      <trans-unit id="label.tags">
+        <source>label.tags</source>
+        <target>Tagi (oddzielone przecinkami)</target>
+      </trans-unit>
+      <trans-unit id="label.is_done">
+        <source>label.is_done</source>
+        <target>Zrobione</target>
+      </trans-unit>
+      <trans-unit id="label.image">
+        <source>label.image</source>
+        <target>Dodaj obrazek</target>
+      </trans-unit>
+      <trans-unit id="label.category_name">
+        <source>label.category_name</source>
+        <target>Nazwa kategorii</target>
+      </trans-unit>
+      <trans-unit id="label.tag_name">
+        <source>label.tag_name</source>
+        <target>Nazwa tagu</target>
+      </trans-unit>
+      <trans-unit id="label.email">
+        <source>label.email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="label.password">
+        <source>label.password</source>
+        <target>Hasło</target>
+      </trans-unit>
+      <trans-unit id="label.role">
+        <source>label.role</source>
+        <target>Rola</target>
+      </trans-unit>
+      <trans-unit id="label.role_user">
+        <source>label.role_user</source>
+        <target>Użytkownik</target>
+      </trans-unit>
+      <trans-unit id="label.role_admin">
+        <source>label.role_admin</source>
+        <target>Administrator</target>
+      </trans-unit>
+      <trans-unit id="label.is_blocked">
+        <source>label.is_blocked</source>
+        <target>Zablokowany</target>
+      </trans-unit>
+      <trans-unit id="label.new_password">
+        <source>label.new_password</source>
+        <target>Nowe hasło</target>
+      </trans-unit>
+      <trans-unit id="label.confirm_password">
+        <source>label.confirm_password</source>
+        <target>Powtórz hasło</target>
+      </trans-unit>
+      <trans-unit id="message.passwords_must_match">
+        <source>message.passwords_must_match</source>
+        <target>Hasła muszą być identyczne.</target>
+      </trans-unit>
+      <trans-unit id="message.no_tasks">
+        <source>message.no_tasks</source>
+        <target>Brak zadań do wyświetlenia.</target>
+      </trans-unit>
+      <trans-unit id="user.action.edit">
+        <source>user.action.edit</source>
+        <target>Edytuj</target>
+      </trans-unit>
+      <trans-unit id="user.action.delete">
+        <source>user.action.delete</source>
+        <target>Usuń</target>
+      </trans-unit>
+      <trans-unit id="user.delete.confirm">
+        <source>user.delete.confirm</source>
+        <target>Jesteś pewny, że chcesz usunąć tego użytkownika?</target>
+      </trans-unit>
+      <trans-unit id="user.manage.title">
+        <source>user.manage.title</source>
+        <target>Zarządzaj użytkownikami</target>
+      </trans-unit>
+      <trans-unit id="edit.category.title">
+        <source>edit.category.title</source>
+        <target>Edytuj kategorie</target>
+      </trans-unit>
+      <trans-unit id="category.form.name">
+        <source>category.form.name</source>
+        <target>Nazwa kategorii</target>
+      </trans-unit>
+      <trans-unit id="action.cancel">
+        <source>action.cancel</source>
+        <target>Anuluj</target>
+      </trans-unit>
+      <trans-unit id="title.category.index">
+        <source>title.category.index</source>
+        <target>Twoje kategorie</target>
+      </trans-unit>
+      <trans-unit id="action.back_home">
+        <source>action.back_home</source>
+        <target>Wróć do strony głównej</target>
+      </trans-unit>
+      <trans-unit id="action.category.new">
+        <source>action.category.new</source>
+        <target>Nowa kategoria</target>
+      </trans-unit>
+      <trans-unit id="category.usage_counts">
+        <source>category.usage_counts</source>
+        <target>(ToDo: %todo%, Notatki: %notes%)</target>
+      </trans-unit>
+      <trans-unit id="action.edit">
+        <source>action.edit</source>
+        <target>Edytuj</target>
+      </trans-unit>
+      <trans-unit id="action.delete">
+        <source>action.delete</source>
+        <target>Usuń</target>
+      </trans-unit>
+      <trans-unit id="confirm.category.delete">
+        <source>confirm.category.delete</source>
+        <target>Czy na pewno chcesz usunąć tę kategorię?</target>
+      </trans-unit>
+      <trans-unit id="category.locked">
+        <source>category.locked</source>
+        <target>Kategoria jest używana – nie można usunąć</target>
+      </trans-unit>
+      <trans-unit id="message.category.empty">
+        <source>message.category.empty</source>
+        <target>Nie masz jeszcze żadnych kategorii.</target>
+      </trans-unit>
+      <trans-unit id="title.category.create">
+        <source>title.category.create</source>
+        <target>Nowa kategoria</target>
+      </trans-unit>
+      <trans-unit id="title.home">
+        <source>title.home</source>
+        <target>Strona Główna</target>
+      </trans-unit>
+      <trans-unit id="home.welcome">
+        <source>home.welcome</source>
+        <target>Witaj w aplikacji notatek i list ToDo</target>
+      </trans-unit>
+      <trans-unit id="home.choose">
+        <source>home.choose</source>
+        <target>Wybierz, co chcesz zrobić:</target>
+      </trans-unit>
+      <trans-unit id="action.view_notes">
+        <source>action.view_notes</source>
+        <target>Zobacz notatki</target>
+      </trans-unit>
+      <trans-unit id="action.view_todos">
+        <source>action.view_todos</source>
+        <target>Zobacz listy ToDo</target>
+      </trans-unit>
+      <trans-unit id="action.profile">
+        <source>action.profile</source>
+        <target>Profil</target>
+      </trans-unit>
+      <trans-unit id="action.manage_users">
+        <source>action.manage_users</source>
+        <target>Zarządzaj użytkownikami</target>
+      </trans-unit>
+      <trans-unit id="title.note_edit">
+        <source>title.note_edit</source>
+        <target>Edytuj notatkę</target>
+      </trans-unit>
+      <trans-unit id="note.edit_heading">
+        <source>note.edit_heading</source>
+        <target>Edytuj notatkę</target>
+      </trans-unit>
+      <trans-unit id="label.new_category">
+        <source>label.new_category</source>
+        <target>Nowa kategoria</target>
+      </trans-unit>
+      <trans-unit id="label.content">
+        <source>label.content</source>
+        <target>Treść</target>
+      </trans-unit>
+      <trans-unit id="title.note_index">
+        <source>title.note_index</source>
+        <target>Twoje notatki</target>
+      </trans-unit>
+      <trans-unit id="note.list_heading">
+        <source>note.list_heading</source>
+        <target>Twoje notatki</target>
+      </trans-unit>
+      <trans-unit id="action.add_note">
+        <source>action.add_note</source>
+        <target>Dodaj nową notatkę</target>
+      </trans-unit>
+      <trans-unit id="action.manage_categories">
+        <source>action.manage_categories</source>
+        <target>Zarządzaj kategoriami</target>
+      </trans-unit>
+      <trans-unit id="action.manage_tags">
+        <source>action.manage_tags</source>
+        <target>Zarządzaj tagami</target>
+      </trans-unit>
+      <trans-unit id="label.search_notes">
+        <source>label.search_notes</source>
+        <target>Wyszukaj notatki:</target>
+      </trans-unit>
+      <trans-unit id="placeholder.search_notes">
+        <source>placeholder.search_notes</source>
+        <target>Wpisz tytuł lub treść</target>
+      </trans-unit>
+      <trans-unit id="action.search">
+        <source>action.search</source>
+        <target>Szukaj</target>
+      </trans-unit>
+      <trans-unit id="label.all">
+        <source>label.all</source>
+        <target>Wszystkie</target>
+      </trans-unit>
+      <trans-unit id="message.no_notes">
+        <source>message.no_notes</source>
+        <target>Brak notatek.</target>
+      </trans-unit>
+      <trans-unit id="label.none">
+        <source>label.none</source>
+        <target>Brak</target>
+      </trans-unit>
+      <trans-unit id="confirm.delete_note">
+        <source>confirm.delete_note</source>
+        <target>Czy na pewno chcesz usunąć notatkę?</target>
+      </trans-unit>
+      <trans-unit id="title.note_new">
+        <source>title.note_new</source>
+        <target>Nowa notatka</target>
+      </trans-unit>
+      <trans-unit id="note.add_heading">
+        <source>note.add_heading</source>
+        <target>Dodaj nową notatkę</target>
+      </trans-unit>
+      <trans-unit id="action.back_to_notes">
+        <source>action.back_to_notes</source>
+        <target>← Wróć do listy notatek</target>
+      </trans-unit>
+      <trans-unit id="action.sign_up">
+        <source>action.sign_up</source>
+        <target>Zarejestruj się</target>
+      </trans-unit>
+      <trans-unit id="title.profile_edit">
+        <source>title.profile_edit</source>
+        <target>Edytuj profil</target>
+      </trans-unit>
+      <trans-unit id="profile.edit_heading">
+        <source>profile.edit_heading</source>
+        <target>Edytuj profil użytkownika</target>
+      </trans-unit>
+      <trans-unit id="action.save_changes">
+        <source>action.save_changes</source>
+        <target>Zapisz zmiany</target>
+      </trans-unit>
+      <trans-unit id="title.login">
+        <source>title.login</source>
+        <target>Logowanie</target>
+      </trans-unit>
+      <trans-unit id="login.heading">
+        <source>login.heading</source>
+        <target>Logowanie</target>
+      </trans-unit>
+      <trans-unit id="login.no_account">
+        <source>login.no_account</source>
+        <target>Nie masz konta? Zarejestruj się</target>
+      </trans-unit>
+      <trans-unit id="title.register">
+        <source>title.register</source>
+        <target>Rejestracja</target>
+      </trans-unit>
+      <trans-unit id="register.heading">
+        <source>register.heading</source>
+        <target>Rejestracja</target>
+      </trans-unit>
+      <trans-unit id="label.register.email">
+        <source>label.register.email</source>
+        <target>Adres e-mail</target>
+      </trans-unit>
+      <trans-unit id="register.have_account">
+        <source>register.have_account</source>
+        <target>Masz już konto?</target>
+      </trans-unit>
+      <trans-unit id="edit.tag.title">
+        <source>edit.tag.title</source>
+        <target>Edytuj tag</target>
+      </trans-unit>
+      <trans-unit id="label.tag.name">
+        <source>label.tag.name</source>
+        <target>Nazwa tagu</target>
+      </trans-unit>
+      <trans-unit id="tag.index.title">
+        <source>tag.index.title</source>
+        <target>Zarządzaj tagami</target>
+      </trans-unit>
+      <trans-unit id="action.add_tag">
+        <source>action.add_tag</source>
+        <target>Dodaj nowy tag</target>
+      </trans-unit>
+      <trans-unit id="message.no_tags">
+        <source>message.no_tags</source>
+        <target>Brak tagów do wyświetlenia.</target>
+      </trans-unit>
+      <trans-unit id="label.name">
+        <source>label.name</source>
+        <target>Nazwa</target>
+      </trans-unit>
+      <trans-unit id="label.todo">
+        <source>label.todo</source>
+        <target>ToDo</target>
+      </trans-unit>
+      <trans-unit id="label.notes">
+        <source>label.notes</source>
+        <target>Notatki</target>
+      </trans-unit>
+      <trans-unit id="label.actions">
+        <source>label.actions</source>
+        <target>Akcje</target>
+      </trans-unit>
+      <trans-unit id="confirm.delete_tag">
+        <source>confirm.delete_tag</source>
+        <target>Czy na pewno chcesz usunąć ten tag?</target>
+      </trans-unit>
+      <trans-unit id="message.tag_in_use">
+        <source>message.tag_in_use</source>
+        <target>Tag używany – nie można usunąć</target>
+      </trans-unit>
+      <trans-unit id="tag.new.title">
+        <source>tag.new.title</source>
+        <target>Dodaj nowy tag</target>
+      </trans-unit>
+      <trans-unit id="todo.edit.title">
+        <source>todo.edit.title</source>
+        <target>Edytuj ToDo</target>
+      </trans-unit>
+      <trans-unit id="todo.collaborators.title">
+        <source>todo.collaborators.title</source>
+        <target>Współtwórcy</target>
+      </trans-unit>
+      <trans-unit id="todo.collaborators.empty">
+        <source>todo.collaborators.empty</source>
+        <target>Brak współpracowników.</target>
+      </trans-unit>
+      <trans-unit id="todo.collaborators.email_placeholder">
+        <source>todo.collaborators.email_placeholder</source>
+        <target>E-mail użytkownika</target>
+      </trans-unit>
+      <trans-unit id="todo.collaborators.add">
+        <source>todo.collaborators.add</source>
+        <target>Dodaj współpracownika</target>
+      </trans-unit>
+      <trans-unit id="action.back_to_todo_list">
+        <source>action.back_to_todo_list</source>
+        <target>← Wróć do listy zadań</target>
+      </trans-unit>
+
+      <trans-unit id="todo.index.title">
+        <source>todo.index.title</source>
+        <target>Twoja lista do zrobienia</target>
+      </trans-unit>
+      <trans-unit id="todo.index.header">
+        <source>todo.index.header</source>
+        <target>Twoja lista do zrobienia</target>
+      </trans-unit>
+      <trans-unit id="todo.index.back_home">
+        <source>todo.index.back_home</source>
+        <target>← Wróć do strony głównej</target>
+      </trans-unit>
+      <trans-unit id="todo.index.new_task">
+        <source>todo.index.new_task</source>
+        <target>Nowe zadanie</target>
+      </trans-unit>
+      <trans-unit id="todo.index.manage_categories">
+        <source>todo.index.manage_categories</source>
+        <target>Zarządzaj kategoriami</target>
+      </trans-unit>
+      <trans-unit id="todo.index.manage_tags">
+        <source>todo.index.manage_tags</source>
+        <target>Zarządzaj tagami</target>
+      </trans-unit>
+      <trans-unit id="todo.index.search_label">
+        <source>todo.index.search_label</source>
+        <target>Wyszukaj zadania:</target>
+      </trans-unit>
+      <trans-unit id="todo.index.search_placeholder">
+        <source>todo.index.search_placeholder</source>
+        <target>Wpisz tytuł lub treść zadania</target>
+      </trans-unit>
+      <trans-unit id="todo.index.search_btn">
+        <source>todo.index.search_btn</source>
+        <target>Szukaj</target>
+      </trans-unit>
+      <trans-unit id="todo.index.filter_category">
+        <source>todo.index.filter_category</source>
+        <target>Filtruj według kategorii:</target>
+      </trans-unit>
+      <trans-unit id="todo.index.filter_tag">
+        <source>todo.index.filter_tag</source>
+        <target>Filtruj według tagów:</target>
+      </trans-unit>
+      <trans-unit id="todo.index.all">
+        <source>todo.index.all</source>
+        <target>Wszystkie</target>
+      </trans-unit>
+      <trans-unit id="todo.index.shared_by">
+        <source>todo.index.shared_by</source>
+        <target>Udostępnione przez</target>
+      </trans-unit>
+      <trans-unit id="todo.index.content">
+        <source>todo.index.content</source>
+        <target>Treść:</target>
+      </trans-unit>
+      <trans-unit id="todo.index.status">
+        <source>todo.index.status</source>
+        <target>Status:</target>
+      </trans-unit>
+      <trans-unit id="todo.index.status_done">
+        <source>todo.index.status_done</source>
+        <target>Zrobione</target>
+      </trans-unit>
+      <trans-unit id="todo.index.status_not_done">
+        <source>todo.index.status_not_done</source>
+        <target>Nieukończone</target>
+      </trans-unit>
+      <trans-unit id="todo.index.category">
+        <source>todo.index.category</source>
+        <target>Kategoria:</target>
+      </trans-unit>
+      <trans-unit id="todo.index.none">
+        <source>todo.index.none</source>
+        <target>Brak</target>
+      </trans-unit>
+      <trans-unit id="todo.index.tags">
+        <source>todo.index.tags</source>
+        <target>Tagi</target>
+      </trans-unit>
+      <trans-unit id="todo.index.created_at">
+        <source>todo.index.created_at</source>
+        <target>Data utworzenia:</target>
+      </trans-unit>
+      <trans-unit id="todo.index.edit">
+        <source>todo.index.edit</source>
+        <target>Edytuj</target>
+      </trans-unit>
+      <trans-unit id="todo.index.delete">
+        <source>todo.index.delete</source>
+        <target>Usuń</target>
+      </trans-unit>
+      <trans-unit id="todo.index.delete_confirm">
+        <source>todo.index.delete_confirm</source>
+        <target>Jesteś pewien, że chcesz usunąć to zadanie?</target>
+      </trans-unit>
+      <trans-unit id="todo.index.share">
+        <source>todo.index.share</source>
+        <target>Udostępnij zadanie</target>
+      </trans-unit>
+      <trans-unit id="todo.index.no_share_token">
+        <source>todo.index.no_share_token</source>
+        <target>Brak tokena do udostępnienia.</target>
+      </trans-unit>
+      <trans-unit id="todo.index.empty">
+        <source>todo.index.empty</source>
+        <target>Brak zadań do wyświetlenia.</target>
+      </trans-unit>
+      <trans-unit id="todo.new.title">
+        <source>todo.new.title</source>
+        <target>Nowe zadanie</target>
+      </trans-unit>
+      <trans-unit id="todo.new.header">
+        <source>todo.new.header</source>
+        <target>Dodaj nowe zadanie</target>
+      </trans-unit>
+      <trans-unit id="todo.new.back_to_list">
+        <source>todo.new.back_to_list</source>
+        <target>Wróć do listy zadań</target>
+      </trans-unit>
+      <trans-unit id="todo.share.title">
+        <source>todo.share.title</source>
+        <target>Udostępnione zadanie</target>
+      </trans-unit>
+      <trans-unit id="title.edit_password_for">
+        <source>title.edit_password_for</source>
+        <target>Zmiana hasła: %email%</target>
+      </trans-unit>
+      <trans-unit id="action.back_to_list">
+        <source>action.back_to_list</source>
+        <target>Wróć do listy</target>
+      </trans-unit>
+      <trans-unit id="user.table.actions">
+        <source>user.table.actions</source>
+        <target>Akcje</target>
+      </trans-unit>
+      <trans-unit id="user.table.email">
+        <source>user.table.email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="title.user_new">
+        <source>title.user_new</source>
+        <target>Dodaj nowego użykownika</target>
+      </trans-unit>
+      <trans-unit id="title.edit_password">
+        <source>title.edit_password</source>
+        <target>Zmiana hasła</target>
+      </trans-unit>
+      <trans-unit id="link.back_to_user_edit">
+        <source>link.back_to_user_edit</source>
+        <target>Wróć do edycji użytkownika</target>
+      </trans-unit>
+      <trans-unit id="title.user_edit">
+        <source>title.user_edit</source>
+        <target>Edycja użytkownika</target>
+      </trans-unit>
+      <trans-unit id="title.user_edit_for">
+        <source>title.user_edit_for</source>
+        <target>Edycja użytkownika: %email%</target>
+      </trans-unit>
+      <trans-unit id="action.back_to_home">
+        <source>action.back_to_home</source>
+        <target>Powrót do strony głównej</target>
+      </trans-unit>
+      <trans-unit id="action.add_user">
+        <source>action.add_user</source>
+        <target>Dodaj nowego użytkownika</target>
+      </trans-unit>
+      <trans-unit id="status.blocked">
+        <source>status.blocked</source>
+        <target>Zablokowany</target>
+      </trans-unit>
+      <trans-unit id="status.active">
+        <source>status.active</source>
+        <target>Aktywny</target>
+      </trans-unit>
+      <trans-unit id="confirm.delete_user">
+        <source>confirm.delete_user</source>
+        <target>Czy na pewno chcesz usunąć tego użytkownika?</target>
+      </trans-unit>
+      <trans-unit id="title.profile">
+        <source>title.profile</source>
+        <target>Profil użytkownika</target>
+      </trans-unit>
+      <trans-unit id="layout.default_title">
+        <source>layout.default_title</source>
+        <target>Aplikacja notatek i ToDo</target>
+      </trans-unit>
+      <trans-unit id="action.sign_in">
+        <source>action.sign_in</source>
+        <target>Zaloguj się</target>
+      </trans-unit>
+      <trans-unit id="label.filter_by_category">
+        <source>label.filter_by_category</source>
+        <target>Filtruj przez kategorie</target>
+      </trans-unit>
+      <trans-unit id="label.filter_by_tag">
+        <source>label.filter_by_tag</source>
+        <target>Filtruj przez tagi</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>

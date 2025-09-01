@@ -1,17 +1,19 @@
-{# templates/user/edit.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Edycja użytkownika{% endblock %}
+{% block title %}{{ 'title.user_edit'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edycja użytkownika: {{ user.email }}</h1>
+    <h1>{{ 'title.user_edit_for'|trans({'%email%': user.email}) }}</h1>
 
     {{ form_start(form) }}
     {{ form_row(form.email) }}
-    {{ form_row(form.password) }}
     {{ form_row(form.roles) }}
     {{ form_row(form.isBlocked) }}
-    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
     {{ form_end(form) }}
+
+    <hr>
+    <a class="btn btn-outline-secondary"
+       href="{{ path('user_change_password', {id: user.id}) }}">
+        {{ 'action.edit_password'|trans }}
+    </a>
 {% endblock %}

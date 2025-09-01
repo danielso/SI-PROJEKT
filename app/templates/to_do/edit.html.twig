@@ -1,74 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edytuj ToDo{% endblock %}
+{% block title %}{{ 'todo.edit.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edytuj ToDo</h1>
+    <h1>{{ 'todo.edit.title'|trans }}</h1>
 
     {{ form_start(form) }}
 
     <div>
-        {# Pole tytuł #}
         {{ form_row(form.title) }}
     </div>
 
     <div>
-        {# Pole treść #}
         {{ form_row(form.content) }}
     </div>
 
     <div>
-        {# Wybór kategorii #}
         {{ form_row(form.category) }}
     </div>
 
     <div>
-        {# Pole na nową kategorię (opcjonalne) #}
         {{ form_row(form.newCategory) }}
     </div>
 
     <div>
-        {# Pole tagów (opcjonalne) #}
         {{ form_row(form.tags) }}
     </div>
 
     <div>
-        {# Pole tagów (opcjonalne) #}
         {{ form_row(form.isDone) }}
     </div>
-
 
     {{ form_end(form) }}
 
     <hr>
     {% if app.user and to_do.user and app.user.id == to_do.user.id %}
-    <h3>Współtwórcy</h3>
+        <h3>{{ 'todo.collaborators.title'|trans }}</h3>
 
-    {% if to_do.collaborators|length %}
-        <ul>
-            {% for u in to_do.collaborators %}
-                <li>
-                    {{ u.email }}
-                    <form method="post"
-                          action="{{ path('app_to_do_collaborator_remove', {id: to_do.id, userId: u.id}) }}"
-                          style="display:inline">
-                        <input type="hidden" name="_token" value="{{ csrf_token('rmcollab' ~ to_do.id ~ '-' ~ u.id) }}">
-                        <button class="btn btn-sm btn-outline-danger">Usuń</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Brak współpracowników.</p>
+        {% if to_do.collaborators|length %}
+            <ul>
+                {% for u in to_do.collaborators %}
+                    <li>
+                        {{ u.email }}
+                        <form method="post"
+                              action="{{ path('app_to_do_collaborator_remove', {id: to_do.id, userId: u.id}) }}"
+                              style="display:inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('rmcollab' ~ to_do.id ~ '-' ~ u.id) }}">
+                            <button class="btn btn-sm btn-outline-danger">{{ 'action.delete'|trans }}</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>{{ 'todo.collaborators.empty'|trans }}</p>
+        {% endif %}
+
+        <form method="post" action="{{ path('app_to_do_collaborator_add', {id: to_do.id}) }}" style="margin-top:8px">
+            <input type="email" name="email" placeholder="{{ 'todo.collaborators.email_placeholder'|trans }}" required>
+            <input type="hidden" name="_token" value="{{ csrf_token('addcollab' ~ to_do.id) }}">
+            <button class="btn btn-sm btn-outline-success">{{ 'todo.collaborators.add'|trans }}</button>
+        </form>
     {% endif %}
 
-    <form method="post" action="{{ path('app_to_do_collaborator_add', {id: to_do.id}) }}" style="margin-top:8px">
-        <input type="email" name="email" placeholder="E-mail użytkownika" required>
-        <input type="hidden" name="_token" value="{{ csrf_token('addcollab' ~ to_do.id) }}">
-        <button class="btn btn-sm btn-outline-success">Dodaj współpracownika</button>
-    </form>
-    {% endif %}
-
-
-    <p><a href="{{ path('app_to_do_index') }}">&larr; Wróć do listy notatek</a></p>
+    <p><a href="{{ path('app_to_do_index') }}">{{ 'action.back_to_todo_list'|trans }}</a></p>
 {% endblock %}

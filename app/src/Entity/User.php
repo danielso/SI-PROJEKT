@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -9,6 +10,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,6 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\Length(max: 180)]
     private ?string $email = null;
 
     /**
@@ -48,16 +51,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Hashed password.
      */
     #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(groups: ['create'])]
+    #[Assert\Length(min: 6, max: 4096, groups: ['create', 'password'])]
     private ?string $password = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isBlocked = false;
 
-    // Getter i Setter
     /**
      * Gets the blocked status of the user.
      *
-     * @return bool The blocked status of the user.
+     * @return bool the blocked status of the user
      */
     public function isBlocked(): bool
     {
@@ -67,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Sets the blocked status of the user.
      *
-     * @param bool $isBlocked The status to set for the user's blocked state.
+     * @param bool $isBlocked the status to set for the user's blocked state
      *
      * @return $this
      */
@@ -184,7 +188,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Getter for the blocked status.
      *
-     * @return bool True if user is blocked, false otherwise.
+     * @return bool true if user is blocked, false otherwise
      */
     public function getIsBlocked(): bool
     {
@@ -194,20 +198,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Sets the blocked status of the user.
      *
-     * @param bool $isBlocked The blocked status to set.
-     *
-     * @return void
+     * @param bool $isBlocked the blocked status to set
      */
     public function setIsBlocked(bool $isBlocked): void
     {
         $this->isBlocked = $isBlocked;
     }
+
     /**
      * Checks whether the user has the given role.
      *
      * @param string $role Role name, e.g. "ROLE_ADMIN".
      *
-     * @return bool True when the role is assigned to the user, false otherwise.
+     * @return bool true when the role is assigned to the user, false otherwise
      */
     public function hasRole(string $role): bool
     {

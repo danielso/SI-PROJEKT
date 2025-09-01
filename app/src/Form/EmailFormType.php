@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -9,7 +10,6 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -21,8 +21,8 @@ class EmailFormType extends AbstractType
     /**
      * Builds the form to collect email information from the user.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options Options for the form.
+     * @param FormBuilderInterface $builder the form builder
+     * @param array                $options options for the form
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

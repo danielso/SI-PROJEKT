@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -9,7 +10,6 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -23,41 +23,38 @@ class UserFormType extends AbstractType
     /**
      * Builds the form for editing a user.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options The options for the form.
+     * @param FormBuilderInterface $builder the form builder
+     * @param array                $options the options for the form
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email', TextType::class, [
-                'label' => 'Email',
+                'label' => 'label.email',
             ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Hasło',
-                'required' => false,
-            ])
+
             ->add('roles', ChoiceType::class, [
-                'label' => 'Rola',
+                'label' => 'label.role',
                 'choices' => [
-                    'Użytkownik' => 'ROLE_USER',
-                    'Administrator' => 'ROLE_ADMIN',
+                    'label.role_user' => 'ROLE_USER',
+                    'label.role_admin' => 'ROLE_ADMIN',
                 ],
                 'multiple' => true,
                 'expanded' => true,
             ])
             ->add('isBlocked', CheckboxType::class, [
-                'label' => 'Zablokowany',
+                'label' => 'label.is_blocked',
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Zapisz zmiany',
+                'label' => 'action.save',
             ]);
     }
 
     /**
      * Configures the options for the User form.
      *
-     * @param OptionsResolver $resolver The resolver for form options.
+     * @param OptionsResolver $resolver the resolver for form options
      */
     public function configureOptions(OptionsResolver $resolver)
     {

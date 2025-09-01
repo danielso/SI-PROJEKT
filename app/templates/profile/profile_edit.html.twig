@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edytuj profil{% endblock %}
+{% block title %}{{ 'title.profile_edit'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edytuj profil użytkownika</h1>
+    <h1>{{ 'profile.edit_heading'|trans }}</h1>
 
     {{ form_start(form) }}
     <div class="form-group">
@@ -11,8 +11,6 @@
         {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.email) }}
     </div>
-
-
 
     <div class="form-group">
         {{ form_label(form.newPassword.first) }}
@@ -25,7 +23,7 @@
     </div>
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+        <button type="submit" class="btn btn-primary">{{ 'action.save_changes'|trans }}</button>
     </div>
     {{ form_end(form) }}
 {% endblock %}

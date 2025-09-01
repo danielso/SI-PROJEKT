@@ -1,0 +1,19 @@
+{# templates/user/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.user_new'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.user_new'|trans }}</h1>
+
+    <a class="btn btn-secondary mb-3" href="{{ path('user_index') }}">
+        ← {{ 'action.back_to_list'|trans }}
+    </a>
+
+    {{ form_start(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.plainPassword.first) }}
+    {{ form_row(form.plainPassword.second) }}
+    <button class="btn btn-primary">{{ 'action.save'|trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}

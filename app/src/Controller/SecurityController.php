@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -23,7 +24,7 @@ class SecurityController extends AbstractController
     /**
      * SecurityController constructor.
      *
-     * @param UserRepository $userRepository The user repository.
+     * @param UserRepository $userRepository the user repository.
      */
     public function __construct(UserRepository $userRepository)
     {
@@ -33,9 +34,9 @@ class SecurityController extends AbstractController
     /**
      * Handles user login.
      *
-     * @param AuthenticationUtils $authenticationUtils The authentication utils service.
+     * @param AuthenticationUtils $authenticationUtils the authentication utils service.
      *
-     * @return Response The response object.
+     * @return Response Rendered login form or redirect on success.
      */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -61,7 +62,7 @@ class SecurityController extends AbstractController
     /**
      * Handles user logout.
      *
-     * @throws \LogicException Always thrown as Symfony intercepts the logout process.
+     * @throws \LogicException always thrown as Symfony intercepts the logout process.
      */
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void

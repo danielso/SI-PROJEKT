@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -47,31 +48,39 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Removes a user from the database.
+     * Zapisuje (persist) encję User i opcjonalnie wykonuje flush.
      *
-     * @param User $user The user to remove
+     * @param User $user  użytkownik do zapisania
+     * @param bool $flush czy wykonać natychmiastowy flush
      */
-    public function remove(User $user): void
+    public function save(User $user, bool $flush = true): void
     {
-        $this->getEntityManager()->remove($user);
-        $this->getEntityManager()->flush();
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        if ($flush) {
+            $em->flush();
+        }
     }
 
     /**
-     * Saves a user to the database.
+     * Usuwa (remove) encję User i opcjonalnie wykonuje flush.
      *
-     * @param User $user The user to save
+     * @param User $user  użytkownik do usunięcia
+     * @param bool $flush czy wykonać natychmiastowy flush
      */
-    public function save(User $user): void
+    public function remove(User $user, bool $flush = true): void
     {
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $em = $this->getEntityManager();
+        $em->remove($user);
+        if ($flush) {
+            $em->flush();
+        }
     }
 
     /**
      * Counts the number of users with the 'ROLE_ADMIN'.
      *
-     * @return int The number of admins.
+     * @return int the number of admins
      */
     public function countAdmins(): int
     {

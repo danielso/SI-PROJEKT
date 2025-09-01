@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Zarządzaj użytkownikami{% endblock %}
+{% block title %}{{ 'user.manage.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Zarządzaj użytkownikami</h1>
+    <h1>{{ 'user.manage.title'|trans }}</h1>
 
     <table class="table">
         <thead>
         <tr>
-            <th>Email</th>
-            <th>Akcje</th>
+            <th>{{ 'user.table.email'|trans }}</th>
+            <th>{{ 'user.table.actions'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -17,10 +17,10 @@
             <tr>
                 <td>{{ user.email }}</td>
                 <td>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-warning">Edytuj</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-warning">{{ 'user.action.edit'|trans }}</a>
                     <form action="{{ path('user_delete', {'id': user.id}) }}" method="POST" style="display:inline;">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Jesteś pewny, że chcesz usunąć tego użytkownika?')">Usuń</button>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('{{ 'user.delete.confirm'|trans }}')">{{ 'user.action.delete'|trans }}</button>
                     </form>
                 </td>
             </tr>

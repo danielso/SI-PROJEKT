@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -31,23 +32,24 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'label' => 'label.email',
                 'required' => true,
                 'constraints' => [
-                    new Assert\NotBlank(),
+                    new NotBlank(),
                     new Assert\Email(),
-                    new Assert\Length(['min' => 6, 'max' => 180]),
+                    new Length(['min' => 6, 'max' => 180]),
 
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Confirm Password'],
+                'first_options' => ['label' => 'label.password'],
+                'second_options' => ['label' => 'label.confirm_password'],
+                'invalid_message' => 'message.passwords_must_match',
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(['min' => 6, 'max' => 4096]),
+                    new NotBlank(),
+                    new Length(['min' => 6, 'max' => 4096]),
                 ],
                 'required' => true,
             ]);

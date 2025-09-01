@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -6,36 +7,40 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * FormType for managing the category form (CRUD operations).
+ * FormType dla kategorii (nazwa).
  */
 class CategoryFormType extends AbstractType
 {
     /**
-     * Builds the form for creating or editing a category.
+     * Buduje formularz Category.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options Options for the form.
+     * @param FormBuilderInterface $builder form builder
+     * @param array<string,mixed>  $options options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('name', TextType::class, [
-                'label' => 'Nazwa kategorii',
-            ]);
+        $builder->add('name', TextType::class, [
+            'label' => 'label.category_name',
+            'empty_data' => '',
+            'constraints' => [
+                new NotBlank(),
+                new Length(max: 255),
+            ],
+        ]);
     }
 
     /**
-     * Configures the options for the category form.
+     * Konfiguracja opcji formularza.
      *
-     * @param OptionsResolver $resolver The options resolver.
+     * @param OptionsResolver $resolver options resolver
      */
     public function configureOptions(OptionsResolver $resolver): void
     {

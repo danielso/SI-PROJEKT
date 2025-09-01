@@ -1,15 +1,15 @@
 {# templates/user/profile.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil użytkownika{% endblock %}
+{% block title %}{{ 'title.profile'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Profil użytkownika</h1>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Rola:</strong> {{ user.roles|join(', ') }}</p>
+    <h1>{{ 'title.profile'|trans }}</h1>
+
+    <p><strong>{{ 'label.email'|trans }}:</strong> {{ user.email }}</p>
+    <p><strong>{{ 'label.role'|trans }}:</strong> {{ user.roles|join(', ') }}</p>
 
     <div>
-        <a href="{{ path('home') }}">Powrót do strony głównej</a>
+        <a href="{{ path('home') }}">← {{ 'action.back_to_home'|trans }}</a>
     </div>
 {% endblock %}

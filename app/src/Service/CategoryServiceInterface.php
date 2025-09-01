@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -14,13 +15,12 @@ use App\Entity\User;
  * Provides operations for listing, creating, updating and deleting categories
  * with ownership checks delegated to the implementation.
  */
-
 interface CategoryServiceInterface
 {
     /**
      * Returns the list of categories for the given user along with related counters.
      *
-     * @param User $user The owner of the categories.
+     * @param User $user the owner of the categories
      *
      * @return array<int, array{0: Category, todoCount: int|string, noteCount: int|string}>
      */
@@ -29,30 +29,28 @@ interface CategoryServiceInterface
     /**
      * Creates a new category for the given user.
      *
-     * @param Category $category The category to create.
-     * @param User     $user     The owner of the category.
+     * @param Category $category the category to create
+     * @param User     $user     the owner of the category
      *
-     * @return Category The persisted category.
+     * @return Category the persisted category
      */
     public function create(Category $category, User $user): Category;
 
     /**
      * Updates an existing category. Ownership should be enforced by the implementation.
      *
-     * @param Category $category The category to update.
-     * @param User     $user     The acting user (must be the owner).
+     * @param Category $category the category to update
+     * @param User     $user     the acting user (must be the owner)
      *
-     * @return Category The updated category.
+     * @return Category the updated category
      */
     public function update(Category $category, User $user): Category;
 
     /**
      * Deletes a category. Ownership should be enforced by the implementation.
      *
-     * @param Category $category The category to delete.
-     * @param User     $user     The acting user (must be the owner).
-     *
-     * @return void
+     * @param Category $category the category to delete
+     * @param User     $user     the acting user (must be the owner)
      */
     public function delete(Category $category, User $user): void;
 }

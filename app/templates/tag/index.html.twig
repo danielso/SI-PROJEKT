@@ -1,27 +1,33 @@
 {# templates/tag/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Zarządzaj tagami{% endblock %}
+{% block title %}{{ 'tag.index.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Zarządzaj tagami</h1>
+        <h1>{{ 'tag.index.title'|trans }}</h1>
 
         <div style="margin-bottom: 1rem;">
-            <a href="{{ path('note_index') }}" class="back-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none;">← Wróć do notatek</a>
-            <a href="{{ path('tag_new') }}" class="add-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">➕ Dodaj nowy tag</a>
+            <a href="{{ path('note_index') }}" class="back-button"
+               style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none;">
+                ← {{ 'action.back_to_notes'|trans }}
+            </a>
+            <a href="{{ path('tag_new') }}" class="add-button"
+               style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">
+                {{ 'action.add_tag'|trans }}
+            </a>
         </div>
 
         {% if rows is empty %}
-            <p>Brak tagów do wyświetlenia.</p>
+            <p>{{ 'message.no_tags'|trans }}</p>
         {% else %}
             <table>
                 <thead>
                 <tr>
-                    <th>Nazwa</th>
-                    <th>ToDo</th>
-                    <th>Notatki</th>
-                    <th>Akcje</th>
+                    <th>{{ 'label.name'|trans }}</th>
+                    <th>{{ 'label.todo'|trans }}</th>
+                    <th>{{ 'label.notes'|trans }}</th>
+                    <th>{{ 'label.actions'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,14 +38,18 @@
                         <td>{{ row.todoCount }}</td>
                         <td>{{ row.noteCount }}</td>
                         <td>
-                            <a href="{{ path('tag_edit', {id: tag.id}) }}">✏️</a>
+                            <a href="{{ path('tag_edit', {id: tag.id}) }}">{{ 'action.edit'|trans }}</a>
                             {% if row.todoCount == 0 and row.noteCount == 0 %}
-                                <form method="post" action="{{ path('tag_delete', {id: tag.id}) }}" style="display:inline" onsubmit="return confirm('Usunąć tag?')">
+                                <form method="post"
+                                      action="{{ path('tag_delete', {id: tag.id}) }}"
+                                      style="display:inline"
+                                      onsubmit="return confirm('{{ 'confirm.delete_tag'|trans }}');">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tag.id) }}">
-                                    <button>🗑</button>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button>{{ 'action.delete'|trans }}</button>
                                 </form>
                             {% else %}
-                                <span title="Tag używany – nie można usunąć">🔒</span>
+                                <span title="{{ 'message.tag_in_use'|trans }}">{{ 'message.tag_in_use'|trans }}</span>
                             {% endif %}
                         </td>
                     </tr>
