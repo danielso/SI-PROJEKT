@@ -117,7 +117,7 @@ class TagController extends AbstractController
      *
      * @return Response Redirect to index after deletion.
      */
-    #[Route('/{id}', name: 'tag_delete', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'tag_delete', methods: ['GET|DELETE'])]
     public function delete(Request $request, Tag $tag): Response
     {
         if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->request->get('_token'))) {
