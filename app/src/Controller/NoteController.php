@@ -123,7 +123,7 @@ class NoteController extends AbstractController
      *
      * @return Response Redirect to index after deletion.
      */
-    #[Route('/note/{id}/delete', name: 'note_delete', methods: ['DELETE'])]
+    #[Route('/note/{id}/delete', name: 'note_delete', methods: ['GET|DELETE'])]
     public function delete(Request $request, int $id): Response
     {
         $user = $this->getUser();

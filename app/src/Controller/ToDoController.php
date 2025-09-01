@@ -174,7 +174,7 @@ final class ToDoController extends AbstractController
      *
      * @return Response Redirect to index after deletion.
      */
-    #[Route('/{id}', name: 'app_to_do_delete', methods: ['DELETE'], requirements: ['id' => '[1-9]\d*'])]
+    #[Route('/{id}', name: 'app_to_do_delete', methods: ['GET|DELETE'])]
     public function delete(Request $request, ToDo $toDo): Response
     {
         $user = $this->getUser();

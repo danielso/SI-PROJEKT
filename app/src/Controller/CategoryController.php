@@ -118,7 +118,7 @@ final class CategoryController extends AbstractController
      *
      * @return Response Response Redirect to categories index.
      */
-    #[Route('/{id}', name: 'category_delete', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'category_delete', methods: ['GET|DELETE'])]
     public function delete(Request $request, Category $category): Response
     {
         $user = $this->getUser();

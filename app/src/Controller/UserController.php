@@ -123,7 +123,7 @@ class UserController extends AbstractController
      *
      * @return Response Redirect to index after deletion.
      */
-    #[Route('/admin/users/{id}/delete', name: 'user_delete', methods: ['DELETE'])]
+    #[Route('/admin/users/{id}/delete', name: 'user_delete', methods: ['GET|DELETE'])]
     public function delete(Request $request, User $user): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
