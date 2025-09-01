@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -10,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use App\Repository\NoteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entity representing a user note with title, content, category, tags and timestamps.
@@ -31,12 +33,16 @@ class Note
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $content = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -48,15 +54,17 @@ class Note
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
+    #[Assert\NotNull]
     private ?User $user = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $image = null;
+
     /**
      * @var Collection<int, Tag>
      */
-
-    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'notes', fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinTable(
         name: 'note_tags',
         joinColumns: [
@@ -79,7 +87,7 @@ class Note
     /**
      * Get the image file name for the note.
      *
-     * @return string|null The image file name.
+     * @return string|null the image file name
      */
     public function getImage(): ?string
     {
@@ -89,7 +97,7 @@ class Note
     /**
      * Set the image file name for the note.
      *
-     * @param string|null $image The image file name to set.
+     * @param string|null $image the image file name to set
      *
      * @return $this
      */
@@ -103,7 +111,7 @@ class Note
     /**
      * Get the ID of the note.
      *
-     * @return int|null The note ID.
+     * @return int|null the note ID
      */
     public function getId(): ?int
     {
@@ -113,7 +121,7 @@ class Note
     /**
      * Get the title of the note.
      *
-     * @return string|null The title of the note.
+     * @return string|null the title of the note
      */
     public function getTitle(): ?string
     {
@@ -123,7 +131,7 @@ class Note
     /**
      * Set the title of the note.
      *
-     * @param string $title The title of the note.
+     * @param string $title the title of the note
      *
      * @return $this
      */
@@ -137,7 +145,7 @@ class Note
     /**
      * Get the content of the note.
      *
-     * @return string|null The content of the note.
+     * @return string|null the content of the note
      */
     public function getContent(): ?string
     {
@@ -147,7 +155,7 @@ class Note
     /**
      * Set the content of the note.
      *
-     * @param string $content The content of the note.
+     * @param string $content the content of the note
      *
      * @return $this
      */
@@ -161,7 +169,7 @@ class Note
     /**
      * Get the creation date of the note.
      *
-     * @return \DateTimeImmutable|null The creation date.
+     * @return \DateTimeImmutable|null the creation date
      */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -171,7 +179,7 @@ class Note
     /**
      * Set the creation date of the note.
      *
-     * @param \DateTimeImmutable $createdAt The creation date to set.
+     * @param \DateTimeImmutable $createdAt the creation date to set
      *
      * @return $this
      */
@@ -185,7 +193,7 @@ class Note
     /**
      * Get the update date of the note.
      *
-     * @return \DateTimeImmutable|null The update date.
+     * @return \DateTimeImmutable|null the update date
      */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
@@ -195,7 +203,7 @@ class Note
     /**
      * Set the update date of the note.
      *
-     * @param \DateTimeImmutable|null $updatedAt The update date to set.
+     * @param \DateTimeImmutable|null $updatedAt the update date to set
      *
      * @return $this
      */
@@ -209,7 +217,7 @@ class Note
     /**
      * Get the category associated with the note.
      *
-     * @return Category|null The category of the note.
+     * @return Category|null the category of the note
      */
     public function getCategory(): ?Category
     {
@@ -219,7 +227,7 @@ class Note
     /**
      * Set the category for the note.
      *
-     * @param Category|null $category The category to associate with the note.
+     * @param Category|null $category the category to associate with the note
      *
      * @return $this
      */
@@ -233,7 +241,7 @@ class Note
     /**
      * Get all the tags associated with the note.
      *
-     * @return Collection The collection of tags.
+     * @return Collection the collection of tags
      */
     public function getTags(): Collection
     {
@@ -243,7 +251,7 @@ class Note
     /**
      * Adds a tag to the note.
      *
-     * @param Tag $tag The tag to add.
+     * @param Tag $tag the tag to add
      *
      * @return $this
      */
@@ -259,7 +267,7 @@ class Note
     /**
      * Removes a tag from the note.
      *
-     * @param Tag $tag The tag to remove.
+     * @param Tag $tag the tag to remove
      *
      * @return $this
      */
@@ -273,7 +281,7 @@ class Note
     /**
      * Get the user associated with the note.
      *
-     * @return User|null The user associated with the note.
+     * @return User|null the user associated with the note
      */
     public function getUser(): ?User
     {
@@ -283,7 +291,7 @@ class Note
     /**
      * Set the user for the note.
      *
-     * @param User $user The user to associate with the note.
+     * @param User $user the user to associate with the note
      *
      * @return $this
      */

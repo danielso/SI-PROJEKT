@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -6,34 +7,34 @@
 namespace App\Service;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Service responsible for registering users (hashing password, assigning roles, persisting).
+ *
+ * Zasada architektoniczna: zapis realizuje repozytorium, nie bezpośredni EntityManager.
  */
 final class RegisterService implements RegisterServiceInterface
 {
     /**
-     * RegisterService constructor.
-     *
-     * @param EntityManagerInterface      $em     Entity manager used to persist users.
-     * @param UserPasswordHasherInterface $hasher Password hasher for secure password storage.
+     * @param UserRepository              $users  repozytorium użytkowników (persist/flush)
+     * @param UserPasswordHasherInterface $hasher hasher haseł
      */
-    public function __construct(private readonly EntityManagerInterface $em, private readonly UserPasswordHasherInterface $hasher)
+    public function __construct(private readonly UserRepository $users, private readonly UserPasswordHasherInterface $hasher)
     {
     }
 
     /**
      * Registers a new user: validates password, hashes it, sets roles, and persists the entity.
      *
-     * @param User   $user          The user entity to register.
-     * @param string $plainPassword The plain (unhashed) password provided by the user.
-     * @param array  $roles         Roles to assign if the user has no roles (defaults to ['ROLE_USER']).
+     * @param User   $user          the user entity to register
+     * @param string $plainPassword the plain (unhashed) password provided by the user
+     * @param array  $roles         roles to assign if the user has no roles (defaults to ['ROLE_USER'])
      *
-     * @return User The persisted user.
+     * @return User the persisted user
      *
-     * @throws \InvalidArgumentException When the password is empty.
+     * @throws \InvalidArgumentException when the password is empty
      */
     public function register(User $user, string $plainPassword, array $roles = ['ROLE_USER']): User
     {
@@ -43,12 +44,12 @@ final class RegisterService implements RegisterServiceInterface
         }
 
         $user->setPassword($this->hasher->hashPassword($user, $plainPassword));
-        if (!$user->getRoles() || ['ROLE_USER'] === $user->getRoles()) {
+
+        if (empty($user->getRoles())) {
             $user->setRoles($roles);
         }
 
-        $this->em->persist($user);
-        $this->em->flush();
+        $this->users->save($user, true);
 
         return $user;
     }

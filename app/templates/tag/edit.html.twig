@@ -1,42 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edytuj Tagi{% endblock %}
+{% block title %}{{ 'edit.tag.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Edytuj Tag: {{ tag.name }}</h1>
+        <h1>{{ 'edit.tag.title'|trans }}: {{ tag.name }}</h1>
 
         {{ form_start(form) }}
 
         <div class="form-group">
-            {{ form_label(form.name) }}
+            {{ form_label(form.name, 'label.tag.name'|trans) }}
             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-success">Zapisz zmiany</button>
+            <button type="submit" class="btn btn-success">{{ 'action.save_changes'|trans }}</button>
         </div>
 
-        <a href="{{ path('tag_index') }}" class="btn btn-secondary">Anuluj</a>
+        <a href="{{ path('tag_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans }}</a>
 
         {{ form_end(form) }}
-        <h3>Współpracownicy</h3>
-        <form method="post" action="{{ path('app_to_do_collaborator_add', {id: to_do.id}) }}">
-            <input type="email" name="email" placeholder="email współpracownika" required>
-            <button type="submit">Dodaj</button>
-        </form>
-
-        <ul>
-            {% for u in to_do.collaborators %}
-                <li>
-                    {{ u.email }}
-                    <form method="post" action="{{ path('app_to_do_collaborator_remove', {id: to_do.id, userId: u.id}) }}" style="display:inline">
-                        <button type="submit">Usuń</button>
-                    </form>
-                </li>
-            {% else %}
-                <li><em>Brak współpracowników</em></li>
-            {% endfor %}
-        </ul>
     </div>
 {% endblock %}

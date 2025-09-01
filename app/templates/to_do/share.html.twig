@@ -1,20 +1,26 @@
-{# templates/to_do/share.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Udostępnione zadanie{% endblock %}
+{% block title %}{{ 'todo.share.title'|trans }}{% endblock %}
 
 {% block body %}
     <h1>{{ to_do.title }}</h1>
-    <p><strong>Treść:</strong> {{ to_do.content }}</p>
-    <p><strong>Kategoria:</strong> {{ to_do.category ? to_do.category.name : 'Brak' }}</p>
-    <p><strong>Status:</strong> {{ to_do.isDone ? 'Zrobione' : 'Nieukończone' }}</p>
-    <p><strong>Tagi:</strong>
+
+    <p><strong>{{ 'label.content'|trans }}:</strong> {{ to_do.content }}</p>
+
+    <p><strong>{{ 'label.category'|trans }}:</strong>
+        {{ to_do.category ? to_do.category.name : 'label.none'|trans }}
+    </p>
+
+    <p><strong>{{ 'label.status'|trans }}:</strong>
+        {{ to_do.isDone ? 'label.is_done'|trans : 'todo.index.status_not_done'|trans }}
+    </p>
+
+    <p><strong>{{ 'label.tags'|trans }}:</strong>
         {% if to_do.tags is empty %}
-            <em>Brak</em>
+            <em>{{ 'label.none'|trans }}</em>
         {% else %}
             {% for tag in to_do.tags %}
-                <span style="display: inline-block; background-color: #e0e0e0; padding: 0.2rem 0.5rem; margin-right: 0.3rem; border-radius: 5px;">
+                <span style="display:inline-block;background-color:#e0e0e0;padding:0.2rem 0.5rem;margin-right:0.3rem;border-radius:5px;">
                     {{ tag.name }}
                 </span>
             {% endfor %}

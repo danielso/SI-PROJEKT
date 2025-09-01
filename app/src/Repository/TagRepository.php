@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -6,9 +7,9 @@
 namespace App\Repository;
 
 use App\Entity\Tag;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\User;
 
 /**
  * Repository class for managing Tag entities.
@@ -18,7 +19,7 @@ class TagRepository extends ServiceEntityRepository
     /**
      * TagRepository constructor.
      *
-     * @param ManagerRegistry $registry The registry to manage the Tag entity.
+     * @param ManagerRegistry $registry the registry to manage the Tag entity.
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -27,11 +28,11 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * Returns all tags with usage counters for an user:
-     *  - `todoCount`: number of ToDo items (owned by the user or where the user is a collaborator)
-     *                 that reference the tag,
+     *  - `todoCount`: number of ToDo items (owned by the user or where the user is a collaborator).
+     *                 that reference the tag.
      *  - `noteCount`: number of the user's notes that reference the tag.
      *
-     * @param User $user The user for which the counters are calculated.
+     * @param User $user the user for which the counters are calculated.
      *
      * @return array<int, array{0: Tag, todoCount: int|string, noteCount: int|string}>
      */
@@ -59,5 +60,39 @@ class TagRepository extends ServiceEntityRepository
             ->orderBy('tag.name', 'ASC');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Saves tag.
+     *
+     * @param Tag  $tag   tag to persist.
+     * @param bool $flush whether to flush immediately.
+     *
+     * @return void
+     */
+    public function save(Tag $tag, bool $flush = false): void
+    {
+        $em = $this->getEntityManager();
+        $em->persist($tag);
+        if ($flush) {
+            $em->flush();
+        }
+    }
+
+    /**
+     * Removes a Tag entity and (optionally) flushes.
+     *
+     * @param Tag  $tag   tag to remove.
+     * @param bool $flush whether to flush immediately.
+     *
+     * @return void
+     */
+    public function remove(Tag $tag, bool $flush = false): void
+    {
+        $em = $this->getEntityManager();
+        $em->remove($tag);
+        if ($flush) {
+            $em->flush();
+        }
     }
 }

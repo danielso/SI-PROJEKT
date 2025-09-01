@@ -1,51 +1,41 @@
-{# templates/note/edit.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Edytuj Notatkę{% endblock %}
+{% block title %}{{ 'title.note_edit'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edytuj notatkę</h1>
+    <h1>{{ 'note.edit_heading'|trans }}</h1>
 
-    {# Wyświetlenie formularza Symfony #}
     {{ form_start(form) }}
 
     <div>
-        {# Pole tytuł #}
-        {{ form_row(form.title) }}
+        {{ form_row(form.title,      {'label': 'label.title'}) }}
     </div>
 
     <div>
-        {# Pole treść #}
-        {{ form_row(form.content) }}
+        {{ form_row(form.content,    {'label': 'label.content'}) }}
     </div>
 
     <div>
-        {# Pole obrazu - obsługuje przesyłanie pliku #}
-        {{ form_row(form.image) }}
+        {{ form_row(form.image,      {'label': 'label.image'}) }}
     </div>
 
     <div>
-        {# Wybór kategorii #}
-        {{ form_row(form.category) }}
+        {{ form_row(form.category,   {'label': 'label.category'}) }}
     </div>
 
     <div>
-        {# Pole na nową kategorię (opcjonalne) #}
-        {{ form_row(form.newCategory) }}
+        {{ form_row(form.newCategory,{'label': 'label.new_category'}) }}
     </div>
 
     <div>
-        {# Pole tagów (opcjonalne) #}
-        {{ form_row(form.tags) }}
+        {{ form_row(form.tags,       {'label': 'label.tags'}) }}
     </div>
 
     <div>
-        {# Przycisk zapisania zmian #}
-        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+        <button type="submit" class="btn btn-primary">{{ 'action.save_changes'|trans }}</button>
     </div>
 
     {{ form_end(form) }}
 
-    <p><a href="{{ path('note_index') }}">&larr; Wróć do listy notatek</a></p>
+    <p><a href="{{ path('note_index') }}">{{ 'action.back_to_notes'|trans }}</a></p>
 {% endblock %}

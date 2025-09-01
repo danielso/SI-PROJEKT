@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -16,7 +17,7 @@ interface TagServiceInterface
     /**
      * Returns all tags with usage counters for the given user.
      *
-     * @param User $user The user for whom counters are calculated.
+     * @param User $user the user for whom counters are calculated
      *
      * @return array<int, array{0: Tag, todoCount: int|string, noteCount: int|string}>
      */
@@ -25,36 +26,34 @@ interface TagServiceInterface
     /**
      * Creates a new tag.
      *
-     * @param Tag $tag The tag to create (name taken from the entity).
+     * @param Tag $tag the tag to create (name taken from the entity)
      *
-     * @return Tag The persisted tag.
+     * @return Tag the persisted tag
      */
     public function create(Tag $tag): Tag;
 
     /**
      * Updates an existing tag.
      *
-     * @param Tag $tag The tag to update.
+     * @param Tag $tag the tag to update
      *
-     * @return Tag The updated tag.
+     * @return Tag the updated tag
      */
     public function update(Tag $tag): Tag;
 
     /**
      * Deletes the given tag.
      *
-     * @param Tag $tag The tag to delete.
-     *
-     * @return void
+     * @param Tag $tag the tag to delete
      */
     public function delete(Tag $tag): void;
 
     /**
      * Finds a tag by its exact name.
      *
-     * @param string $name The tag name to search for.
+     * @param string $name the tag name to search for
      *
-     * @return Tag|null The found tag or null if none.
+     * @return Tag|null the found tag or null if none
      */
     public function findOneByName(string $name): ?Tag;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -20,9 +21,8 @@ use Doctrine\ORM\Mapping as ORM;
         new ORM\Index(name: 'idx_todo_updated', columns: ['updated_at']),
     ]
 )]
-
 /**
- * Class ToDo
+ * Class ToDo.
  *
  * Represents a to-do task, which can be categorized and tagged, and associated with a user.
  */
@@ -37,12 +37,16 @@ class ToDo
     private ?string $content = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?bool $isDone = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $title = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -52,16 +56,16 @@ class ToDo
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
     private ?Category $category = null;
 
-
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull]
     private ?User $user = null;
 
-    #[ORM\Column(type: "string", length: 255, unique: true, nullable: true, name: "share_token")]
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true, name: 'share_token')]
     #[Assert\Length(max: 255)]
     private ?string $shareToken = null;
 
-    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'toDos', fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinTable(
         name: 'todo_tags',
         joinColumns: [
@@ -88,7 +92,7 @@ class ToDo
     /**
      * ToDo constructor.
      *
-     * Initializes the collection for tags.
+     * Initializes collection properties for tags and collaborators.
      */
     public function __construct()
     {
@@ -99,7 +103,7 @@ class ToDo
     /**
      * Gets the share token of the to-do task.
      *
-     * @return string|null The share token.
+     * @return string|null the share token
      */
     public function getShareToken(): ?string
     {
@@ -109,7 +113,7 @@ class ToDo
     /**
      * Sets the share token of the to-do task.
      *
-     * @param string|null $shareToken The share token.
+     * @param string|null $shareToken the share token
      *
      * @return self
      */
@@ -123,7 +127,7 @@ class ToDo
     /**
      * Gets the user associated with the to-do task.
      *
-     * @return User|null The user.
+     * @return User|null the user
      */
     public function getUser(): ?User
     {
@@ -133,7 +137,7 @@ class ToDo
     /**
      * Sets the user for the to-do task.
      *
-     * @param User $user The user.
+     * @param User $user the user
      *
      * @return self
      */
@@ -147,7 +151,7 @@ class ToDo
     /**
      * Gets the ID of the to-do task.
      *
-     * @return int|null The ID.
+     * @return int|null the ID
      */
     public function getId(): ?int
     {
@@ -157,7 +161,7 @@ class ToDo
     /**
      * Gets the content of the to-do task.
      *
-     * @return string|null The content.
+     * @return string|null the content
      */
     public function getContent(): ?string
     {
@@ -167,7 +171,7 @@ class ToDo
     /**
      * Sets the content of the to-do task.
      *
-     * @param string $content The content.
+     * @param string $content the content
      *
      * @return self
      */
@@ -181,7 +185,7 @@ class ToDo
     /**
      * Checks if the to-do task is done.
      *
-     * @return bool|null The status of the task.
+     * @return bool|null the status of the task
      */
     public function isDone(): ?bool
     {
@@ -191,7 +195,7 @@ class ToDo
     /**
      * Sets the status of the to-do task.
      *
-     * @param bool $isDone The status.
+     * @param bool $isDone the status
      *
      * @return self
      */
@@ -205,7 +209,7 @@ class ToDo
     /**
      * Gets the title of the to-do task.
      *
-     * @return string|null The title.
+     * @return string|null the title
      */
     public function getTitle(): ?string
     {
@@ -215,7 +219,7 @@ class ToDo
     /**
      * Sets the title of the to-do task.
      *
-     * @param string $title The title.
+     * @param string $title the title
      *
      * @return self
      */
@@ -229,7 +233,7 @@ class ToDo
     /**
      * Gets the creation date of the to-do task.
      *
-     * @return \DateTimeImmutable|null The creation date.
+     * @return \DateTimeImmutable|null the creation date
      */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -239,7 +243,7 @@ class ToDo
     /**
      * Sets the creation date of the to-do task.
      *
-     * @param \DateTimeImmutable $createdAt The creation date.
+     * @param \DateTimeImmutable $createdAt the creation date
      *
      * @return self
      */
@@ -253,7 +257,7 @@ class ToDo
     /**
      * Gets the last updated date of the to-do task.
      *
-     * @return \DateTimeImmutable|null The updated date.
+     * @return \DateTimeImmutable|null the updated date
      */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
@@ -263,7 +267,7 @@ class ToDo
     /**
      * Sets the last updated date of the to-do task.
      *
-     * @param \DateTimeImmutable|null $updatedAt The updated date.
+     * @param \DateTimeImmutable|null $updatedAt the updated date
      *
      * @return self
      */
@@ -277,7 +281,7 @@ class ToDo
     /**
      * Gets the category of the to-do task.
      *
-     * @return Category|null The category.
+     * @return Category|null the category
      */
     public function getCategory(): ?Category
     {
@@ -287,7 +291,7 @@ class ToDo
     /**
      * Sets the category of the to-do task.
      *
-     * @param Category|null $category The category.
+     * @param Category|null $category the category
      *
      * @return self
      */
@@ -301,7 +305,7 @@ class ToDo
     /**
      * Gets the tags associated with the to-do task.
      *
-     * @return Collection The collection of tags.
+     * @return Collection the collection of tags
      */
     public function getTags(): Collection
     {
@@ -311,7 +315,7 @@ class ToDo
     /**
      * Sets the tags associated with the to-do task.
      *
-     * @param Collection $tags The collection of tags.
+     * @param Collection $tags the collection of tags
      *
      * @return self
      */
@@ -325,7 +329,7 @@ class ToDo
     /**
      * Adds a tag to the to-do task.
      *
-     * @param Tag $tag The tag to add.
+     * @param Tag $tag the tag to add
      *
      * @return self
      */
@@ -341,7 +345,7 @@ class ToDo
     /**
      * Removes a tag from the to-do task.
      *
-     * @param Tag $tag The tag to remove.
+     * @param Tag $tag the tag to remove
      *
      * @return self
      */
@@ -365,7 +369,7 @@ class ToDo
     /**
      * Adds a collaborator to this to-do.
      *
-     * @param User $user The user to add as a collaborator.
+     * @param User $user the user to add as a collaborator
      *
      * @return self
      */
@@ -381,7 +385,7 @@ class ToDo
     /**
      * Removes a collaborator from this to-do.
      *
-     * @param User $user The user to remove from collaborators.
+     * @param User $user the user to remove from collaborators
      *
      * @return self
      */
@@ -395,9 +399,9 @@ class ToDo
     /**
      * Checks whether the given user is a collaborator of this to-do.
      *
-     * @param User $user The user to check.
+     * @param User $user the user to check
      *
-     * @return bool True if the user is a collaborator, false otherwise.
+     * @return bool true if the user is a collaborator, false otherwise
      */
     public function isCollaborator(User $user): bool
     {

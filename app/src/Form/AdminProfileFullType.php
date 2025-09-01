@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -14,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * FormType for managing the admin profile form, including email and password fields.
@@ -26,7 +26,7 @@ class AdminProfileFullType extends AbstractType
     /**
      * AdminProfileFullType constructor.
      *
-     * @param EntityManagerInterface $em Entity manager, available for potential custom validators or lookups.
+     * @param EntityManagerInterface $em entity manager, available for potential custom validators or lookups
      */
     public function __construct(EntityManagerInterface $em)
     {
@@ -36,8 +36,8 @@ class AdminProfileFullType extends AbstractType
     /**
      * Builds the form for editing the admin profile.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options Options for the form.
+     * @param FormBuilderInterface $builder the form builder
+     * @param array                $options options for the form
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -46,7 +46,7 @@ class AdminProfileFullType extends AbstractType
 
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Adres email',
+                'label' => 'label.email',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Email(),
@@ -56,15 +56,15 @@ class AdminProfileFullType extends AbstractType
                 'type' => PasswordType::class,
                 'mapped' => false,
                 'required' => false,
-                'first_options'  => ['label' => 'Nowe hasło'],
-                'second_options' => ['label' => 'Powtórz hasło'],
+                'first_options'  => ['label' => 'label.new_password'],
+                'second_options' => ['label' => 'label.confirm_password'],
             ]);
     }
 
     /**
      * Configures the options for the form.
      *
-     * @param OptionsResolver $resolver The options resolver.
+     * @param OptionsResolver $resolver the options resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -1,23 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nowy Tag{% endblock %}
+{% block title %}{{ 'tag.new.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Dodaj nowy tag</h1>
+        <h1>{{ 'tag.new.title'|trans }}</h1>
 
         {{ form_start(form) }}
 
         <div class="form-group">
+            {# użyje klucza "label.name" jeśli jest skonfigurowany #}
             {{ form_label(form.name) }}
             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Zapisz</button>
+            <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
         </div>
 
-        <a href="{{ path('tag_index') }}" class="btn btn-secondary">Anuluj</a>
+        <a href="{{ path('tag_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans }}</a>
 
         {{ form_end(form) }}
     </div>

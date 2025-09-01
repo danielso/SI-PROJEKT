@@ -1,20 +1,19 @@
-{# templates/category/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Twoje kategorie{% endblock %}
+{% block title %}{{ 'title.category.index'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Twoje kategorie</h1>
+        <h1>{{ 'title.category.index'|trans }}</h1>
 
         <div style="margin-bottom: 1rem;">
             <a href="{{ path('home') }}" class="back-button"
                style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none;">
-                ← Wróć do strony głównej
+                {{ 'action.back_home'|trans }}
             </a>
             <a href="{{ path('category_new') }}"
                style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">
-                ➕ Nowa kategoria
+                {{ 'action.category.new'|trans }}
             </a>
         </div>
 
@@ -25,12 +24,12 @@
                     <h3 style="margin: 0;">
                         {{ category.name }}
                         <small style="font-weight: normal; color: #666;">
-                            (ToDo: {{ row.todoCount }}, Notatki: {{ row.noteCount }})
+                            {{ 'category.usage_counts'|trans({'%todo%': row.todoCount, '%notes%': row.noteCount}) }}
                         </small>
                     </h3>
 
                     <div style="margin-top: 10px;">
-                        <a href="{{ path('category_edit', { id: category.id }) }}" style="margin-right: 0.5rem;">✏️ Edytuj</a>
+                        <a href="{{ path('category_edit', { id: category.id }) }}" style="margin-right: 0.5rem;">{{ 'action.edit'|trans }}</a>
 
                         {% if row.todoCount == 0 and row.noteCount == 0 %}
                             <form method="post"
@@ -38,16 +37,18 @@
                                   style="display:inline;"
                                   onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?');">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                                <input type="hidden" name="_method" value="DELETE">
                                 <button style="background: none; border: none; color: red; cursor: pointer;">🗑 Usuń</button>
                             </form>
+
                         {% else %}
-                            <span title="Kategoria jest używana – nie można usunąć">🔒</span>
+                            <span title="{{ 'category.locked'|trans }}">🔒</span>
                         {% endif %}
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <p>Nie masz jeszcze żadnych kategorii.</p>
+            <p>{{ 'message.category.empty'|trans }}</p>
         {% endif %}
     </div>
 {% endblock %}

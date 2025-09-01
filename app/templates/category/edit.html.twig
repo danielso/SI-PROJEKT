@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edytuj kategorię{% endblock %}
+{% block title %}{{ 'edit.category.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Edytuj kategorię: {{ category.name }}</h1>
+        <h1>{{ 'edit.category.title'|trans }}: {{ category.name }}</h1>
 
         {{ form_start(form) }}
 
         <div class="form-group">
-            {{ form_label(form.name) }}
+            {{ form_label(form.name, 'category.form.name'|trans) }}
             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-success">Zapisz zmiany</button>
+            <button type="submit" class="btn btn-success">{{ 'action.save_changes'|trans }}</button>
         </div>
 
-        <a href="{{ path('category_index') }}" class="btn btn-secondary">Anuluj</a>
+        <a href="{{ path('category_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans }}</a>
 
         {{ form_end(form) }}
     </div>

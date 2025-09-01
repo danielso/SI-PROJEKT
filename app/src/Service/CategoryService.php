@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -8,28 +9,24 @@ namespace App\Service;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Service layer for Category domain operations (CRUD, lists with counters).
+ * Warstwa serwisowa dla kategorii (CRUD, listy z licznikami).
  */
 final class CategoryService implements CategoryServiceInterface
 {
     /**
-     * CategoryService constructor.
-     *
-     * @param CategoryRepository     $categoryRepository Repository for Category entities.
-     * @param EntityManagerInterface $em                 Entity manager for persistence operations.
+     * @param CategoryRepository $categoryRepository repozytorium kategorii.
      */
-    public function __construct(private readonly CategoryRepository $categoryRepository, private readonly EntityManagerInterface $em)
+    public function __construct(private readonly CategoryRepository $categoryRepository)
     {
     }
 
     /**
-     * Returns the list of categories for the given user along with related counters.
+     * Returns categories for the given user with item counters.
      *
-     * @param User $user The owner of the categories.
+     * @param User $user category owner
      *
      * @return array<int, array{0: Category, todoCount: int|string, noteCount: int|string}>
      */
@@ -41,62 +38,59 @@ final class CategoryService implements CategoryServiceInterface
     /**
      * Creates a new category for the given user.
      *
-     * @param Category $category The category to create.
-     * @param User     $user     The owner of the category.
+     * @param Category $category category to create
+     * @param User     $user     owner to assign
      *
-     * @return Category The persisted category.
+     * @return Category
      */
     public function create(Category $category, User $user): Category
     {
         $category->setUser($user);
-
-        $this->em->persist($category);
-        $this->em->flush();
+        $this->categoryRepository->save($category, true);
 
         return $category;
     }
 
     /**
-     * Updates an existing category. Owner check is enforced.
+     * Updates a category after ownership check.
      *
-     * @param Category $category The category to update.
-     * @param User     $user     The acting user (must be the owner).
+     * @param Category $category category to update
+     * @param User     $user     acting user
      *
-     * @return Category The updated category.
+     * @return Category
+     *
+     * @throws AccessDeniedException when the user is not the owner
      */
     public function update(Category $category, User $user): Category
     {
         $this->assertOwner($category, $user);
-        $this->em->flush();
+        $this->categoryRepository->save($category, true);
 
         return $category;
     }
 
     /**
-     * Deletes a category. Owner check is enforced.
+     * Deletes a category after ownership check.
      *
-     * @param Category $category The category to delete.
-     * @param User     $user     The acting user (must be the owner).
+     * @param Category $category category to delete
+     * @param User     $user     acting user
      *
-     * @return void
+     * @throws AccessDeniedException when the user is not the owner
      */
     public function delete(Category $category, User $user): void
     {
         $this->assertOwner($category, $user);
-
-        $this->em->remove($category);
-        $this->em->flush();
+        $this->categoryRepository->remove($category, true);
     }
 
+
     /**
-     * Ensures the given user is the owner of the category.
+     * Weryfikuje, czy użytkownik jest właścicielem kategorii.
      *
-     * @param Category $category The category to check.
-     * @param User     $user     The user to verify.
+     * @param Category $category kategoria do sprawdzenia.
+     * @param User     $user     sprawdzany użytkownik.
      *
-     * @throws AccessDeniedException When the user is not the owner.
-     *
-     * @return void
+     * @throws AccessDeniedException gdy użytkownik nie jest właścicielem.
      */
     private function assertOwner(Category $category, User $user): void
     {

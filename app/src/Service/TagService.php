@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -8,7 +9,6 @@ namespace App\Service;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\TagRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service layer for Tag domain operations (listing with counters, CRUD, simple lookups).
@@ -16,19 +16,16 @@ use Doctrine\ORM\EntityManagerInterface;
 final class TagService implements TagServiceInterface
 {
     /**
-     * TagService constructor.
-     *
-     * @param EntityManagerInterface $em   Entity manager for persistence operations.
-     * @param TagRepository          $tags Repository for Tag entities.
+     * @param TagRepository $tags repository for Tag entities.
      */
-    public function __construct(private readonly EntityManagerInterface $em, private readonly TagRepository $tags)
+    public function __construct(private readonly TagRepository $tags)
     {
     }
 
     /**
-     * Returns all tags with usage counters for the given user.
+     * Returns all tags with usage counters (todoCount, noteCount) for a given user.
      *
-     * @param User $user The user for whom counters are calculated.
+     * @param User $user user for whom counters are calculated.
      *
      * @return array<int, array{0: Tag, todoCount: int|string, noteCount: int|string}>
      */
@@ -38,13 +35,13 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Creates a new tag after validating the name and uniqueness.
+     * Creates a new tag (validates name and uniqueness).
      *
-     * @param Tag $tag The tag to create (name is taken from the entity).
+     * @param Tag $tag tag to create.
      *
-     * @return Tag The persisted tag.
+     * @return Tag
      *
-     * @throws \InvalidArgumentException When the name is empty or already exists.
+     * @throws \InvalidArgumentException when name is empty or tag already exists.
      */
     public function create(Tag $tag): Tag
     {
@@ -58,21 +55,19 @@ final class TagService implements TagServiceInterface
         }
 
         $tag->setName($name);
-        $this->em->persist($tag);
-        $this->em->flush();
+        $this->tags->save($tag, true);
 
         return $tag;
     }
 
-
     /**
-     * Updates an existing tag's name with validation and uniqueness check.
+     * Updates an existing tag (validates name and uniqueness across other tags).
      *
-     * @param Tag $tag The tag to update.
+     * @param Tag $tag tag to update.
      *
-     * @return Tag The updated tag.
+     * @return Tag
      *
-     * @throws \InvalidArgumentException When the name is empty or collides with another tag.
+     * @throws \InvalidArgumentException when name is empty or would collide with another tag.
      */
     public function update(Tag $tag): Tag
     {
@@ -87,30 +82,29 @@ final class TagService implements TagServiceInterface
         }
 
         $tag->setName($name);
-        $this->em->flush();
+        $this->tags->save($tag, true);
 
         return $tag;
     }
 
     /**
-     * Deletes the given tag.
+     * Deletes a tag.
      *
-     * @param Tag $tag The tag to delete.
+     * @param Tag $tag tag to delete.
      *
      * @return void
      */
     public function delete(Tag $tag): void
     {
-        $this->em->remove($tag);
-        $this->em->flush();
+        $this->tags->remove($tag, true);
     }
 
     /**
-     * Finds a tag by its exact name.
+     * Finds a tag by its name.
      *
-     * @param string $name The tag name to search for.
+     * @param string $name tag name to search for.
      *
-     * @return Tag|null The found tag or null if none.
+     * @return Tag|null
      */
     public function findOneByName(string $name): ?Tag
     {

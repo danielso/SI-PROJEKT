@@ -1,90 +1,120 @@
 <?php
+
 /**
  * @license MIT
  */
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Note;
+use App\Entity\User;
+use App\Repository\CategoryRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Category;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Form type for creating or editing a note.
- * Handles the fields for title, content, image, category, new category, and tags.
+ * Form type tworzenia/edycji notatki.
+ *
+ * Obrazek i tagi są mapped=false i obsługiwane w serwisie.
+ * Lista kategorii filtrowana po właścicielu (opcja 'user').
  */
 class NoteType extends AbstractType
 {
     /**
-     * Builds the form for creating or editing a note.
+     * Buduje formularz notatki.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options Additional options for the form.
+     * @param FormBuilderInterface $builder form builder.
+     * @param array<string, mixed> $options opcje (oczekuje klucza 'user' => ?User).
+     *
+     * @return void.
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User|null $user */
+        $user = $options['user'] ?? null;
+
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Tytuł',
+                'label' => 'label.title',
+                'empty_data' => '',
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(max: 255),
+                ],
             ])
             ->add('content', TextareaType::class, [
-                'label' => 'Treść',
+                'label' => 'label.content',
                 'attr' => ['rows' => 10],
+                'empty_data' => '',
+                'constraints' => [
+                    new NotBlank(),
+                ],
             ])
-
-            //pole do wyboru pliku
             ->add('image', FileType::class, [
-                'label' => 'Dodaj obrazek',
+                'label' => 'label.image',
                 'required' => false,
                 'mapped' => false,
                 'attr' => ['accept' => 'image/*'],
+                'constraints' => [
+                    new File(maxSize: '5M'),
+                ],
             ])
-
-            // Kategoria
             ->add('category', EntityType::class, [
+                'label' => 'label.category',
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'required' => false,
-                'placeholder' => 'Wybierz kategorię',
-            ])
+                'placeholder' => 'label.choose_category',
+                'query_builder' => function (CategoryRepository $repo) use ($user) {
+                    if (!$user) {
+                        return $repo->createQueryBuilder('c')->where('1 = 0');
+                    }
 
-            // Nowa kategoria
+                    return $repo->createQueryBuilder('c')
+                        ->andWhere('c.user = :u')
+                        ->setParameter('u', $user)
+                        ->orderBy('c.name', 'ASC');
+                },
+            ])
             ->add('newCategory', TextType::class, [
-                'label' => 'Nowa Kategoria',
+                'label' => 'label.new_category',
                 'required' => false,
-                'attr' => ['placeholder' => 'Wpisz nazwę nowej kategorii'],
                 'mapped' => false,
+                'attr' => ['placeholder' => 'label.new_category_placeholder'],
             ])
-
-            // Tagowanie
             ->add('tags', TextType::class, [
+                'label' => 'label.tags',
                 'mapped' => false,
                 'required' => false,
-                'label' => 'Tagi (oddzielone przecinkami)',
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Zapisz',
+                'label' => 'action.save',
             ]);
     }
 
-
     /**
-     * Configures the options for the form.
+     * Konfiguracja opcji formularza.
      *
-     * @param OptionsResolver $resolver The options resolver.
+     * @param OptionsResolver $resolver resolver opcji.
+     *
+     * @return void.
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Note::class,
-            'user' => null,
+            'user' => null, // \App\Entity\User
         ]);
+        $resolver->setAllowedTypes('user', ['null', User::class]);
     }
 }

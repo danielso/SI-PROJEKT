@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -9,6 +10,7 @@ use App\Entity\Tag;
 use App\Form\TagFormType;
 use App\Service\TagServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +24,7 @@ class TagController extends AbstractController
     /**
      * TagController constructor.
      *
-     * @param TagServiceInterface $tags Service handling tag operations.
+     * @param TagServiceInterface $tags service handling tag operations.
      */
     public function __construct(private readonly TagServiceInterface $tags)
     {
@@ -31,7 +33,7 @@ class TagController extends AbstractController
     /**
      * Displays a list of all tags with usage counts for the current user.
      *
-     * @return Response
+     * @return Response Rendered list page.
      */
     #[Route('/', name: 'tag_index', methods: ['GET'])]
     public function index(): Response
@@ -51,9 +53,9 @@ class TagController extends AbstractController
     /**
      * Creates a new tag.
      *
-     * @param Request $request
+     * @param Request $request HTTP request with form data.
      *
-     * @return Response
+     * @return Response Rendered create form or redirect on success.
      */
     #[Route('/new', name: 'tag_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -65,11 +67,10 @@ class TagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->tags->create($tag);
-                $this->addFlash('success', 'Tag utworzony.');
 
                 return $this->redirectToRoute('tag_index');
             } catch (\InvalidArgumentException $e) {
-                $this->addFlash('error', $e->getMessage());
+                $form->addError(new FormError($e->getMessage()));
             }
         }
 
@@ -81,10 +82,10 @@ class TagController extends AbstractController
     /**
      * Edits an existing tag.
      *
-     * @param Request $request
-     * @param Tag     $tag
+     * @param Request $request HTTP request with form data.
+     * @param Tag     $tag     tag being edited.
      *
-     * @return Response
+     * @return Response Rendered edit form or redirect on success.
      */
     #[Route('/{id}/edit', name: 'tag_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tag $tag): Response
@@ -95,7 +96,6 @@ class TagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->tags->update($tag);
-                $this->addFlash('success', 'Tag zaktualizowany.');
 
                 return $this->redirectToRoute('tag_index');
             } catch (\InvalidArgumentException $e) {
@@ -112,17 +112,16 @@ class TagController extends AbstractController
     /**
      * Deletes a tag after CSRF validation.
      *
-     * @param Request $request
-     * @param Tag     $tag
+     * @param Request $request HTTP request with CSRF token.
+     * @param Tag     $tag     tag being deleted.
      *
-     * @return Response
+     * @return Response Redirect to index after deletion.
      */
-    #[Route('/{id}', name: 'tag_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'tag_delete', methods: ['DELETE'])]
     public function delete(Request $request, Tag $tag): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->request->get('_token'))) {
             $this->tags->delete($tag);
-            $this->addFlash('success', 'Tag usunięty.');
         }
 
         return $this->redirectToRoute('tag_index');

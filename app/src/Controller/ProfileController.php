@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -16,14 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Controller responsible for profile management
+ * Controller responsible for profile management.
  */
 class ProfileController extends AbstractController
 {
     /**
      * ProfileController constructor.
      *
-     * @param ProfileServiceInterface $profile Service handling profile operations.
+     * @param ProfileServiceInterface $profile service handling profile operations.
      */
     public function __construct(private readonly ProfileServiceInterface $profile)
     {
@@ -34,9 +35,9 @@ class ProfileController extends AbstractController
      *
      * Requires ROLE_USER.
      *
-     * @param Request $request
+     * @param Request $request HTTP request.
      *
-     * @return Response
+     * @return Response Rendered edit form or redirect on success.
      */
     #[IsGranted('ROLE_USER')]
     #[Route('/profile/edit', name: 'profile_edit')]
@@ -51,8 +52,6 @@ class ProfileController extends AbstractController
             $newPassword = $form->get('newPassword')->getData();
             $this->profile->updateProfile($user, $newPassword ?: null);
 
-            $this->addFlash('success', 'Dane zostały zaktualizowane.');
-
             return $this->redirectToRoute('home');
         }
 
@@ -66,9 +65,9 @@ class ProfileController extends AbstractController
      *
      * Requires ROLE_ADMIN.
      *
-     * @param Request $request
+     * @param Request $request HTTP request.
      *
-     * @return Response
+     * @return Response Rendered password form or redirect on success.
      */
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/change-password', name: 'admin_change_password')]
@@ -83,8 +82,6 @@ class ProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('newPassword')->getData();
             $this->profile->changePassword($user, $newPassword);
-
-            $this->addFlash('success', 'Hasło zostało zmienione.');
 
             return $this->redirectToRoute('admin_change_password');
         }

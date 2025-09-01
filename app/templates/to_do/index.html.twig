@@ -1,100 +1,123 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Twoja lista do zrobienia{% endblock %}
+{% block title %}{{ 'todo.index.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Towoja lista do zrobienia</h1>
+    <h1>{{ 'todo.index.header'|trans }}</h1>
 
     <div style="margin-bottom: 1rem;">
-        <a href="{{ path('home') }}" class="back-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">← Wróć do strony głównej</a>
-        <a href="{{ path('app_to_do_new') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">➕ Nowe zadanie</a>
-        <a href="{{ path('category_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">📁 Zarządzaj kategoriami</a>
-        <a href="{{ path('tag_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">🏷️ Zarządzaj tagami</a>
-
+        <a href="{{ path('home') }}" class="back-button"
+           style="padding: .5rem 1rem; background-color:#4CAF50; color:#fff; border-radius:5px; text-decoration:none; margin-left:1rem;">
+            {{ 'todo.index.back_home'|trans }}
+        </a>
+        <a href="{{ path('app_to_do_new') }}"
+           style="padding: .5rem 1rem; background-color:#4CAF50; color:#fff; border-radius:5px; text-decoration:none; margin-left:1rem;">
+            {{ 'todo.index.new_task'|trans }}
+        </a>
+        <a href="{{ path('category_index') }}"
+           style="padding: .5rem 1rem; background-color:#4CAF50; color:#fff; border-radius:5px; text-decoration:none; margin-left:1rem;">
+            {{ 'todo.index.manage_categories'|trans }}
+        </a>
+        <a href="{{ path('tag_index') }}"
+           style="padding: .5rem 1rem; background-color:#4CAF50; color:#fff; border-radius:5px; text-decoration:none; margin-left:1rem;">
+            {{ 'todo.index.manage_tags'|trans }}
+        </a>
     </div>
 
     <form method="get" action="{{ path('app_to_do_index') }}" style="margin-bottom: 1rem;">
-        <label for="search">Wyszukaj zadania:</label>
-        <input type="text" id="search" name="search" value="{{ searchTerm }}" placeholder="Wpisz tytuł lub treść zadania">
-        <button type="submit">Szukaj</button>
+        <label for="search">{{ 'todo.index.search_label'|trans }}</label>
+        <input type="text" id="search" name="search" value="{{ searchTerm }}"
+               placeholder="{{ 'todo.index.search_placeholder'|trans }}">
+        <button type="submit">{{ 'todo.index.search_btn'|trans }}</button>
     </form>
 
-
     <form method="get" action="{{ path('app_to_do_index') }}" style="margin-bottom: 1rem;">
-        <label for="category">Filtruj według kategorii:</label>
+        <label for="category">{{ 'todo.index.filter_category'|trans }}</label>
         <select name="category" id="category" onchange="this.form.submit()">
-            <option value="">Wszystkie</option>
+            <option value="">{{ 'todo.index.all'|trans }}</option>
             {% for category in categories %}
-                <option value="{{ category.id }}" {% if selectedCategory == category.id %}selected{% endif %}>{{ category.name }}</option>
+                <option value="{{ category.id }}" {% if selectedCategory == category.id %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
             {% endfor %}
         </select>
     </form>
 
     <form method="get" action="{{ path('app_to_do_index') }}" style="margin-bottom: 1rem;">
-        <label for="tag">Filtruj według tagów:</label>
+        <label for="tag">{{ 'todo.index.filter_tag'|trans }}</label>
         <select name="tag" id="tag" onchange="this.form.submit()">
-            <option value="">Wszystkie</option>
+            <option value="">{{ 'todo.index.all'|trans }}</option>
             {% for tag in tags %}
-                <option value="{{ tag.id }}" {% if selectedTag == tag.id %}selected{% endif %}>{{ tag.name }}</option>
+                <option value="{{ tag.id }}" {% if selectedTag == tag.id %}selected{% endif %}>
+                    {{ tag.name }}
+                </option>
             {% endfor %}
         </select>
     </form>
-
 
     {% for task in to_do %}
-        <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-            <h3 style="margin-top: 0;">{{ task.title }}</h3>
+        <div style="border:1px solid #ccc; border-radius:8px; padding:1rem; margin-bottom:1rem;">
+            <h3 style="margin-top:0;">{{ task.title }}</h3>
+
             {% if task.user and app.user and app.user.id != task.user.id %}
                 <div style="margin:12px 0; padding:8px 12px; background:#eef5ff; border:1px solid #cfe2ff; border-radius:6px;">
-                    Udostępnione przez <strong>{{ task.user.email }}</strong>
+                    {{ 'todo.index.shared_by'|trans }} <strong>{{ task.user.email }}</strong>
                 </div>
             {% endif %}
+
             {% if task.content %}
-                <p><strong>Treść:</strong> {{ task.content|markdown_to_html }}</p>
+                <p><strong>{{ 'todo.index.content'|trans }}</strong> {{ task.content|markdown_to_html }}</p>
             {% endif %}
 
-            <p><strong>Status:</strong> {{ task.isDone ? 'Zrobione' : 'Nieukończone' }}</p>
+            <p><strong>{{ 'todo.index.status'|trans }}</strong>
+                {{ task.isDone ? ('todo.index.status_done'|trans) : ('todo.index.status_not_done'|trans) }}
+            </p>
 
             {% if task.category %}
-                <p><strong>Kategoria:</strong> {{ task.category.name }}</p>
+                <p><strong>{{ 'todo.index.category'|trans }}</strong> {{ task.category.name }}</p>
             {% else %}
-                <p><strong>Kategoria:</strong> <em>Brak</em></p>
+                <p><strong>{{ 'todo.index.category'|trans }}</strong> <em>{{ 'todo.index.none'|trans }}</em></p>
             {% endif %}
-            <p>Tagi:
+
+            <p>{{ 'todo.index.tags'|trans }}:
                 {% if task.tags is empty %}
-                    <em>Brak</em>
+                    <em>{{ 'todo.index.none'|trans }}</em>
                 {% else %}
                     {% for tag in task.tags %}
-                        <span style="display: inline-block; background-color: #e0e0e0; padding: 0.2rem 0.5rem; margin-right: 0.3rem; border-radius: 5px;">
-                                    {{ tag.name }}
-                                </span>
+                        <span style="display:inline-block; background:#e0e0e0; padding:.2rem .5rem; margin-right:.3rem; border-radius:5px;">
+                            {{ tag.name }}
+                        </span>
                     {% endfor %}
                 {% endif %}
             </p>
 
-            <p><strong>Data utworzenia:</strong> {{ task.createdAt|date('Y-m-d H:i') }}</p>
+            <p><strong>{{ 'todo.index.created_at'|trans }}</strong> {{ task.createdAt|date('Y-m-d H:i') }}</p>
 
-
-
-            <div style="margin-top: 0.5rem;">
-                <a href="{{ path('app_to_do_edit', {'id': task.id}) }}" style="margin-right: 0.5rem;">✏️ Edytuj</a>
-                <form method="post" action="{{ path('app_to_do_delete', {'id': task.id}) }}" style="display:inline;" onsubmit="return confirm('Jesteś pewien?');">
+            <div style="margin-top:.5rem;">
+                <a href="{{ path('app_to_do_edit', {'id': task.id}) }}" style="margin-right:.5rem;">
+                    {{ 'todo.index.edit'|trans }}
+                </a>
+                <form method="post"
+                      action="{{ path('app_to_do_delete', {'id': task.id}) }}"
+                      style="display:inline;"
+                      onsubmit="return confirm('{{ 'todo.index.delete_confirm'|trans }}');">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}">
-                    <button style="background: none; border: none; cursor: pointer;">🗑 Usuń</button>
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button style="background:none; border:none; cursor:pointer;">
+                        {{ 'todo.index.delete'|trans }}
+                    </button>
                 </form>
             </div>
 
-
             {% if task.shareToken %}
-                <a href="{{ path('app_to_do_share', {'token': task.shareToken}) }}">Udostępnij zadanie</a>
+                <a href="{{ path('app_to_do_share', {'token': task.shareToken}) }}">
+                    {{ 'todo.index.share'|trans }}
+                </a>
             {% else %}
-                <p>Brak tokena do udostępnienia.</p>
+                <p>{{ 'todo.index.no_share_token'|trans }}</p>
             {% endif %}
-
         </div>
     {% else %}
-        <p>Brak zadań do wyświetlenia.</p>
+        <p>{{ 'todo.index.empty'|trans }}</p>
     {% endfor %}
-
-
 {% endblock %}

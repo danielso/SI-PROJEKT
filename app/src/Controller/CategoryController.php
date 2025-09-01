@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -22,7 +23,7 @@ final class CategoryController extends AbstractController
     /**
      * CategoryController constructor.
      *
-     * @param CategoryServiceInterface $categoryService Service handling category operations.
+     * @param CategoryServiceInterface $categoryService service handling category operations
      */
     public function __construct(private readonly CategoryServiceInterface $categoryService)
     {
@@ -31,7 +32,7 @@ final class CategoryController extends AbstractController
     /**
      * Displays a list of categories for the current user.
      *
-     * @return Response
+     * @return Response Response Rendered categories list page.
      */
     #[Route('/', name: 'category_index', methods: ['GET'])]
     public function index(): Response
@@ -51,9 +52,9 @@ final class CategoryController extends AbstractController
     /**
      * Creates a new category for the current user.
      *
-     * @param Request $request
+     * @param Request $request HTTP request with form data
      *
-     * @return Response
+     * @return Response Response Rendered form or redirect to index on success.
      */
     #[Route('/new', name: 'category_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -81,10 +82,10 @@ final class CategoryController extends AbstractController
     /**
      * Edits an existing category.
      *
-     * @param Request  $request
-     * @param Category $category
+     * @param Request  $request  HTTP request with form data
+     * @param Category $category Category being edited
      *
-     * @return Response
+     * @return Response Response Rendered form or redirect to index on success.
      */
     #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Category $category): Response
@@ -112,12 +113,12 @@ final class CategoryController extends AbstractController
     /**
      * Deletes a category after CSRF validation.
      *
-     * @param Request  $request
-     * @param Category $category
+     * @param Request  $request  HTTP request with CSRF token
+     * @param Category $category Category being deleted
      *
-     * @return Response
+     * @return Response Response Redirect to categories index.
      */
-    #[Route('/{id}', name: 'category_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'category_delete', methods: ['DELETE'])]
     public function delete(Request $request, Category $category): Response
     {
         $user = $this->getUser();

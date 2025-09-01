@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -10,15 +11,15 @@ namespace App\Entity;
  */
 class UserRole
 {
-    const ROLE_USER = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * Get the role label.
      *
-     * @param string $role The role for which the label should be returned.
+     * @param string $role the role for which the label should be returned
      *
-     * @return string The corresponding role label.
+     * @return string the corresponding role label
      */
     public static function label(string $role): string
     {

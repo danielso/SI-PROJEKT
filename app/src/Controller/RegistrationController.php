@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -7,11 +8,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\RegisterServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -22,17 +22,14 @@ class RegistrationController extends AbstractController
     /**
      * Handles user registration.
      *
-     * @param Request                     $request
-     * @param EntityManagerInterface      $entityManager
-     * @param UserPasswordHasherInterface $passwordHasher
+     * @param Request                  $request  HTTP request.
+     * @param RegisterServiceInterface $register domain service handling registration flow.
      *
-     * @return Response
+     * @return Response Rendered registration form or redirect on success.
      */
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(Request $request, RegisterServiceInterface $register): Response
     {
-        dump("Register Controller called");
-
         if ($this->getUser()) {
             return $this->redirectToRoute('home');
         }
@@ -42,13 +39,9 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->get('plainPassword')->getData();
-            $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-            $user->setPassword($hashedPassword);
-            $user->setRoles(['ROLE_USER']);
+            $plainPassword = (string) $form->get('plainPassword')->getData();
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $register->register($user, $plainPassword);
 
             return $this->redirectToRoute('app_login');
         }

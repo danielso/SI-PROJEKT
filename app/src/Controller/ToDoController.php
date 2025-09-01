@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -16,14 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Controller for managing ToDo items (listing, CRUD, sharing, collaborators).
  */
-
 #[Route('/to/do')]
 final class ToDoController extends AbstractController
 {
     /**
      * ToDoController constructor.
      *
-     * @param ToDoServiceInterface $toDo Service handling ToDo operations.
+     * @param ToDoServiceInterface $toDo service handling ToDo operations.
      */
     public function __construct(private readonly ToDoServiceInterface $toDo)
     {
@@ -32,9 +32,9 @@ final class ToDoController extends AbstractController
     /**
      * Lists ToDo items for the current user with optional filters.
      *
-     * @param Request $request
+     * @param Request $request HTTP request with query parameters.
      *
-     * @return Response
+     * @return Response Rendered list page.
      */
     #[Route('', name: 'app_to_do_index', methods: ['GET'])]
     public function index(Request $request): Response
@@ -69,9 +69,9 @@ final class ToDoController extends AbstractController
     /**
      * Creates a new ToDo for the current user.
      *
-     * @param Request $request
+     * @param Request $request HTTP request with form data.
      *
-     * @return Response
+     * @return Response Rendered create form or redirect on success.
      */
     #[Route('/new', name: 'app_to_do_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -82,37 +82,46 @@ final class ToDoController extends AbstractController
         }
 
         $toDo = new ToDo();
+        $toDo->setUser($user);
+        $toDo->setIsDone(false);
+        if (null === $toDo->getCreatedAt()) {
+            $toDo->setCreatedAt(new \DateTimeImmutable());
+        }
+
         $form = $this->createForm(ToDoForm::class, $toDo, ['user' => $user]);
         $form->handleRequest($request);
 
-        $categoryId      = $request->get('category') ? (int) $request->get('category') : null;
-        $newCategoryName = $request->get('newCategory') ?: null;
-        $tagsCsv         = $form->get('tags')->getData();
+        /** @var \App\Entity\Category|null $selectedCategory */
+        $selectedCategory = $form->get('category')->getData();
+        $categoryId       = $selectedCategory?->getId();
+        $newCategoryName  = $form->get('newCategory')->getData() ?: null;
+        $tagsCsv          = $form->get('tags')->getData() ?: null;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->toDo->create($toDo, $user, $categoryId, $newCategoryName, $tagsCsv);
 
             return $this->redirectToRoute('app_to_do_index');
         }
+        $status = $form->isSubmitted() && !$form->isValid() ? 422 : 200;
 
         return $this->render('to_do/new.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], new Response('', $status));
     }
 
     /**
      * Shows a single ToDo if the current user can view it.
      *
-     * @param ToDo $toDo
+     * @param ToDo $toDo ToDo to display.
      *
-     * @return Response
+     * @return Response Rendered details page.
      */
-    #[Route('/{id}', name: 'app_to_do_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_to_do_show', methods: ['GET'], requirements: ['id' => '[1-9]\d*'])]
     public function show(ToDo $toDo): Response
     {
         $user = $this->getUser();
         if (!$this->toDo->canView($toDo, $user)) {
-            throw $this->createAccessDeniedException('Brak dostępu do tego zadania.');
+            throw $this->createAccessDeniedException();
         }
 
         return $this->render('to_do/show.html.twig', [
@@ -123,25 +132,27 @@ final class ToDoController extends AbstractController
     /**
      * Edits an existing ToDo if the current user can edit it.
      *
-     * @param Request $request
-     * @param ToDo    $toDo
+     * @param Request $request HTTP request with form data.
+     * @param ToDo    $toDo    ToDo being edited.
      *
-     * @return Response
+     * @return Response Rendered edit form or redirect on success.
      */
-    #[Route('/{id}/edit', name: 'app_to_do_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_to_do_edit', methods: ['GET', 'POST'], requirements: ['id' => '[1-9]\d*'])]
     public function edit(Request $request, ToDo $toDo): Response
     {
         $user = $this->getUser();
         if (!$this->toDo->canEdit($toDo, $user)) {
-            throw $this->createAccessDeniedException('Nie masz uprawnień do edycji tego zadania.');
+            throw $this->createAccessDeniedException();
         }
 
         $form = $this->createForm(ToDoForm::class, $toDo, ['user' => $user]);
         $form->handleRequest($request);
 
-        $categoryId      = $request->get('category') ? (int) $request->get('category') : null;
-        $newCategoryName = $request->get('newCategory') ?: null;
-        $tagsCsv         = $form->has('tags') ? $form->get('tags')->getData() : null;
+        /** @var \App\Entity\Category|null $selectedCategory */
+        $selectedCategory = $form->get('category')->getData();
+        $categoryId       = $selectedCategory?->getId();
+        $newCategoryName  = $form->get('newCategory')->getData() ?: null;
+        $tagsCsv          = $form->has('tags') ? $form->get('tags')->getData() : null;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->toDo->update($toDo, $user, $categoryId, $newCategoryName, $tagsCsv);
@@ -158,17 +169,17 @@ final class ToDoController extends AbstractController
     /**
      * Deletes a ToDo after permission and CSRF checks.
      *
-     * @param Request $request
-     * @param ToDo    $toDo
+     * @param Request $request HTTP request with CSRF token.
+     * @param ToDo    $toDo    ToDo being deleted.
      *
-     * @return Response
+     * @return Response Redirect to index after deletion.
      */
-    #[Route('/{id}', name: 'app_to_do_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_to_do_delete', methods: ['DELETE'], requirements: ['id' => '[1-9]\d*'])]
     public function delete(Request $request, ToDo $toDo): Response
     {
         $user = $this->getUser();
         if (!$this->toDo->canDelete($toDo, $user)) {
-            throw $this->createAccessDeniedException('Nie masz uprawnień do usunięcia tego zadania.');
+            throw $this->createAccessDeniedException();
         }
 
         if ($this->isCsrfTokenValid('delete'.$toDo->getId(), $request->request->get('_token'))) {
@@ -181,25 +192,27 @@ final class ToDoController extends AbstractController
     /**
      * Opens a shared ToDo via token and allows editing based on the owner's context.
      *
-     * @param Request $request
-     * @param string  $token
+     * @param Request $request HTTP request with form data.
+     * @param string  $token   share token.
      *
-     * @return Response
+     * @return Response Rendered share form or redirect on success.
      */
     #[Route('/share/{token}', name: 'app_to_do_share', methods: ['GET', 'POST'])]
     public function share(Request $request, string $token): Response
     {
         $toDo = $this->toDo->findOneByShareToken($token);
         if (!$toDo) {
-            throw $this->createNotFoundException('Zadanie nie zostało znalezione.');
+            throw $this->createNotFoundException();
         }
 
         $form = $this->createForm(ToDoForm::class, $toDo, ['user' => $toDo->getUser()]);
         $form->handleRequest($request);
 
-        $categoryId      = $request->get('category') ? (int) $request->get('category') : null;
-        $newCategoryName = $request->get('newCategory') ?: null;
-        $tagsCsv         = $form->has('tags') ? $form->get('tags')->getData() : null;
+        /** @var \App\Entity\Category|null $selectedCategory */
+        $selectedCategory = $form->get('category')->getData();
+        $categoryId       = $selectedCategory?->getId();
+        $newCategoryName  = $form->get('newCategory')->getData() ?: null;
+        $tagsCsv          = $form->has('tags') ? $form->get('tags')->getData() : null;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->toDo->update($toDo, $toDo->getUser(), $categoryId, $newCategoryName, $tagsCsv);
@@ -216,12 +229,12 @@ final class ToDoController extends AbstractController
     /**
      * Adds a collaborator to a ToDo by email (owner-only action).
      *
-     * @param Request $request
-     * @param ToDo    $toDo
+     * @param Request $request HTTP request with collaborator email.
+     * @param ToDo    $toDo    ToDo to add collaborator to.
      *
-     * @return Response
+     * @return Response Redirect back to edit page.
      */
-    #[Route('/{id}/collaborators/add', name: 'app_to_do_collaborator_add', methods: ['POST'])]
+    #[Route('/{id}/collaborators/add', name: 'app_to_do_collaborator_add', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function addCollaborator(Request $request, ToDo $toDo): Response
     {
         $currentUser = $this->getUser();
@@ -229,7 +242,6 @@ final class ToDoController extends AbstractController
 
         try {
             $this->toDo->addCollaboratorByEmail($toDo, $email, $currentUser);
-            $this->addFlash('success', 'Współpracownik dodany.');
         } catch (\InvalidArgumentException $e) {
             $this->addFlash('error', $e->getMessage());
         } catch (\LogicException $e) {
@@ -242,19 +254,18 @@ final class ToDoController extends AbstractController
     /**
      * Removes a collaborator from a ToDo (owner-only action).
      *
-     * @param ToDo $toDo
-     * @param int  $userId
+     * @param ToDo $toDo   ToDo to remove collaborator from.
+     * @param int  $userId user id of collaborator to remove.
      *
-     * @return Response
+     * @return Response Redirect back to edit page.
      */
-    #[Route('/{id}/collaborators/{userId}/remove', name: 'app_to_do_collaborator_remove', methods: ['POST'])]
+    #[Route('/{id}/collaborators/{userId}/remove', name: 'app_to_do_collaborator_remove', methods: ['POST'], requirements: ['id' => '\d+', 'userId' => '\d+'])]
     public function removeCollaborator(ToDo $toDo, int $userId): Response
     {
         $currentUser = $this->getUser();
 
         try {
             $this->toDo->removeCollaboratorById($toDo, $userId, $currentUser);
-            $this->addFlash('success', 'Współpracownik usunięty.');
         } catch (\LogicException $e) {
             throw $this->createAccessDeniedException($e->getMessage());
         }

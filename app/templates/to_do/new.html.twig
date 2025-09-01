@@ -1,20 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nowe zadanie{% endblock %}
+{% block title %}{{ 'todo.new.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Dodaj nowe zadanie</h1>
+        <h1>{{ 'todo.new.header'|trans }}</h1>
 
         {{ form_start(form) }}
+
+        {{ form_errors(form) }}
+
         {{ form_row(form.title) }}
         {{ form_row(form.content) }}
         {{ form_row(form.category) }}
         {{ form_row(form.newCategory) }}
         {{ form_row(form.tags) }}
         {{ form_row(form.isDone) }}
+        {{ form_row(form.save) }}
+
         {{ form_end(form) }}
     </div>
 
-    <p><a href="{{ path('app_to_do_index') }}">&larr; Wróć do listy zadań</a></p>
+    <p><a href="{{ path('app_to_do_index') }}">&larr; {{ 'todo.new.back_to_list'|trans }}</a></p>
 {% endblock %}

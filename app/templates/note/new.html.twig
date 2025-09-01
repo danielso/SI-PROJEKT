@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nowa Notatka{% endblock %}
+{% block title %}{{ 'title.note_new'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Dodaj nową notatkę</h1>
+    <h1>{{ 'note.add_heading'|trans }}</h1>
 
     {{ form_start(form) }}
 
@@ -13,10 +13,7 @@
     {{ form_row(form.newCategory) }}
     {{ form_row(form.tags) }}
 
-
     {{ form_end(form) }}
 
-    <a href="{{ path('note_index') }}">Wróć do listy notatek</a>
-
-
+    <a href="{{ path('note_index') }}">{{ 'action.back_to_notes'|trans }}</a>
 {% endblock %}

@@ -1,29 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Twoje notatki{% endblock %}
+{% block title %}{{ 'title.note_index'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Twoje notatki</h1>
+        <h1>{{ 'note.list_heading'|trans }}</h1>
 
         <div style="margin-bottom: 1rem;">
-            <a href="{{ path('home') }}" class="back-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">← Wróć do strony głównej</a>
-            <a href="{{ path('note_new') }}" class="add-button" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">➕ Dodaj nową notatkę</a>
-            <a href="{{ path('category_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">📁 Zarządzaj kategoriami</a>
-            <a href="{{ path('tag_index') }}" style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">🏷️ Zarządzaj tagami</a>
+            <a href="{{ path('home') }}" class="back-button"
+               style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">
+                {{ 'action.back_home'|trans }}
+            </a>
+            <a href="{{ path('note_new') }}" class="add-button"
+               style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">
+                {{ 'action.add_note'|trans }}
+            </a>
+            <a href="{{ path('category_index') }}"
+               style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">
+                {{ 'action.manage_categories'|trans }}
+            </a>
+            <a href="{{ path('tag_index') }}"
+               style="padding: 0.5rem 1rem; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none; margin-left: 1rem;">
+                {{ 'action.manage_tags'|trans }}
+            </a>
         </div>
 
         <form method="get" action="{{ path('note_index') }}" style="margin-bottom: 1rem;">
-            <label for="search">Wyszukaj notatki:</label>
-            <input type="text" id="search" name="search" value="{{ searchTerm }}" placeholder="Wpisz tytuł lub treść">
-            <button type="submit">Szukaj</button>
+            <label for="search">{{ 'label.search_notes'|trans }}</label>
+            <input type="text" id="search" name="search" value="{{ searchTerm }}" placeholder="{{ 'placeholder.search_notes'|trans }}">
+            <button type="submit">{{ 'action.search'|trans }}</button>
         </form>
 
-
         <form method="get" action="{{ path('note_index') }}" style="margin-bottom: 1rem;">
-            <label for="category">Filtruj według kategorii:</label>
+            <label for="category">{{ 'label.filter_by_category'|trans }}</label>
             <select name="category" id="category" onchange="this.form.submit()">
-                <option value="">Wszystkie</option>
+                <option value="">{{ 'label.all'|trans }}</option>
                 {% for category in categories %}
                     <option value="{{ category.id }}" {% if selectedCategory == category.id %}selected{% endif %}>{{ category.name }}</option>
                 {% endfor %}
@@ -31,9 +42,9 @@
         </form>
 
         <form method="get" action="{{ path('note_index') }}" style="margin-bottom: 1rem;">
-            <label for="tag">Filtruj według tagów:</label>
+            <label for="tag">{{ 'label.filter_by_tag'|trans }}</label>
             <select name="tag" id="tag" onchange="this.form.submit()">
-                <option value="">Wszystkie</option>
+                <option value="">{{ 'label.all'|trans }}</option>
                 {% for tag in tags %}
                     <option value="{{ tag.id }}" {% if selectedTag == tag.id %}selected{% endif %}>{{ tag.name }}</option>
                 {% endfor %}
@@ -41,7 +52,7 @@
         </form>
 
         {% if notes is empty %}
-            <p>Brak notatek.</p>
+            <p>{{ 'message.no_notes'|trans }}</p>
         {% else %}
             {% for note in notes %}
                 <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
@@ -50,10 +61,10 @@
                         <img src="{{ asset('uploads/images/' ~ note.image) }}" alt="{{ note.title }}" style="max-width: 100%; height: auto; border-radius: 5px;">
                     {% endif %}
                     <p>{{ note.content|markdown_to_html }}</p>
-                    <p>Kategoria: {{ note.category ? note.category.name : 'Brak' }}</p>
-                    <p>Tagi:
+                    <p>{{ 'label.category'|trans }}: {{ note.category ? note.category.name : ('label.none'|trans) }}</p>
+                    <p>{{ 'label.tags'|trans }}:
                         {% if note.tags is empty %}
-                            <em>Brak</em>
+                            <em>{{ 'label.none'|trans }}</em>
                         {% else %}
                             {% for tag in note.tags %}
                                 <span style="display: inline-block; background-color: #e0e0e0; padding: 0.2rem 0.5rem; margin-right: 0.3rem; border-radius: 5px;">
@@ -64,10 +75,14 @@
                     </p>
                     <small>{{ note.createdAt|date('Y-m-d H:i') }}</small>
                     <div style="margin-top: 10px;">
-                        <a href="{{ path('note_edit', { id: note.id }) }}">✏️ Edytuj</a>
-                        <form action="{{ path('note_delete', { id: note.id }) }}" method="post" style="display:inline;" onsubmit="return confirm('Czy na pewno chcesz usunąć notatkę?');">
+                        <a href="{{ path('note_edit', { id: note.id }) }}">{{ 'action.edit'|trans }}</a>
+                        <form action="{{ path('note_delete', { id: note.id }) }}"
+                              method="post"
+                              style="display:inline;"
+                              onsubmit="return confirm('{{ 'confirm.delete_note'|trans }}');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
-                            <button type="submit">🗑️ Usuń</button>
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit">{{ 'action.delete'|trans }}</button>
                         </form>
                     </div>
                 </div>

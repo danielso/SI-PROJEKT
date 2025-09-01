@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license MIT
  */
@@ -7,43 +8,59 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\NoteRepository;
+use App\Repository\ToDoRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
- * Service layer for user management (update, delete, admin count guard).
+ * Warstwa serwisowa zarządzania użytkownikami (update, delete, licznik adminów).
+ *
+ * Zasada: serwis nie używa bezpośrednio EntityManagera — zapis/usuń realizuje repozytorium.
  */
 final class UserService implements UserServiceInterface
 {
     /**
-     * UserService constructor.
-     *
-     * @param EntityManagerInterface      $em     Entity manager used for persistence.
-     * @param UserRepository              $users  Repository for User entities.
-     * @param UserPasswordHasherInterface $hasher Password hasher for secure password updates.
+     * @param UserRepository              $users  repozytorium
+     *                                            użytkowników
+     * @param NoteRepository              $notes  repozytorium notatek (do
+     *                                            liczników)
+     * @param ToDoRepository              $todos  repozytorium zadań (do
+     *                                            liczników)
+     * @param UserPasswordHasherInterface $hasher hasher
+     *                                            haseł
      */
-    public function __construct(private readonly EntityManagerInterface $em, private readonly UserRepository $users, private readonly UserPasswordHasherInterface $hasher)
+    public function __construct(private readonly UserRepository $users, private readonly NoteRepository $notes, private readonly ToDoRepository $todos, private readonly UserPasswordHasherInterface $hasher)
     {
     }
 
     /**
-     * Updates a user: guards last-admin demotion/block, optionally changes password and block flag.
+     * Zwraca listę wszystkich użytkowników.
      *
-     * @param User        $user             The user to update.
-     * @param bool        $wasAdmin         Whether the user had ROLE_ADMIN before the update.
-     * @param string|null $newPlainPassword Optional new plain password (hashed if provided).
-     * @param bool|null   $blocked          Optional new blocked flag (if entity supports it).
+     * @return User[]
+     */
+    public function listAll(): array
+    {
+        return $this->users->findAll();
+    }
+
+    /**
+     * Aktualizuje dane użytkownika (roles/blocked/hasło) z ochroną ostatniego administratora.
+     *
+     * @param User        $user             aktualizowany użytkownik
+     * @param bool        $wasAdmin         czy przed zmianą był adminem
+     * @param string|null $newPlainPassword nowe hasło w postaci jawnej (opcjonalnie)
+     * @param bool|null   $blocked          czy zablokować użytkownika (opcjonalnie)
      *
      * @return void
      *
-     * @throws \LogicException When attempting to demote or block the last administrator.
+     * @throws \LogicException gdy próba odebrania uprawnień lub zablokowania ostatniego administratora
      */
     public function update(User $user, bool $wasAdmin, ?string $newPlainPassword = null, ?bool $blocked = null): void
     {
         $isAdminNow = $user->hasRole('ROLE_ADMIN');
 
         if ($wasAdmin && !$isAdminNow && $this->countAdmins() <= 1) {
-            $roles = $user->getRoles();
+            $roles   = $user->getRoles();
             $roles[] = 'ROLE_ADMIN';
             $user->setRoles(array_values(array_unique($roles)));
             throw new \LogicException('Nie można odebrać uprawnień ostatniemu administratorowi.');
@@ -61,17 +78,17 @@ final class UserService implements UserServiceInterface
             $user->setBlocked($blocked);
         }
 
-        $this->em->flush();
+        $this->users->save($user, true);
     }
 
     /**
-     * Deletes a user after checking last-admin guard.
+     * Usuwa użytkownika po weryfikacji ograniczeń (ostatni admin, posiadane dane).
      *
-     * @param User $user The user to delete.
+     * @param User $user użytkownik do usunięcia
      *
      * @return void
      *
-     * @throws \LogicException When attempting to delete the last administrator.
+     * @throws \LogicException gdy to ostatni administrator lub gdy posiada notatki/zadania
      */
     public function delete(User $user): void
     {
@@ -79,14 +96,19 @@ final class UserService implements UserServiceInterface
             throw new \LogicException('Nie można usunąć ostatniego administratora.');
         }
 
-        $this->em->remove($user);
-        $this->em->flush();
+        $noteCount = $this->notes->count(['user' => $user]);
+        $todoCount = $this->todos->count(['user' => $user]);
+        if ($noteCount > 0 || $todoCount > 0) {
+            throw new \LogicException('Nie można usunąć użytkownika posiadającego notatki lub zadania.');
+        }
+
+        $this->users->remove($user, true);
     }
 
     /**
-     * Counts administrators (users that have ROLE_ADMIN in their roles).
+     * Zwraca liczbę użytkowników z rolą ROLE_ADMIN.
      *
-     * @return int Number of admin users.
+     * @return int
      */
     public function countAdmins(): int
     {
