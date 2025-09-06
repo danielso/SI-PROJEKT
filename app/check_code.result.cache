@@ -1,13 +1,9 @@
-   1) src/Controller/ProfileController.php (fully_qualified_strict_types)
-   2) src/Controller/TagController.php (fully_qualified_strict_types, phpdoc_align)
-   3) src/Entity/Tag.php (fully_qualified_strict_types, no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_trim)
-   4) src/Entity/ToDo.php (fully_qualified_strict_types, no_superfluous_phpdoc_tags, phpdoc_trim)
-   5) src/Service/CategoryService.php (no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_separation, phpdoc_trim)
-   6) src/Service/NoteService.php (fully_qualified_strict_types)
-   7) src/Service/NoteServiceInterface.php (fully_qualified_strict_types)
-   8) src/Service/TagService.php (no_superfluous_phpdoc_tags, phpdoc_summary, phpdoc_separation, phpdoc_trim)
+   1) src/Entity/ToDo.php (no_superfluous_phpdoc_tags, phpdoc_trim)
+   2) src/Service/CategoryService.php (no_superfluous_phpdoc_tags, phpdoc_separation)
+   3) src/Service/NoteService.php (no_superfluous_phpdoc_tags, phpdoc_trim)
+   4) src/Service/TagService.php (no_superfluous_phpdoc_tags, phpdoc_trim)
 
-Found 8 of 53 files that can be fixed in 2.073 seconds, 18.00 MB memory used
+Found 4 of 53 files that can be fixed in 1.941 seconds, 18.00 MB memory used
  ------- -------- ---- ---------------------- 
   State   Domain   Id   Message Preview (en)  
  ------- -------- ---- ---------------------- 
@@ -17,7 +13,7 @@ Found 8 of 53 files that can be fixed in 2.073 seconds, 18.00 MB memory used
  ------- -------- ---- ---------------------- ------------------------------- 
 
 [notice] Migrating up to DoctrineMigrations\Version20250905153329
-[notice] finished in 4311.3ms, used 24M memory, 10 migrations executed, 32 sql queries
+[notice] finished in 3892.4ms, used 24M memory, 10 migrations executed, 32 sql queries
 
  [OK] Successfully migrated to version: DoctrineMigrations\Version20250905153329                                        
 
