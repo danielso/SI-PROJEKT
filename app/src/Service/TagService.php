@@ -11,12 +11,12 @@ use App\Entity\User;
 use App\Repository\TagRepository;
 
 /**
- * Service layer for Tag domain operations (listing with counters, CRUD, simple lookups)
+ * Service layer for Tag domain operations (listing with counters, CRUD, simple lookups).
  */
 final class TagService implements TagServiceInterface
 {
     /**
-     * TagService constructor
+     * TagService constructor.
      *
      * @param TagRepository $tags Repository for Tag entities
      */
@@ -25,11 +25,11 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Returns all tags with usage counters (todoCount, noteCount) for a given user
+     * Returns all tags with usage counters (todoCount, noteCount) for a given user.
      *
      * @param User $user User for whom counters are calculated
      *
-     * @return array<int, array{0: Tag, todoCount: int|string, noteCount: int|string}>
+     * @return array<int, array{0: Tag, todoCount: int|string, noteCount: int|string}> List of tags with counters
      */
     public function getAllWithCountsForUser(User $user): array
     {
@@ -37,19 +37,19 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Creates a new tag (validates name and uniqueness)
+     * Creates a new tag (validates name and uniqueness).
      *
      * @param Tag $tag Tag to create
      *
-     * @return Tag
+     * @return Tag Created tag
      *
-     * @throws \InvalidArgumentException when name is empty or tag already exists
+     * @throws \InvalidArgumentException When name is empty or tag already exists
      */
     public function create(Tag $tag): Tag
     {
         $name = trim((string) $tag->getName());
         if ('' === $name) {
-            throw new \InvalidArgumentException('Nazwa tagu nie może być pusta.');
+            throw new \InvalidArgumentException();
         }
 
         if ($this->findOneByName($name)) {
@@ -63,19 +63,19 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Updates an existing tag (validates name and uniqueness across other tags)
+     * Updates an existing tag (validates name and uniqueness across other tags).
      *
      * @param Tag $tag Tag to update
      *
-     * @return Tag
+     * @return Tag Updated tag
      *
-     * @throws \InvalidArgumentException when name is empty or would collide with another tag
+     * @throws \InvalidArgumentException When name is empty or would collide with another tag
      */
     public function update(Tag $tag): Tag
     {
         $name = trim((string) $tag->getName());
         if ('' === $name) {
-            throw new \InvalidArgumentException('Nazwa tagu nie może być pusta.');
+            throw new \InvalidArgumentException();
         }
 
         $existing = $this->findOneByName($name);
@@ -90,9 +90,11 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Deletes a tag
+     * Deletes a tag.
      *
      * @param Tag $tag Tag to delete
+     *
+     * @return void
      */
     public function delete(Tag $tag): void
     {
@@ -100,11 +102,11 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Finds a tag by its name
+     * Finds a tag by its name.
      *
      * @param string $name Tag name to search for
      *
-     * @return Tag|null
+     * @return Tag|null The tag if found, otherwise null
      */
     public function findOneByName(string $name): ?Tag
     {

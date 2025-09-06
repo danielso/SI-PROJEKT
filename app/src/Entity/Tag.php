@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Entity representing a tag that can be attached to notes or to-dos
+ * Entity representing a tag that can be attached to notes or to-dos.
  */
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(
@@ -37,9 +37,9 @@ class Tag
     private ?User $user = null;
 
     /**
-     * Returns the owner user of this tag (if any)
+     * Returns the owner user of this tag (if any).
      *
-     * @return \App\Entity\User|null owner user or null when not assigned
+     * @return User|null Owner user or null when not assigned
      */
     public function getUser(): ?User
     {
@@ -47,11 +47,11 @@ class Tag
     }
 
     /**
-     * Sets (or unsets) the owner user of this tag
+     * Sets (or unsets) the owner user of this tag.
      *
-     * @param \App\Entity\User|null $user owner user or null to unassign
+     * @param User|null $user Owner user or null to unassign
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setUser(?User $user): self
     {
@@ -61,9 +61,9 @@ class Tag
     }
 
     /**
-     * Gets the ID of the tag
+     * Gets the ID of the tag.
      *
-     * @return int|null the tag ID
+     * @return int|null The tag ID
      */
     public function getId(): ?int
     {
@@ -71,9 +71,9 @@ class Tag
     }
 
     /**
-     * Gets the name of the tag
+     * Gets the name of the tag.
      *
-     * @return string|null the tag name
+     * @return string|null The tag name
      */
     public function getName(): ?string
     {
@@ -81,11 +81,11 @@ class Tag
     }
 
     /**
-     * Sets the name of the tag
+     * Sets the name of the tag.
      *
-     * @param string $name the tag name
+     * @param string $name The tag name
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setName(string $name): self
     {

@@ -14,12 +14,12 @@ use App\Repository\ToDoRepository;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Warstwa serwisowa dla kategorii (CRUD, listy z licznikami)
+ * Warstwa serwisowa dla kategorii (CRUD, listy z licznikami).
  */
 final class CategoryService implements CategoryServiceInterface
 {
     /**
-     * Konstruktor
+     * Konstruktor.
      *
      * @param CategoryRepository $categoryRepository Repozytorium kategorii
      * @param NoteRepository     $noteRepository     Repozytorium notatek
@@ -30,11 +30,11 @@ final class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Zwraca kategorie użytkownika wraz z licznikami
+     * Zwraca kategorie użytkownika wraz z licznikami.
      *
      * @param User $user Właściciel kategorii
      *
-     * @return array<int, array{0: Category, todoCount: int|string, noteCount: int|string}>
+     * @return array<int, array{0: Category, todoCount: int|string, noteCount: int|string}> Lista kategorii z licznikami
      */
     public function getListForUserWithCounts(User $user): array
     {
@@ -42,12 +42,12 @@ final class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Tworzy nową kategorię dla wskazanego użytkownika
+     * Tworzy nową kategorię dla wskazanego użytkownika.
      *
      * @param Category $category Kategoria do utworzenia
      * @param User     $user     Właściciel do przypisania
      *
-     * @return Category
+     * @return Category Utworzona kategoria
      */
     public function create(Category $category, User $user): Category
     {
@@ -58,14 +58,14 @@ final class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Aktualizuje kategorię po weryfikacji własności
+     * Aktualizuje kategorię po weryfikacji własności.
      *
      * @param Category $category Kategoria do aktualizacji
      * @param User     $user     Użytkownik wykonujący operację
      *
-     * @return Category
+     * @return Category Zaktualizowana kategoria
      *
-     * @throws AccessDeniedException gdy użytkownik nie jest właścicielem
+     * @throws AccessDeniedException Gdy użytkownik nie jest właścicielem
      */
     public function update(Category $category, User $user): Category
     {
@@ -76,12 +76,14 @@ final class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Usuwa kategorię po weryfikacji własności
+     * Usuwa kategorię po weryfikacji własności.
      *
      * @param Category $category Kategoria do usunięcia
      * @param User     $user     Użytkownik wykonujący operację
      *
-     * @throws AccessDeniedException gdy użytkownik nie jest właścicielem
+     * @return void
+     *
+     * @throws AccessDeniedException Gdy użytkownik nie jest właścicielem
      */
     public function delete(Category $category, User $user): void
     {
@@ -90,11 +92,11 @@ final class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Określa, czy kategorię można usunąć
+     * Określa, czy kategorię można usunąć.
      *
-     * @param Category $category Kategoria
+     * @param Category $category Kategoria do sprawdzenia
      *
-     * @return bool
+     * @return bool True, jeśli nie ma powiązanych notatek ani zadań
      */
     public function canBeDeleted(Category $category): bool
     {
@@ -105,12 +107,14 @@ final class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Weryfikuje, czy użytkownik jest właścicielem kategorii
+     * Weryfikuje, czy użytkownik jest właścicielem kategorii.
      *
      * @param Category $category Kategoria do sprawdzenia
      * @param User     $user     Sprawdzany użytkownik
      *
-     * @throws AccessDeniedException gdy użytkownik nie jest właścicielem
+     * @return void
+     *
+     * @throws AccessDeniedException Gdy użytkownik nie jest właścicielem
      */
     private function assertOwner(Category $category, User $user): void
     {

@@ -8,6 +8,7 @@ namespace App\Service;
 
 use App\Entity\Category;
 use App\Entity\Note;
+use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -81,9 +82,9 @@ interface NoteServiceInterface
     /**
      * Lists tags belonging to the given user (sorted by name).
      *
-     * @param \App\Entity\User $owner owner of tags
+     * @param User $owner Owner of tags
      *
-     * @return array<int, \App\Entity\Tag> user's tags
+     * @return array<int, Tag> User's tags
      */
     public function listTagsForUser(User $owner): array;
 }
