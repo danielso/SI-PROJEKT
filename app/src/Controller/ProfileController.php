@@ -6,6 +6,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\AdminPasswordChangeType;
 use App\Form\AdminProfileFullType;
 use App\Service\ProfileServiceInterface;
@@ -23,7 +24,7 @@ class ProfileController extends AbstractController
     /**
      * ProfileController constructor.
      *
-     * @param \App\Service\ProfileServiceInterface $profile service handling profile operations
+     * @param ProfileServiceInterface $profile Service handling profile operations
      */
     public function __construct(private readonly ProfileServiceInterface $profile)
     {
@@ -34,9 +35,9 @@ class ProfileController extends AbstractController
      *
      * Requires ROLE_USER.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Request $request HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response Rendered edit form or redirect on success
+     * @return Response Rendered edit form or redirect on success
      */
     #[IsGranted('ROLE_USER')]
     #[Route('/profile/edit', name: 'profile_edit')]
@@ -65,9 +66,9 @@ class ProfileController extends AbstractController
      *
      * Requires ROLE_ADMIN.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Request $request HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response Rendered password form or redirect on success
+     * @return Response Rendered password form or redirect on success
      */
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/change-password', name: 'admin_change_password')]

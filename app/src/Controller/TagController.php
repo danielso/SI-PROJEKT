@@ -7,6 +7,7 @@
 namespace App\Controller;
 
 use App\Entity\Tag;
+use App\Entity\User;
 use App\Form\TagFormType;
 use App\Security\Voter\TagVoter;
 use App\Service\TagServiceInterface;
@@ -26,7 +27,7 @@ class TagController extends AbstractController
     /**
      * TagController constructor.
      *
-     * @param \App\Service\TagServiceInterface $tags service handling tag operations
+     * @param TagServiceInterface $tags Service handling tag operations
      */
     public function __construct(private readonly TagServiceInterface $tags)
     {
@@ -35,12 +36,12 @@ class TagController extends AbstractController
     /**
      * Displays a list of all tags with usage counts for the current user.
      *
-     * @return \Symfony\Component\HttpFoundation\Response Rendered list page
+     * @return Response Rendered list page
      */
     #[Route('/', name: 'tag_index', methods: ['GET'])]
     public function index(): Response
     {
-        /** @var \App\Entity\User|null $user */
+        /** @var User|null $user */
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
@@ -56,9 +57,9 @@ class TagController extends AbstractController
     /**
      * Creates a new tag.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request with form data
+     * @param Request $request HTTP request with form data
      *
-     * @return \Symfony\Component\HttpFoundation\Response Rendered create form or redirect on success
+     * @return Response Rendered create form or redirect on success
      */
     #[Route('/new', name: 'tag_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -85,10 +86,10 @@ class TagController extends AbstractController
     /**
      * Edits an existing tag.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request with form data
-     * @param \App\Entity\Tag                           $tag     tag being edited
+     * @param Request $request HTTP request with form data
+     * @param Tag     $tag     Tag being edited
      *
-     * @return \Symfony\Component\HttpFoundation\Response Rendered edit form or redirect on success
+     * @return Response Rendered edit form or redirect on success
      */
     #[Route('/{id}/edit', name: 'tag_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tag $tag): Response
@@ -117,11 +118,11 @@ class TagController extends AbstractController
     /**
      * Deletes a tag after CSRF validation.
      *
-     * @param \Symfony\Component\HttpFoundation\Request          $request    HTTP request with CSRF token
-     * @param \App\Entity\Tag                                    $tag        tag being deleted
-     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator translator for flash messages
+     * @param Request             $request    HTTP request with CSRF token
+     * @param Tag                 $tag        Tag being deleted
+     * @param TranslatorInterface $translator Translator for flash messages
      *
-     * @return \Symfony\Component\HttpFoundation\Response Redirect to index after deletion
+     * @return Response Redirect to index after deletion
      */
     #[Route('/{id}/delete', name: 'tag_delete', methods: ['GET', 'DELETE'], requirements: ['id' => '[1-9]\d*'])]
     public function delete(Request $request, Tag $tag, TranslatorInterface $translator): Response

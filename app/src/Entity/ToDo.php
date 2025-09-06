@@ -111,7 +111,7 @@ class ToDo
      *
      * @param string|null $shareToken Token udostępniania
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setShareToken(?string $shareToken): self
     {
@@ -123,7 +123,7 @@ class ToDo
     /**
      * Zwraca właściciela zadania.
      *
-     * @return \App\Entity\User|null Właściciel lub null
+     * @return User|null Właściciel lub null
      */
     public function getUser(): ?User
     {
@@ -133,9 +133,9 @@ class ToDo
     /**
      * Ustawia właściciela zadania.
      *
-     * @param \App\Entity\User $user Użytkownik będący właścicielem
+     * @param User $user Użytkownik będący właścicielem
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setUser(User $user): static
     {
@@ -169,7 +169,7 @@ class ToDo
      *
      * @param string $content Treść
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setContent(string $content): static
     {
@@ -193,7 +193,7 @@ class ToDo
      *
      * @param bool $isDone Flaga ukończenia
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setIsDone(bool $isDone): static
     {
@@ -217,7 +217,7 @@ class ToDo
      *
      * @param string $title Tytuł
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setTitle(string $title): static
     {
@@ -241,7 +241,7 @@ class ToDo
      *
      * @param \DateTimeImmutable $createdAt Data utworzenia
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
@@ -265,7 +265,7 @@ class ToDo
      *
      * @param \DateTimeImmutable|null $updatedAt Data aktualizacji
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
@@ -277,7 +277,7 @@ class ToDo
     /**
      * Zwraca kategorię zadania.
      *
-     * @return \App\Entity\Category|null Kategoria
+     * @return Category|null Kategoria
      */
     public function getCategory(): ?Category
     {
@@ -287,9 +287,9 @@ class ToDo
     /**
      * Ustawia kategorię zadania.
      *
-     * @param \App\Entity\Category|null $category Kategoria
+     * @param Category|null $category Kategoria
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setCategory(?Category $category): static
     {
@@ -301,7 +301,7 @@ class ToDo
     /**
      * Zwraca tagi przypisane do zadania.
      *
-     * @return \Doctrine\Common\Collections\Collection<int, \App\Entity\Tag> Kolekcja tagów
+     * @return Collection<int, Tag> Kolekcja tagów
      */
     public function getTags(): Collection
     {
@@ -311,9 +311,9 @@ class ToDo
     /**
      * Ustawia pełną kolekcję tagów.
      *
-     * @param \Doctrine\Common\Collections\Collection<int, \App\Entity\Tag> $tags Kolekcja tagów
+     * @param Collection<int, Tag> $tags Kolekcja tagów
      *
-     * @return self
+     * @return self Fluent interface
      */
     public function setTags(Collection $tags): static
     {
@@ -325,7 +325,7 @@ class ToDo
     /**
      * Dodaje tag do zadania.
      *
-     * @param \App\Entity\Tag $tag Tag do dodania
+     * @param Tag $tag Tag do dodania
      *
      * @return self
      */
@@ -341,7 +341,7 @@ class ToDo
     /**
      * Usuwa tag z zadania.
      *
-     * @param \App\Entity\Tag $tag Tag do usunięcia
+     * @param Tag $tag Tag do usunięcia
      *
      * @return self
      */
@@ -355,7 +355,7 @@ class ToDo
     /**
      * Zwraca współpracowników przypisanych do zadania.
      *
-     * @return \Doctrine\Common\Collections\Collection<int, \App\Entity\User> Kolekcja użytkowników
+     * @return Collection<int, User>
      */
     public function getCollaborators(): Collection
     {
@@ -365,7 +365,7 @@ class ToDo
     /**
      * Dodaje współpracownika do zadania.
      *
-     * @param \App\Entity\User $user Współpracownik do dodania
+     * @param User $user Współpracownik do dodania
      *
      * @return self
      */
@@ -381,7 +381,7 @@ class ToDo
     /**
      * Usuwa współpracownika z zadania.
      *
-     * @param \App\Entity\User $user Współpracownik do usunięcia
+     * @param User $user Współpracownik do usunięcia
      *
      * @return self
      */
@@ -395,7 +395,7 @@ class ToDo
     /**
      * Sprawdza, czy podany użytkownik jest współpracownikiem tego zadania.
      *
-     * @param \App\Entity\User $user Użytkownik do sprawdzenia
+     * @param User $user Użytkownik do sprawdzenia
      *
      * @return bool True, jeśli jest współpracownikiem
      */

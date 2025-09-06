@@ -9,7 +9,7 @@
         {{ form_start(form) }}
 
         {{ form_errors(form) }}
-        {{ form_row(form.name, {'label': 'category.form.name'|trans}) }}
+        {{ form_row(form.name) }}
 
         <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
         <a href="{{ path('category_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans }}</a>

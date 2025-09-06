@@ -88,7 +88,7 @@ final class NoteService implements NoteServiceInterface
      */
     public function create(Note $note, User $owner, ?string $categoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $note->setUser($owner);
         $note->setCreatedAt($now);
         $note->setUpdatedAt($now);
@@ -114,7 +114,7 @@ final class NoteService implements NoteServiceInterface
      */
     public function update(Note $note, ?string $categoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note
     {
-        $note->setUpdatedAt(new \DateTimeImmutable());
+        $note->setUpdatedAt(new DateTimeImmutable());
 
         $this->applyCategoryByName($note, $note->getUser(), $categoryName);
         $this->applyTags($note, $tagsCsv);
@@ -141,9 +141,9 @@ final class NoteService implements NoteServiceInterface
     /**
      * Zwraca tagi użytkownika (posortowane po nazwie).
      *
-     * @param \App\Entity\User $owner właściciel tagów
+     * @param User $owner właściciel tagów
      *
-     * @return array<int, \App\Entity\Tag> lista tagów użytkownika
+     * @return array<int, Tag> lista tagów użytkownika
      */
     public function listTagsForUser(User $owner): array
     {
@@ -156,6 +156,8 @@ final class NoteService implements NoteServiceInterface
      * @param Note        $note         Notatka do modyfikacji
      * @param User        $owner        Właściciel notatki
      * @param string|null $categoryName Nazwa kategorii lub null
+     *
+     * @return void
      */
     private function applyCategoryByName(Note $note, User $owner, ?string $categoryName): void
     {
