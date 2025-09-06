@@ -38,9 +38,8 @@ final class RegisterService implements RegisterServiceInterface
      */
     public function register(User $user, string $plainPassword, array $roles = ['ROLE_USER']): User
     {
-        $plainPassword = trim($plainPassword);
         if ('' === $plainPassword) {
-            throw new \InvalidArgumentException('Hasło nie może być puste.');
+            throw new \InvalidArgumentException();
         }
 
         $user->setPassword($this->hasher->hashPassword($user, $plainPassword));

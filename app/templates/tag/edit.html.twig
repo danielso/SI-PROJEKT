@@ -8,17 +8,18 @@
 
         {{ form_start(form) }}
 
-        <div class="form-group">
-            {{ form_label(form.name, 'label.tag.name'|trans) }}
-            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form) }}
+
+        <div class="mb-3">
+            {{ form_row(form.name) }}
         </div>
 
-        <div class="form-group">
+        <div class="d-flex gap-2 mt-2">
             <button type="submit" class="btn btn-success">{{ 'action.save_changes'|trans }}</button>
+            <a href="{{ path('tag_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans }}</a>
         </div>
-
-        <a href="{{ path('tag_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans }}</a>
 
         {{ form_end(form) }}
     </div>
+
 {% endblock %}

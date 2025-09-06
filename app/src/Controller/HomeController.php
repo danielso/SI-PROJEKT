@@ -21,7 +21,7 @@ class HomeController extends AbstractController
     /**
      * Displays the home page and checks if the logged-in user is an administrator.
      *
-     * @return Response Rendered home page.
+     * @return Response Rendered home page
      */
     #[Route('/', name: 'home')]
     public function index(): Response

@@ -57,11 +57,17 @@
             {% for note in notes %}
                 <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
                     <h3>{{ note.title }}</h3>
+
                     {% if note.image %}
                         <img src="{{ asset('uploads/images/' ~ note.image) }}" alt="{{ note.title }}" style="max-width: 100%; height: auto; border-radius: 5px;">
                     {% endif %}
+
                     <p>{{ note.content|markdown_to_html }}</p>
-                    <p>{{ 'label.category'|trans }}: {{ note.category ? note.category.name : ('label.none'|trans) }}</p>
+
+                    <p>{{ 'label.category'|trans }}:
+                        {{ note.category ? note.category.name : ('label.none'|trans) }}
+                    </p>
+
                     <p>{{ 'label.tags'|trans }}:
                         {% if note.tags is empty %}
                             <em>{{ 'label.none'|trans }}</em>
@@ -73,17 +79,17 @@
                             {% endfor %}
                         {% endif %}
                     </p>
-                    <small>{{ note.createdAt|date('Y-m-d H:i') }}</small>
+
+                    <small>
+                        {{ note.createdAt ? note.createdAt|format_datetime('long', 'short') : '' }}
+                    </small>
+
                     <div style="margin-top: 10px;">
                         <a href="{{ path('note_edit', { id: note.id }) }}">{{ 'action.edit'|trans }}</a>
-                        <form action="{{ path('note_delete', { id: note.id }) }}"
-                              method="post"
-                              style="display:inline;"
-                              onsubmit="return confirm('{{ 'confirm.delete_note'|trans }}');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit">{{ 'action.delete'|trans }}</button>
-                        </form>
+                        {# Bez confirm(), przejście do strony potwierdzenia (GET) #}
+                        <a href="{{ path('note_delete', { id: note.id }) }}" style="margin-left:.5rem;">
+                            {{ 'action.delete'|trans }}
+                        </a>
                     </div>
                 </div>
             {% endfor %}

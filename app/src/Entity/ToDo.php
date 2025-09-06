@@ -6,12 +6,15 @@
 
 namespace App\Entity;
 
+use App\Repository\ToDoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Repository\ToDoRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Reprezentuje zadanie to-do, które może mieć kategorię, tagi i współpracowników.
+ */
 #[ORM\Entity(repositoryClass: ToDoRepository::class)]
 #[ORM\Table(
     name: 'to_do',
@@ -21,11 +24,6 @@ use Doctrine\ORM\Mapping as ORM;
         new ORM\Index(name: 'idx_todo_updated', columns: ['updated_at']),
     ]
 )]
-/**
- * Class ToDo.
- *
- * Represents a to-do task, which can be categorized and tagged, and associated with a user.
- */
 class ToDo
 {
     #[ORM\Id]
@@ -90,9 +88,7 @@ class ToDo
     private Collection $collaborators;
 
     /**
-     * ToDo constructor.
-     *
-     * Initializes collection properties for tags and collaborators.
+     * Inicjalizuje kolekcje tagów i współpracowników.
      */
     public function __construct()
     {
@@ -101,9 +97,9 @@ class ToDo
     }
 
     /**
-     * Gets the share token of the to-do task.
+     * Zwraca token udostępniania zadania.
      *
-     * @return string|null the share token
+     * @return string|null Token udostępniania lub null
      */
     public function getShareToken(): ?string
     {
@@ -111,9 +107,9 @@ class ToDo
     }
 
     /**
-     * Sets the share token of the to-do task.
+     * Ustawia token udostępniania zadania.
      *
-     * @param string|null $shareToken the share token
+     * @param string|null $shareToken Token udostępniania
      *
      * @return self
      */
@@ -125,9 +121,9 @@ class ToDo
     }
 
     /**
-     * Gets the user associated with the to-do task.
+     * Zwraca właściciela zadania.
      *
-     * @return User|null the user
+     * @return \App\Entity\User|null Właściciel lub null
      */
     public function getUser(): ?User
     {
@@ -135,9 +131,9 @@ class ToDo
     }
 
     /**
-     * Sets the user for the to-do task.
+     * Ustawia właściciela zadania.
      *
-     * @param User $user the user
+     * @param \App\Entity\User $user Użytkownik będący właścicielem
      *
      * @return self
      */
@@ -149,9 +145,9 @@ class ToDo
     }
 
     /**
-     * Gets the ID of the to-do task.
+     * Zwraca identyfikator zadania.
      *
-     * @return int|null the ID
+     * @return int|null Identyfikator zadania
      */
     public function getId(): ?int
     {
@@ -159,9 +155,9 @@ class ToDo
     }
 
     /**
-     * Gets the content of the to-do task.
+     * Zwraca treść zadania.
      *
-     * @return string|null the content
+     * @return string|null Treść zadania
      */
     public function getContent(): ?string
     {
@@ -169,9 +165,9 @@ class ToDo
     }
 
     /**
-     * Sets the content of the to-do task.
+     * Ustawia treść zadania.
      *
-     * @param string $content the content
+     * @param string $content Treść
      *
      * @return self
      */
@@ -183,9 +179,9 @@ class ToDo
     }
 
     /**
-     * Checks if the to-do task is done.
+     * Sprawdza, czy zadanie jest ukończone.
      *
-     * @return bool|null the status of the task
+     * @return bool|null Flaga ukończenia
      */
     public function isDone(): ?bool
     {
@@ -193,9 +189,9 @@ class ToDo
     }
 
     /**
-     * Sets the status of the to-do task.
+     * Ustawia status ukończenia zadania.
      *
-     * @param bool $isDone the status
+     * @param bool $isDone Flaga ukończenia
      *
      * @return self
      */
@@ -207,9 +203,9 @@ class ToDo
     }
 
     /**
-     * Gets the title of the to-do task.
+     * Zwraca tytuł zadania.
      *
-     * @return string|null the title
+     * @return string|null Tytuł
      */
     public function getTitle(): ?string
     {
@@ -217,9 +213,9 @@ class ToDo
     }
 
     /**
-     * Sets the title of the to-do task.
+     * Ustawia tytuł zadania.
      *
-     * @param string $title the title
+     * @param string $title Tytuł
      *
      * @return self
      */
@@ -231,9 +227,9 @@ class ToDo
     }
 
     /**
-     * Gets the creation date of the to-do task.
+     * Zwraca datę utworzenia.
      *
-     * @return \DateTimeImmutable|null the creation date
+     * @return \DateTimeImmutable|null Data utworzenia
      */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -241,9 +237,9 @@ class ToDo
     }
 
     /**
-     * Sets the creation date of the to-do task.
+     * Ustawia datę utworzenia.
      *
-     * @param \DateTimeImmutable $createdAt the creation date
+     * @param \DateTimeImmutable $createdAt Data utworzenia
      *
      * @return self
      */
@@ -255,9 +251,9 @@ class ToDo
     }
 
     /**
-     * Gets the last updated date of the to-do task.
+     * Zwraca datę ostatniej aktualizacji.
      *
-     * @return \DateTimeImmutable|null the updated date
+     * @return \DateTimeImmutable|null Data aktualizacji
      */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
@@ -265,9 +261,9 @@ class ToDo
     }
 
     /**
-     * Sets the last updated date of the to-do task.
+     * Ustawia datę ostatniej aktualizacji.
      *
-     * @param \DateTimeImmutable|null $updatedAt the updated date
+     * @param \DateTimeImmutable|null $updatedAt Data aktualizacji
      *
      * @return self
      */
@@ -279,9 +275,9 @@ class ToDo
     }
 
     /**
-     * Gets the category of the to-do task.
+     * Zwraca kategorię zadania.
      *
-     * @return Category|null the category
+     * @return \App\Entity\Category|null Kategoria
      */
     public function getCategory(): ?Category
     {
@@ -289,9 +285,9 @@ class ToDo
     }
 
     /**
-     * Sets the category of the to-do task.
+     * Ustawia kategorię zadania.
      *
-     * @param Category|null $category the category
+     * @param \App\Entity\Category|null $category Kategoria
      *
      * @return self
      */
@@ -303,9 +299,9 @@ class ToDo
     }
 
     /**
-     * Gets the tags associated with the to-do task.
+     * Zwraca tagi przypisane do zadania.
      *
-     * @return Collection the collection of tags
+     * @return \Doctrine\Common\Collections\Collection<int, \App\Entity\Tag> Kolekcja tagów
      */
     public function getTags(): Collection
     {
@@ -313,9 +309,9 @@ class ToDo
     }
 
     /**
-     * Sets the tags associated with the to-do task.
+     * Ustawia pełną kolekcję tagów.
      *
-     * @param Collection $tags the collection of tags
+     * @param \Doctrine\Common\Collections\Collection<int, \App\Entity\Tag> $tags Kolekcja tagów
      *
      * @return self
      */
@@ -327,9 +323,9 @@ class ToDo
     }
 
     /**
-     * Adds a tag to the to-do task.
+     * Dodaje tag do zadania.
      *
-     * @param Tag $tag the tag to add
+     * @param \App\Entity\Tag $tag Tag do dodania
      *
      * @return self
      */
@@ -343,9 +339,9 @@ class ToDo
     }
 
     /**
-     * Removes a tag from the to-do task.
+     * Usuwa tag z zadania.
      *
-     * @param Tag $tag the tag to remove
+     * @param \App\Entity\Tag $tag Tag do usunięcia
      *
      * @return self
      */
@@ -357,9 +353,9 @@ class ToDo
     }
 
     /**
-     * Returns the collection of collaborators (users) assigned to this task.
+     * Zwraca współpracowników przypisanych do zadania.
      *
-     * @return Collection<int, User>
+     * @return \Doctrine\Common\Collections\Collection<int, \App\Entity\User> Kolekcja użytkowników
      */
     public function getCollaborators(): Collection
     {
@@ -367,9 +363,9 @@ class ToDo
     }
 
     /**
-     * Adds a collaborator to this to-do.
+     * Dodaje współpracownika do zadania.
      *
-     * @param User $user the user to add as a collaborator
+     * @param \App\Entity\User $user Współpracownik do dodania
      *
      * @return self
      */
@@ -383,9 +379,9 @@ class ToDo
     }
 
     /**
-     * Removes a collaborator from this to-do.
+     * Usuwa współpracownika z zadania.
      *
-     * @param User $user the user to remove from collaborators
+     * @param \App\Entity\User $user Współpracownik do usunięcia
      *
      * @return self
      */
@@ -397,11 +393,11 @@ class ToDo
     }
 
     /**
-     * Checks whether the given user is a collaborator of this to-do.
+     * Sprawdza, czy podany użytkownik jest współpracownikiem tego zadania.
      *
-     * @param User $user the user to check
+     * @param \App\Entity\User $user Użytkownik do sprawdzenia
      *
-     * @return bool true if the user is a collaborator, false otherwise
+     * @return bool True, jeśli jest współpracownikiem
      */
     public function isCollaborator(User $user): bool
     {

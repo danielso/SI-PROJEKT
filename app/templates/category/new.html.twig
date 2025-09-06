@@ -8,15 +8,10 @@
 
         {{ form_start(form) }}
 
-        <div class="form-group">
-            {{ form_label(form.name) }}
-            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-        </div>
+        {{ form_errors(form) }}
+        {{ form_row(form.name, {'label': 'category.form.name'|trans}) }}
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
-        </div>
-
+        <button type="submit" class="btn btn-primary">{{ 'action.save'|trans }}</button>
         <a href="{{ path('category_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans }}</a>
 
         {{ form_end(form) }}

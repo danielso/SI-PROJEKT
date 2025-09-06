@@ -20,7 +20,7 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Constructor.
      *
-     * @param ManagerRegistry $registry manager registry.
+     * @param ManagerRegistry $registry manager registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -30,10 +30,10 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Builds a query listing notes for the given user with optional filters.
      *
-     * @param User                                                                           $user    the user whose notes to list.
-     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters optional filters.
+     * @param User                                                                           $user    the user whose notes to list
+     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters optional filters
      *
-     * @return QueryBuilder
+     * @return QueryBuilder Query builder instance ready for execution/pagination
      */
     public function queryListForUser(User $user, array $filters = []): QueryBuilder
     {
@@ -75,10 +75,8 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Saves Note.
      *
-     * @param Note $note  notatka do zapisania.
-     * @param bool $flush czy wykonać natychmiastowy flush.
-     *
-     * @return void
+     * @param Note $note  notatka do zapisania
+     * @param bool $flush czy wykonać natychmiastowy flush
      */
     public function save(Note $note, bool $flush = false): void
     {
@@ -92,10 +90,8 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Deletes Note.
      *
-     * @param Note $note  notatka do usunięcia.
-     * @param bool $flush czy wykonać natychmiastowy flush.
-     *
-     * @return void
+     * @param Note $note  notatka do usunięcia
+     * @param bool $flush czy wykonać natychmiastowy flush
      */
     public function remove(Note $note, bool $flush = false): void
     {

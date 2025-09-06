@@ -33,14 +33,9 @@
                     <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-warning">
                         {{ 'action.edit'|trans }}
                     </a>
-                    <form action="{{ path('user_delete', {'id': user.id}) }}"
-                          method="post"
-                          style="display:inline;"
-                          onsubmit="return confirm('{{ 'confirm.delete_user'|trans }}');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger">{{ 'action.delete'|trans }}</button>
-                    </form>
+                    <a href="{{ path('user_delete', {'id': user.id}) }}" class="btn btn-danger">
+                        {{ 'action.delete'|trans }}
+                    </a>
                 </td>
             </tr>
         {% endfor %}

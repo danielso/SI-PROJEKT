@@ -7,27 +7,21 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Repository\NoteRepository;
 use App\Repository\ToDoRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Warstwa serwisowa zarządzania użytkownikami (update, delete, licznik adminów).
- *
- * Zasada: serwis nie używa bezpośrednio EntityManagera — zapis/usuń realizuje repozytorium.
  */
 final class UserService implements UserServiceInterface
 {
     /**
-     * @param UserRepository              $users  repozytorium
-     *                                            użytkowników
-     * @param NoteRepository              $notes  repozytorium notatek (do
-     *                                            liczników)
-     * @param ToDoRepository              $todos  repozytorium zadań (do
-     *                                            liczników)
-     * @param UserPasswordHasherInterface $hasher hasher
-     *                                            haseł
+     * @param UserRepository              $users  Repozytorium użytkowników
+     * @param NoteRepository              $notes  Repozytorium notatek (do liczników)
+     * @param ToDoRepository              $todos  Repozytorium zadań (do liczników)
+     * @param UserPasswordHasherInterface $hasher Hasher haseł
      */
     public function __construct(private readonly UserRepository $users, private readonly NoteRepository $notes, private readonly ToDoRepository $todos, private readonly UserPasswordHasherInterface $hasher)
     {
@@ -36,7 +30,7 @@ final class UserService implements UserServiceInterface
     /**
      * Zwraca listę wszystkich użytkowników.
      *
-     * @return User[]
+     * @return array<int, User>
      */
     public function listAll(): array
     {
@@ -46,14 +40,12 @@ final class UserService implements UserServiceInterface
     /**
      * Aktualizuje dane użytkownika (roles/blocked/hasło) z ochroną ostatniego administratora.
      *
-     * @param User        $user             aktualizowany użytkownik
-     * @param bool        $wasAdmin         czy przed zmianą był adminem
-     * @param string|null $newPlainPassword nowe hasło w postaci jawnej (opcjonalnie)
-     * @param bool|null   $blocked          czy zablokować użytkownika (opcjonalnie)
+     * @param User        $user             Aktualizowany użytkownik
+     * @param bool        $wasAdmin         Czy przed zmianą był adminem
+     * @param string|null $newPlainPassword Nowe hasło w postaci jawnej (opcjonalnie)
+     * @param bool|null   $blocked          Czy zablokować użytkownika (opcjonalnie)
      *
-     * @return void
-     *
-     * @throws \LogicException gdy próba odebrania uprawnień lub zablokowania ostatniego administratora
+     * @throws \LogicException Gdy próba odebrania uprawnień lub zablokowania ostatniego administratora
      */
     public function update(User $user, bool $wasAdmin, ?string $newPlainPassword = null, ?bool $blocked = null): void
     {
@@ -84,11 +76,9 @@ final class UserService implements UserServiceInterface
     /**
      * Usuwa użytkownika po weryfikacji ograniczeń (ostatni admin, posiadane dane).
      *
-     * @param User $user użytkownik do usunięcia
+     * @param User $user Użytkownik do usunięcia
      *
-     * @return void
-     *
-     * @throws \LogicException gdy to ostatni administrator lub gdy posiada notatki/zadania
+     * @throws \LogicException Gdy to ostatni administrator lub gdy posiada notatki/zadania
      */
     public function delete(User $user): void
     {
@@ -108,7 +98,7 @@ final class UserService implements UserServiceInterface
     /**
      * Zwraca liczbę użytkowników z rolą ROLE_ADMIN.
      *
-     * @return int
+     * @return int Liczba administratorów
      */
     public function countAdmins(): int
     {

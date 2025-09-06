@@ -11,8 +11,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Form type dla tagu (nazwa).
@@ -22,29 +20,22 @@ class TagFormType extends AbstractType
     /**
      * Buduje formularz Tag.
      *
-     * @param FormBuilderInterface $builder form builder.
-     * @param array<string,mixed>  $options opcje formularza.
-     *
-     * @return void
+     * @param FormBuilderInterface $builder form builder
+     * @param array<string, mixed> $options opcje formularza
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name', TextType::class, [
             'label' => 'label.tag_name',
+            'required' => true,
             'empty_data' => '',
-            'constraints' => [
-                new NotBlank(),
-                new Length(max: 255),
-            ],
         ]);
     }
 
     /**
      * Konfiguracja opcji formularza.
      *
-     * @param OptionsResolver $resolver resolver opcji.
-     *
-     * @return void
+     * @param OptionsResolver $resolver resolver opcji
      */
     public function configureOptions(OptionsResolver $resolver): void
     {

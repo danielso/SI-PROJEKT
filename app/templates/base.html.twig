@@ -16,13 +16,72 @@
     {% endblock %}
 </head>
 <body>
-<main role="main" class="container-fluid">
+
+<header class="border-bottom mb-3">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('home') }}">Todo/Notes</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{{ path('note_index') }}">{{ 'nav.notes'|trans|default('Notatki') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_to_do_index') }}">{{ 'nav.todos'|trans|default('Zadania') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('category_index') }}">{{ 'nav.categories'|trans|default('Kategorie') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('tag_index') }}">{{ 'nav.tags'|trans|default('Tagi') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('profile_edit') }}">{{ 'nav.profile'|trans|default('Profil') }}</a></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('user_index') }}">{{ 'nav.manage_users'|trans|default('Użytkownicy') }}</a></li>
+                    {% endif %}
+                </ul>
+
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <span class="navbar-text me-2">
+                                <i class="bi bi-person"></i> {{ app.user.email }}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <span class="badge text-bg-secondary ms-1">admin</span>
+                                {% endif %}
+                            </span>
+                        </li>
+
+                        <li class="nav-item">
+                            <form action="{{ path('app_logout') }}" method="post" class="d-inline">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">{{ 'nav.logout'|trans|default('Wyloguj') }}</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">{{ 'nav.login'|trans|default('Zaloguj') }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+{# globalne flashe #}
+<div class="container-fluid px-3">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show mt-2" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<main role="main" class="container-fluid px-3">
     {% block body %}{% endblock %}
 </main>
 
 {% block javascripts %}
-    <script
-            src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
             integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

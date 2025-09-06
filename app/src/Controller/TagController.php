@@ -8,12 +8,14 @@ namespace App\Controller;
 
 use App\Entity\Tag;
 use App\Form\TagFormType;
+use App\Security\Voter\TagVoter;
 use App\Service\TagServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Controller for managing tags (CRUD operations).
@@ -24,7 +26,7 @@ class TagController extends AbstractController
     /**
      * TagController constructor.
      *
-     * @param TagServiceInterface $tags service handling tag operations.
+     * @param \App\Service\TagServiceInterface $tags service handling tag operations
      */
     public function __construct(private readonly TagServiceInterface $tags)
     {
@@ -33,11 +35,12 @@ class TagController extends AbstractController
     /**
      * Displays a list of all tags with usage counts for the current user.
      *
-     * @return Response Rendered list page.
+     * @return \Symfony\Component\HttpFoundation\Response Rendered list page
      */
     #[Route('/', name: 'tag_index', methods: ['GET'])]
     public function index(): Response
     {
+        /** @var \App\Entity\User|null $user */
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
@@ -53,9 +56,9 @@ class TagController extends AbstractController
     /**
      * Creates a new tag.
      *
-     * @param Request $request HTTP request with form data.
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request with form data
      *
-     * @return Response Rendered create form or redirect on success.
+     * @return \Symfony\Component\HttpFoundation\Response Rendered create form or redirect on success
      */
     #[Route('/new', name: 'tag_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -82,14 +85,16 @@ class TagController extends AbstractController
     /**
      * Edits an existing tag.
      *
-     * @param Request $request HTTP request with form data.
-     * @param Tag     $tag     tag being edited.
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request with form data
+     * @param \App\Entity\Tag                           $tag     tag being edited
      *
-     * @return Response Rendered edit form or redirect on success.
+     * @return \Symfony\Component\HttpFoundation\Response Rendered edit form or redirect on success
      */
     #[Route('/{id}/edit', name: 'tag_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tag $tag): Response
     {
+        $this->denyAccessUnlessGranted(TagVoter::EDIT, $tag);
+
         $form = $this->createForm(TagFormType::class, $tag);
         $form->handleRequest($request);
 
@@ -112,18 +117,34 @@ class TagController extends AbstractController
     /**
      * Deletes a tag after CSRF validation.
      *
-     * @param Request $request HTTP request with CSRF token.
-     * @param Tag     $tag     tag being deleted.
+     * @param \Symfony\Component\HttpFoundation\Request          $request    HTTP request with CSRF token
+     * @param \App\Entity\Tag                                    $tag        tag being deleted
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator translator for flash messages
      *
-     * @return Response Redirect to index after deletion.
+     * @return \Symfony\Component\HttpFoundation\Response Redirect to index after deletion
      */
-    #[Route('/{id}', name: 'tag_delete', methods: ['GET|DELETE'])]
-    public function delete(Request $request, Tag $tag): Response
+    #[Route('/{id}/delete', name: 'tag_delete', methods: ['GET', 'DELETE'], requirements: ['id' => '[1-9]\d*'])]
+    public function delete(Request $request, Tag $tag, TranslatorInterface $translator): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->request->get('_token'))) {
+        $this->denyAccessUnlessGranted(TagVoter::DELETE, $tag);
+
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('tag_delete', ['id' => $tag->getId()]))
+            ->setMethod('DELETE')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->tags->delete($tag);
+            $this->addFlash('success', $translator->trans('message.deleted_successfully'));
+
+            return $this->redirectToRoute('tag_index');
         }
 
-        return $this->redirectToRoute('tag_index');
+        return $this->render('tag/delete.html.twig', [
+            'form' => $form->createView(),
+            'tag'  => $tag,
+        ]);
     }
 }

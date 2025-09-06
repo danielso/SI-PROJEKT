@@ -577,14 +577,116 @@
         <source>action.sign_in</source>
         <target>Sign in</target>
       </trans-unit>
-      <trans-unit id="label.filter_by_category">
+
+      <trans-unit id="nav.notes">
+              <source>nav.notes</source>
+              <target>Notes</target>
+            </trans-unit>
+            <trans-unit id="nav.todos">
+              <source>nav.todos</source>
+              <target>ToDo's</target>
+            </trans-unit>
+            <trans-unit id="nav.categories">
+              <source>nav.categories</source>
+              <target>Categories</target>
+            </trans-unit>
+            <trans-unit id="nav.tags">
+              <source>nav.tags</source>
+              <target>Tag's</target>
+            </trans-unit>
+            <trans-unit id="nav.manage_users">
+              <source>nav.manage_users</source>
+              <target>Users</target>
+            </trans-unit>
+            <trans-unit id="nav.profile">
+              <source>nav.profile</source>
+              <target>Profile</target>
+            </trans-unit>
+            <trans-unit id="nav.login">
+              <source>nav.login</source>
+              <target>Log in</target>
+            </trans-unit>
+            <trans-unit id="nav.logout">
+              <source>nav.logout</source>
+              <target>Log out</target>
+            </trans-unit>
+            <trans-unit id="todo.delete.title">
+              <source>todo.delete.title</source>
+              <target>Deleting task %title%</target>
+            </trans-unit>
+            <trans-unit id="todo.delete.confirm_text">
+              <source>todo.delete.confirm_text</source>
+              <target>Are you sure you want to delete this task?</target>
+            </trans-unit>
+            <trans-unit id="label.filter_by_category">
               <source>label.filter_by_category</source>
-              <target>Filtruj przez kategorie</target>
+              <target>Filter by category</target>
             </trans-unit>
             <trans-unit id="label.filter_by_tag">
               <source>label.filter_by_tag</source>
-              <target>Filtruj przez tagi</target>
+              <target>Filter by tags</target>
             </trans-unit>
+            <trans-unit id="todo.collaborators.email_label">
+              <source>todo.collaborators.email_label</source>
+              <target>User E-mail</target>
+            </trans-unit>
+            <trans-unit id="label.categoryName">
+                     <source>label.categoryName</source>
+                     <target>Category</target>
+                  </trans-unit>
+            <trans-unit id="user.delete.confirm_text">
+                     <source>user.delete.confirm_text</source>
+                     <target>Are you sure you want to delete this user?</target>
+                  </trans-unit>
+                  <trans-unit id="user.delete.title">
+                     <source>user.delete.title</source>
+                     <target>Delete user.</target>
+                  </trans-unit>
+                  <trans-unit id="note.delete.confirm_text">
+                     <source>note.delete.confirm_text</source>
+                     <target>Are you sure you want to delete this note?</target>
+                  </trans-unit>
+                  <trans-unit id="title.note_delete">
+                     <source>title.note_delete</source>
+                     <target>Deleting note</target>
+                  </trans-unit>
+                  <trans-unit id="message.deleted_successfully">
+                     <source>message.deleted_successfully</source>
+                     <target>Deleting was succesful</target>
+                  </trans-unit>
+                  <trans-unit id="message.category_contains_items">
+                     <source>message.category_contains_items</source>
+                     <target>Category contains items</target>
+                  </trans-unit>
+                  <trans-unit id="message.record_not_found">
+                     <source>message.record_not_found</source>
+                     <target>Record not found</target>
+                  </trans-unit>
+                  <trans-unit id="message.password_cannot_be_whitespace_only">
+                    <source>message.password_cannot_be_whitespace_only</source>
+                    <target>Password cannot be whitespace only.</target>
+                  </trans-unit>
+            <trans-unit id="category.delete.title">
+                    <source>category.delete.title</source>
+                    <target>Deleting category: %name%</target>
+                  </trans-unit>
+                  <trans-unit id="category.delete.heading">
+                    <source>category.delete.heading</source>
+                    <target>Deleting category „%name%”</target>
+                  </trans-unit>
+                  <trans-unit id="category.delete.confirm_text">
+                    <source>category.delete.confirm_text</source>
+                    <target>Are you sure you want to delete this category?</target>
+                  </trans-unit>
+            <trans-unit id="tag.delete.title">
+                    <source>tag.delete.title</source>
+                    <target>Deleting tag „%name%”</target>
+                  </trans-unit>
+
+                  <trans-unit id="tag.delete.confirm_text">
+                    <source>tag.delete.confirm_text</source>
+                    <target>Are you sure you want to delete tag „%name%”?</target>
+                  </trans-unit>
     </body>
   </file>
 </xliff>

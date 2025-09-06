@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.note_delete'|trans({'%id%': note.id|default('')}) }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ 'title.note_delete'|trans({'%id%': note.id}) }}</h1>
+        <p>{{ 'note.delete.confirm_text'|trans|default('Czy na pewno chcesz usunąć tę notatkę?') }}</p>
+
+        {{ form_start(form) }}
+        <button type="submit" class="btn btn-danger">
+            {{ 'action.delete'|trans|default('Usuń') }}
+        </button>
+        <a href="{{ path('note_index') }}" class="btn btn-secondary" style="margin-left:.5rem">
+            {{ 'action.cancel'|trans|default('Anuluj') }}
+        </a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

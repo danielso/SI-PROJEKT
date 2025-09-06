@@ -22,10 +22,10 @@ class RegistrationController extends AbstractController
     /**
      * Handles user registration.
      *
-     * @param Request                  $request  HTTP request.
-     * @param RegisterServiceInterface $register domain service handling registration flow.
+     * @param Request                  $request  HTTP request
+     * @param RegisterServiceInterface $register domain service handling registration flow
      *
-     * @return Response Rendered registration form or redirect on success.
+     * @return Response Rendered registration form or redirect on success
      */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, RegisterServiceInterface $register): Response

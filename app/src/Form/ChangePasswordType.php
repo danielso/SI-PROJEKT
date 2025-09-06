@@ -36,11 +36,15 @@ class ChangePasswordType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(min: 6, max: 4096),
+                    new Assert\Regex(pattern: '/\S/'),
                 ],
             ],
             'second_options' => [
                 'label' => 'label.confirm_password',
                 'attr' => ['autocomplete' => 'new-password'],
+            ],
+            'options' => [
+                'trim' => false,
             ],
             'invalid_message' => 'message.passwords_must_match',
         ]);

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'category.delete.title'|trans({'%name%': category.name|default('')}) }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ 'category.delete.heading'|trans({'%name%': category.name}) }}</h1>
+        <p>{{ 'category.delete.confirm_text'|trans|default('Czy na pewno chcesz usunąć tę kategorię?') }}</p>
+
+        {{ form_start(form) }}
+        <button class="btn btn-danger">{{ 'action.delete'|trans|default('Usuń') }}</button>
+        <a href="{{ path('category_index') }}" class="btn btn-secondary">{{ 'action.cancel'|trans|default('Anuluj') }}</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

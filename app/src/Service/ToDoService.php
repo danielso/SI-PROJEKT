@@ -18,19 +18,16 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * Serwis domenowy ToDo:
- * listowanie, CRUD, uprawnienia, kategorie/tagi, współpracownicy.
- *
- * Zasada: brak bezpośredniego użycia EntityManager – zapis/usuń realizują repozytoria.
  */
 final class ToDoService implements ToDoServiceInterface
 {
     /**
      * Konstruktor serwisu ToDo.
      *
-     * @param ToDoRepository     $toDoRepo     repozytorium ToDo
-     * @param CategoryRepository $categoryRepo repozytorium kategorii
-     * @param TagRepository      $tagRepo      repozytorium tagów
-     * @param UserRepository     $userRepo     repozytorium użytkowników
+     * @param ToDoRepository     $toDoRepo     Repozytorium zadań ToDo
+     * @param CategoryRepository $categoryRepo Repozytorium kategorii
+     * @param TagRepository      $tagRepo      Repozytorium tagów
+     * @param UserRepository     $userRepo     Repozytorium użytkowników
      */
     public function __construct(private readonly ToDoRepository $toDoRepo, private readonly CategoryRepository $categoryRepo, private readonly TagRepository $tagRepo, private readonly UserRepository $userRepo)
     {
@@ -39,10 +36,10 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Buduje zapytanie listujące zadania użytkownika z filtrami.
      *
-     * @param User                                                                                                                $user    użytkownik
-     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null, scope?: 'mine'|'shared'|string|null} $filters filtry
+     * @param User                                                                                                                $user    Użytkownik, dla którego listujemy
+     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null, scope?: 'mine'|'shared'|string|null} $filters Filtry listy
      *
-     * @return QueryBuilder
+     * @return QueryBuilder Obiekt zapytania gotowy do dalszego przetwarzania
      */
     public function buildListForUser(User $user, array $filters = []): QueryBuilder
     {
@@ -52,9 +49,9 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Wyszukuje zadanie po tokenie udostępniania.
      *
-     * @param string $token token udostępniania.
+     * @param string $token Token udostępniania
      *
-     * @return ToDo|null
+     * @return ToDo|null Encja ToDo lub null, gdy nie znaleziono
      */
     public function findOneByShareToken(string $token): ?ToDo
     {
@@ -64,10 +61,10 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Zwraca zadanie, jeśli należy do wskazanego właściciela.
      *
-     * @param int  $id    identyfikator zadania.
-     * @param User $owner oczekiwany właściciel.
+     * @param int  $id    Identyfikator zadania
+     * @param User $owner Oczekiwany właściciel zadania
      *
-     * @return ToDo|null
+     * @return ToDo|null Encja ToDo lub null, gdy brak uprawnień lub nie istnieje
      */
     public function findOwned(int $id, User $owner): ?ToDo
     {
@@ -82,10 +79,10 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Zwraca zadanie, jeśli użytkownik może je zobaczyć (własne lub współdzielone).
      *
-     * @param int  $id   identyfikator zadania.
-     * @param User $user użytkownik sprawdzający dostęp.
+     * @param int  $id   Identyfikator zadania
+     * @param User $user Użytkownik sprawdzający dostęp
      *
-     * @return ToDo|null
+     * @return ToDo|null Encja ToDo lub null, gdy niedostępne
      */
     public function findOwnedOrShared(int $id, User $user): ?ToDo
     {
@@ -100,17 +97,14 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Tworzy zadanie wraz z kategorią i tagami.
      *
-     * @param ToDo        $toDo            nowa encja.
-     * @param User        $owner           właściciel.
-     * @param int|null    $categoryId      ID istniejącej kategorii.
-     *                                     (opcjonalnie).
-     * @param string|null $newCategoryName nazwa nowej kategorii (opcjonalnie).
-     * @param string|null $tagsCsv         CSV z nazwami tagów.
-     *                                     (opcjonalnie).
+     * @param ToDo        $toDo         Nowa encja zadania
+     * @param User        $owner        Właściciel zadania
+     * @param string|null $categoryName Nazwa istniejącej/nowej kategorii (opcjonalnie)
+     * @param string|null $tagsCsv      Nazwy tagów w formacie CSV (opcjonalnie)
      *
-     * @return ToDo
+     * @return ToDo Zapisana encja zadania
      */
-    public function create(ToDo $toDo, User $owner, ?int $categoryId, ?string $newCategoryName, ?string $tagsCsv): ToDo
+    public function create(ToDo $toDo, User $owner, ?string $categoryName, ?string $tagsCsv): ToDo
     {
         $now = new \DateTimeImmutable();
         $toDo->setUser($owner);
@@ -121,7 +115,7 @@ final class ToDoService implements ToDoServiceInterface
             $toDo->setShareToken(bin2hex(random_bytes(16)));
         }
 
-        $this->applyCategory($toDo, $owner, $categoryId, $newCategoryName);
+        $this->applyCategoryByName($toDo, $owner, $categoryName);
         $this->applyTags($toDo, $tagsCsv);
 
         $this->toDoRepo->save($toDo, true);
@@ -132,25 +126,22 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Aktualizuje zadanie (kategoria i tagi). Wymaga uprawnień do edycji.
      *
-     * @param ToDo        $toDo            zadanie do aktualizacji.
-     * @param User        $actingUser      użytkownik wykonujący.
-     *                                     operację.
-     * @param int|null    $categoryId      ID istniejącej kategorii.
-     *                                     (opcjonalnie).
-     * @param string|null $newCategoryName nazwa nowej kategorii (opcjonalnie).
-     * @param string|null $tagsCsv         CSV z nazwami tagów.
-     *                                     (opcjonalnie).
+     * @param ToDo        $toDo         Zadanie do aktualizacji
+     * @param User        $actingUser   Użytkownik wykonujący operację
+     * @param string|null $categoryName Nazwa istniejącej/nowej kategorii (opcjonalnie)
+     * @param string|null $tagsCsv      CSV z nazwami tagów (opcjonalnie)
      *
-     * @return ToDo
+     * @return ToDo Zapisana encja zadania
      *
-     * @throws \LogicException gdy brak uprawnień do edycji
+     * @throws \LogicException Gdy brak uprawnień do edycji
      */
-    public function update(ToDo $toDo, User $actingUser, ?int $categoryId, ?string $newCategoryName, ?string $tagsCsv): ToDo
+    public function update(ToDo $toDo, User $actingUser, ?string $categoryName, ?string $tagsCsv): ToDo
     {
         $this->assertCanEdit($toDo, $actingUser);
 
         $toDo->setUpdatedAt(new \DateTimeImmutable());
-        $this->applyCategory($toDo, $toDo->getUser(), $categoryId, $newCategoryName);
+
+        $this->applyCategoryByName($toDo, $toDo->getUser(), $categoryName);
         $this->applyTags($toDo, $tagsCsv);
 
         $this->toDoRepo->save($toDo, true);
@@ -161,12 +152,10 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Usuwa zadanie. Wymaga by użytkownik był właścicielem.
      *
-     * @param ToDo $toDo       zadanie do usunięcia.
-     * @param User $actingUser użytkownik wykonujący operację.
+     * @param ToDo $toDo       Zadanie do usunięcia
+     * @param User $actingUser Użytkownik wykonujący operację
      *
-     * @return void
-     *
-     * @throws \LogicException gdy użytkownik nie jest właścicielem
+     * @throws \LogicException Gdy użytkownik nie jest właścicielem
      */
     public function delete(ToDo $toDo, User $actingUser): void
     {
@@ -177,10 +166,10 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Sprawdza, czy użytkownik może zobaczyć zadanie.
      *
-     * @param ToDo      $toDo zadanie
-     * @param User|null $user użytkownik (może być null)
+     * @param ToDo      $toDo Zadanie
+     * @param User|null $user Użytkownik (może być null)
      *
-     * @return bool
+     * @return bool True, jeśli widoczne; w przeciwnym razie false
      */
     public function canView(ToDo $toDo, ?User $user): bool
     {
@@ -197,10 +186,10 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Sprawdza, czy użytkownik może edytować zadanie.
      *
-     * @param ToDo      $toDo zadanie
-     * @param User|null $user użytkownik (może być null)
+     * @param ToDo      $toDo Zadanie
+     * @param User|null $user Użytkownik (może być null)
      *
-     * @return bool
+     * @return bool True, jeśli edytowalne; w przeciwnym razie false
      */
     public function canEdit(ToDo $toDo, ?User $user): bool
     {
@@ -210,10 +199,10 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Sprawdza, czy użytkownik może usunąć zadanie (musi być właścicielem).
      *
-     * @param ToDo      $toDo zadanie
-     * @param User|null $user użytkownik (może być null)
+     * @param ToDo      $toDo Zadanie
+     * @param User|null $user Użytkownik (może być null)
      *
-     * @return bool
+     * @return bool True, jeśli można usunąć; w przeciwnym razie false
      */
     public function canDelete(ToDo $toDo, ?User $user): bool
     {
@@ -223,9 +212,9 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Zwraca kategorie użytkownika (posortowane po nazwie).
      *
-     * @param User $user właściciel
+     * @param User $user Właściciel
      *
-     * @return array<Category>
+     * @return array<int, Category> Lista kategorii użytkownika
      */
     public function getCategoriesFor(User $user): array
     {
@@ -235,7 +224,7 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Zwraca wszystkie tagi (posortowane po nazwie).
      *
-     * @return array<Tag>
+     * @return array<int, Tag> Lista tagów
      */
     public function getAllTags(): array
     {
@@ -245,16 +234,13 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Dodaje współpracownika po adresie e-mail (tylko właściciel).
      *
-     * @param ToDo   $toDo       zadanie
-     * @param string $email      adres e-mail dodawanego
-     *                           użytkownika
-     * @param User   $actingUser użytkownik wykonujący
+     * @param ToDo   $toDo       Zadanie
+     * @param string $email      Adres e-mail dodawanego użytkownika
+     * @param User   $actingUser Użytkownik wykonujący
      *                           operację
      *
-     * @return void
-     *
-     * @throws \LogicException          gdy wykonujący nie jest właścicielem
-     * @throws \InvalidArgumentException gdy e-mail pusty lub użytkownik nie istnieje / jest właścicielem
+     * @throws \LogicException           Gdy wykonujący nie jest właścicielem
+     * @throws \InvalidArgumentException Gdy e-mail jest pusty, użytkownik nie istnieje lub jest właścicielem
      */
     public function addCollaboratorByEmail(ToDo $toDo, string $email, User $actingUser): void
     {
@@ -262,15 +248,15 @@ final class ToDoService implements ToDoServiceInterface
 
         $email = trim($email);
         if ('' === $email) {
-            throw new \InvalidArgumentException('E-mail jest wymagany.');
+            throw new \InvalidArgumentException();
         }
 
         $target = $this->userRepo->findOneBy(['email' => $email]);
         if (!$target) {
-            throw new \InvalidArgumentException('Nie znaleziono użytkownika o podanym e-mailu.');
+            throw new \InvalidArgumentException();
         }
         if ($target->getId() === $toDo->getUser()?->getId()) {
-            throw new \InvalidArgumentException('Właściciel nie może być własnym współpracownikiem.');
+            throw new \InvalidArgumentException();
         }
         if ($toDo->getCollaborators()->contains($target)) {
             return;
@@ -283,20 +269,18 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Usuwa współpracownika po ID (tylko właściciel).
      *
-     * @param ToDo $toDo       zadanie
-     * @param int  $userId     identyfikator współpracownika
-     * @param User $actingUser użytkownik wykonujący operację
+     * @param ToDo $toDo       Zadanie
+     * @param int  $userId     Identyfikator współpracownika
+     * @param User $actingUser Użytkownik wykonujący operację
      *
-     * @return void
-     *
-     * @throws \LogicException gdy wykonujący nie jest właścicielem
+     * @throws \LogicException Gdy wykonujący nie jest właścicielem
      */
     public function removeCollaboratorById(ToDo $toDo, int $userId, User $actingUser): void
     {
         $this->assertOwner($toDo, $actingUser);
 
         $target = $this->userRepo->find($userId);
-        if ($target && $toDo->getCollaborators()->contains($target)) {
+        if (null !== $target && $toDo->getCollaborators()->contains($target)) {
             $toDo->removeCollaborator($target);
             $this->toDoRepo->save($toDo, true);
         }
@@ -305,12 +289,12 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Przełącza status wykonania zadania (isDone).
      *
-     * @param ToDo $toDo       zadanie
-     * @param User $actingUser użytkownik wykonujący operację
+     * @param ToDo $toDo       Zadanie
+     * @param User $actingUser Użytkownik wykonujący operację
      *
-     * @return ToDo
+     * @return ToDo Zapisana encja zadania
      *
-     * @throws \LogicException gdy brak uprawnień do edycji
+     * @throws \LogicException Gdy brak uprawnień do edycji
      */
     public function toggleDone(ToDo $toDo, User $actingUser): ToDo
     {
@@ -325,50 +309,41 @@ final class ToDoService implements ToDoServiceInterface
     }
 
     /**
-     * Ustawia kategorię istniejącą po ID lub tworzy nową po nazwie.
+     * Ustawia kategorię po nazwie.
      *
-     * @param ToDo        $toDo            zadanie
-     * @param User        $owner           właściciel zadania
-     * @param int|null    $categoryId      ID istniejącej kategorii
-     * @param string|null $newCategoryName nazwa nowej kategorii
+     * @param ToDo        $toDo         Zadanie
+     * @param User        $owner        Właściciel zadania
+     * @param string|null $categoryName Nazwa kategorii (lub null/'' aby pominąć)
      *
-     * @return void
-     *
-     * @throws \LogicException gdy istniejąca kategoria należy do innego użytkownika
+     * @throws \LogicException Gdy istniejąca kategoria należy do innego użytkownika
      */
-    private function applyCategory(ToDo $toDo, User $owner, ?int $categoryId, ?string $newCategoryName): void
+    private function applyCategoryByName(ToDo $toDo, User $owner, ?string $categoryName): void
     {
-        $newCategoryName = $newCategoryName ? trim($newCategoryName) : null;
-
-        if ($categoryId) {
-            $category = $this->categoryRepo->find((int) $categoryId);
-            if ($category && $category->getUser()?->getId() === $owner->getId()) {
-                $toDo->setCategory($category);
-
-                return;
-            }
-            if ($category) {
-                throw new \LogicException('Wybrana kategoria nie należy do użytkownika.');
-            }
+        $name = trim((string) $categoryName);
+        if ('' === $name) {
+            return;
         }
 
-        if ($newCategoryName) {
-            $category = (new Category())
-                ->setName($newCategoryName)
-                ->setUser($owner);
-            // zapis bez flush; finalny flush wykona zapis ToDo
-            $this->categoryRepo->save($category, false);
-            $toDo->setCategory($category);
+        $existing = $this->categoryRepo->findOneBy(['user' => $owner, 'name' => $name]);
+        if (null !== $existing) {
+            $toDo->setCategory($existing);
+
+            return;
         }
+
+        $category = (new Category())
+            ->setName($name)
+            ->setUser($owner);
+
+        $this->categoryRepo->save($category, false);
+        $toDo->setCategory($category);
     }
 
     /**
      * Zastępuje tagi ToDo listą przekazaną w CSV (tworzy brakujące tagi).
      *
-     * @param ToDo        $toDo    zadanie
+     * @param ToDo        $toDo    Zadanie
      * @param string|null $tagsCsv CSV z nazwami tagów
-     *
-     * @return void
      */
     private function applyTags(ToDo $toDo, ?string $tagsCsv): void
     {
@@ -381,11 +356,12 @@ final class ToDoService implements ToDoServiceInterface
         }
 
         $names = array_filter(array_map('trim', explode(',', (string) $tagsCsv)));
+        $owner = $toDo->getUser();
+
         foreach ($names as $name) {
-            $tag = $this->tagRepo->findOneBy(['name' => $name]);
-            if (!$tag) {
-                $tag = (new Tag())->setName($name);
-                // zapis bez flush; finalny flush przy zapisie ToDo
+            $tag = $this->tagRepo->findOneBy(['name' => $name, 'user' => $owner]);
+            if (null === $tag) {
+                $tag = (new Tag())->setName($name)->setUser($owner);
                 $this->tagRepo->save($tag, false);
             }
             $toDo->addTag($tag);
@@ -395,34 +371,30 @@ final class ToDoService implements ToDoServiceInterface
     /**
      * Rzuca wyjątek, jeśli użytkownik nie jest właścicielem ToDo.
      *
-     * @param ToDo $toDo zadanie
-     * @param User $user użytkownik do weryfikacji
+     * @param ToDo $toDo Zadanie
+     * @param User $user Użytkownik do weryfikacji
      *
-     * @return void
-     *
-     * @throws \LogicException
+     * @throws \LogicException Gdy użytkownik nie jest właścicielem zadania
      */
     private function assertOwner(ToDo $toDo, User $user): void
     {
         if ($toDo->getUser()?->getId() !== $user->getId()) {
-            throw new \LogicException('Operacja dostępna tylko dla właściciela.');
+            throw new \LogicException();
         }
     }
 
     /**
      * Rzuca wyjątek, jeśli użytkownik nie może edytować ToDo.
      *
-     * @param ToDo $toDo zadanie
-     * @param User $user użytkownik do weryfikacji
+     * @param ToDo $toDo Zadanie
+     * @param User $user Użytkownik do weryfikacji
      *
-     * @return void
-     *
-     * @throws \LogicException
+     * @throws \LogicException Gdy brak uprawnień do edycji
      */
     private function assertCanEdit(ToDo $toDo, User $user): void
     {
         if (!$this->canEdit($toDo, $user)) {
-            throw new \LogicException('Brak uprawnień do edycji.');
+            throw new \LogicException();
         }
     }
 }
