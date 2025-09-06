@@ -15,15 +15,14 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Repozytorium encji ToDo.
  *
- * Zapewnia zapytania listujące z filtrami oraz metody persystencji (save/remove),
- * aby cała praca z EntityManagerem była zamknięta w repozytoriach.
- *
  * @extends ServiceEntityRepository<ToDo>
  */
 class ToDoRepository extends ServiceEntityRepository
 {
     /**
-     * @param ManagerRegistry $registry rejestr managerów Doctrine.
+     * Konstruktor.
+     *
+     * @param ManagerRegistry $registry Rejestr managerów Doctrine
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -33,10 +32,10 @@ class ToDoRepository extends ServiceEntityRepository
     /**
      * Buduje zapytanie listujące ToDo widoczne dla danego użytkownika (własne + współdzielone).
      *
-     * @param User                                                                                                                $user    użytkownik, dla którego listujemy.
-     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null, scope?: 'mine'|'shared'|string|null} $filters filtry.
+     * @param User                                                                                                                $user    Użytkownik, dla którego listujemy
+     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null, scope?: 'mine'|'shared'|string|null} $filters Filtry
      *
-     * @return QueryBuilder queryBuilder gotowy do wykonania/paginacji.
+     * @return QueryBuilder QueryBuilder gotowy do wykonania/paginacji
      */
     public function queryListForUser(User $user, array $filters = []): QueryBuilder
     {
@@ -60,9 +59,11 @@ class ToDoRepository extends ServiceEntityRepository
         if (!empty($filters['category'])) {
             $qb->andWhere('c.id = :cid')->setParameter('cid', (int) $filters['category']);
         }
+
         if (!empty($filters['tag'])) {
             $qb->andWhere('tag.id = :tid')->setParameter('tid', (int) $filters['tag']);
         }
+
         if (!empty($filters['search'])) {
             $s = mb_strtolower(trim((string) $filters['search']));
             if ('' !== $s) {
@@ -70,6 +71,7 @@ class ToDoRepository extends ServiceEntityRepository
                     ->setParameter('q', '%'.$s.'%');
             }
         }
+
         if (!empty($filters['scope'])) {
             if ('mine' === $filters['scope']) {
                 $qb->andWhere('t.user = :u');
@@ -84,10 +86,8 @@ class ToDoRepository extends ServiceEntityRepository
     /**
      * Zapisuje encję ToDo (persist) i opcjonalnie wykonuje flush.
      *
-     * @param ToDo $toDo  encja do zapisania.
-     * @param bool $flush czy wykonać natychmiastowy flush.
-     *
-     * @return void
+     * @param ToDo $toDo  Encja do zapisania
+     * @param bool $flush Czy wykonać natychmiastowy flush
      */
     public function save(ToDo $toDo, bool $flush = false): void
     {
@@ -101,10 +101,8 @@ class ToDoRepository extends ServiceEntityRepository
     /**
      * Usuwa encję ToDo i opcjonalnie wykonuje flush.
      *
-     * @param ToDo $toDo  encja do usunięcia.
-     * @param bool $flush czy wykonać natychmiastowy flush.
-     *
-     * @return void
+     * @param ToDo $toDo  Encja do usunięcia
+     * @param bool $flush Czy wykonać natychmiastowy flush
      */
     public function remove(ToDo $toDo, bool $flush = false): void
     {
@@ -118,9 +116,9 @@ class ToDoRepository extends ServiceEntityRepository
     /**
      * Znajduje ToDo po tokenie udostępniania.
      *
-     * @param string $token token udostępniania.
+     * @param string $token Token udostępniania
      *
-     * @return ToDo|null
+     * @return ToDo|null ToDo lub null
      */
     public function findOneByShareToken(string $token): ?ToDo
     {

@@ -20,20 +20,13 @@
     </div>
 
     <div>
-        {{ form_row(form.category,   {'label': 'label.category'}) }}
-    </div>
-
-    <div>
-        {{ form_row(form.newCategory,{'label': 'label.new_category'}) }}
+        {{ form_row(form.categoryName,{'label': 'label.categoryName'}) }}
     </div>
 
     <div>
         {{ form_row(form.tags,       {'label': 'label.tags'}) }}
     </div>
 
-    <div>
-        <button type="submit" class="btn btn-primary">{{ 'action.save_changes'|trans }}</button>
-    </div>
 
     {{ form_end(form) }}
 

@@ -53,4 +53,13 @@ interface CategoryServiceInterface
      * @param User     $user     the acting user (must be the owner)
      */
     public function delete(Category $category, User $user): void;
+
+    /**
+     * Can Category be deleted?
+     *
+     * @param Category $category Category entity
+     *
+     * @return bool Result
+     */
+    public function canBeDeleted(Category $category): bool;
 }

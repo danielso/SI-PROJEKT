@@ -29,18 +29,15 @@
                     </h3>
 
                     <div style="margin-top: 10px;">
-                        <a href="{{ path('category_edit', { id: category.id }) }}" style="margin-right: 0.5rem;">{{ 'action.edit'|trans }}</a>
+                        <a href="{{ path('category_edit', { id: category.id }) }}" style="margin-right: 0.5rem;">
+                            {{ 'action.edit'|trans }}
+                        </a>
 
                         {% if row.todoCount == 0 and row.noteCount == 0 %}
-                            <form method="post"
-                                  action="{{ path('category_delete', { id: category.id }) }}"
-                                  style="display:inline;"
-                                  onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button style="background: none; border: none; color: red; cursor: pointer;">🗑 Usuń</button>
-                            </form>
-
+                            <a href="{{ path('category_delete', { id: category.id }) }}"
+                               style="color: red; margin-left: .5rem;">
+                                🗑 {{ 'action.delete'|trans }}
+                            </a>
                         {% else %}
                             <span title="{{ 'category.locked'|trans }}">🔒</span>
                         {% endif %}

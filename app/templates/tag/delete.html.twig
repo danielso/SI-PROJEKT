@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'tag.delete.title'|trans({'%name%': tag.name|default('')}) }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ 'tag.delete.title'|trans({'%name%': tag.name|default('')}) }}</h1>
+        <p>{{ 'tag.delete.confirm_text'|trans({'%name%': tag.name|default('')}) }}</p>
+
+        {{ form_start(form) }}
+        <button class="btn btn-danger">{{ 'action.delete'|trans }}</button>
+        <a href="{{ path('tag_index') }}" class="btn btn-secondary" style="margin-left:.5rem">
+            {{ 'action.cancel'|trans }}
+        </a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

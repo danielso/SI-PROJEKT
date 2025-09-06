@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'user.delete.title'|trans({'%email%': user.email|default('')}) }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'user.delete.title'|trans({'%email%': user.email}) }}</h1>
+    <p>{{ 'user.delete.confirm_text'|trans|default('Czy na pewno chcesz usunąć tego użytkownika?') }}</p>
+
+    {{ form_start(form) }}
+    <button type="submit" class="btn btn-danger">
+        {{ 'action.delete'|trans|default('Usuń') }}
+    </button>
+    <a href="{{ path('user_index') }}" class="btn btn-secondary" style="margin-left:.5rem">
+        {{ 'action.cancel'|trans|default('Anuluj') }}
+    </a>
+    {{ form_end(form) }}
+{% endblock %}

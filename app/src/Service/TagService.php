@@ -11,21 +11,23 @@ use App\Entity\User;
 use App\Repository\TagRepository;
 
 /**
- * Service layer for Tag domain operations (listing with counters, CRUD, simple lookups).
+ * Service layer for Tag domain operations (listing with counters, CRUD, simple lookups)
  */
 final class TagService implements TagServiceInterface
 {
     /**
-     * @param TagRepository $tags repository for Tag entities.
+     * TagService constructor
+     *
+     * @param TagRepository $tags Repository for Tag entities
      */
     public function __construct(private readonly TagRepository $tags)
     {
     }
 
     /**
-     * Returns all tags with usage counters (todoCount, noteCount) for a given user.
+     * Returns all tags with usage counters (todoCount, noteCount) for a given user
      *
-     * @param User $user user for whom counters are calculated.
+     * @param User $user User for whom counters are calculated
      *
      * @return array<int, array{0: Tag, todoCount: int|string, noteCount: int|string}>
      */
@@ -35,13 +37,13 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Creates a new tag (validates name and uniqueness).
+     * Creates a new tag (validates name and uniqueness)
      *
-     * @param Tag $tag tag to create.
+     * @param Tag $tag Tag to create
      *
      * @return Tag
      *
-     * @throws \InvalidArgumentException when name is empty or tag already exists.
+     * @throws \InvalidArgumentException when name is empty or tag already exists
      */
     public function create(Tag $tag): Tag
     {
@@ -61,13 +63,13 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Updates an existing tag (validates name and uniqueness across other tags).
+     * Updates an existing tag (validates name and uniqueness across other tags)
      *
-     * @param Tag $tag tag to update.
+     * @param Tag $tag Tag to update
      *
      * @return Tag
      *
-     * @throws \InvalidArgumentException when name is empty or would collide with another tag.
+     * @throws \InvalidArgumentException when name is empty or would collide with another tag
      */
     public function update(Tag $tag): Tag
     {
@@ -88,11 +90,9 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Deletes a tag.
+     * Deletes a tag
      *
-     * @param Tag $tag tag to delete.
-     *
-     * @return void
+     * @param Tag $tag Tag to delete
      */
     public function delete(Tag $tag): void
     {
@@ -100,9 +100,9 @@ final class TagService implements TagServiceInterface
     }
 
     /**
-     * Finds a tag by its name.
+     * Finds a tag by its name
      *
-     * @param string $name tag name to search for.
+     * @param string $name Tag name to search for
      *
      * @return Tag|null
      */

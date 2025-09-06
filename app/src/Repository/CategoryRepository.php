@@ -19,7 +19,7 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * Konstruktor klasy CategoryRepository.
      *
-     * @param ManagerRegistry $registry Rejestr menedżera jednostek.
+     * @param ManagerRegistry $registry Rejestr menedżera jednostek
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -72,8 +72,8 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * Usuwa (remove) encję Category i opcjonalnie wykonuje flush.
      *
-     * @param Category $category kategoria do usunięcia.
-     * @param bool     $flush    czy wykonać natychmiastowy flush.
+     * @param Category $category kategoria do usunięcia
+     * @param bool     $flush    czy wykonać natychmiastowy flush
      */
     public function remove(Category $category, bool $flush = false): void
     {

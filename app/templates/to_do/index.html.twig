@@ -91,22 +91,16 @@
                 {% endif %}
             </p>
 
-            <p><strong>{{ 'todo.index.created_at'|trans }}</strong> {{ task.createdAt|date('Y-m-d H:i') }}</p>
+            <small>{{ task.createdAt|format_date('long') }}</small>
+
 
             <div style="margin-top:.5rem;">
                 <a href="{{ path('app_to_do_edit', {'id': task.id}) }}" style="margin-right:.5rem;">
                     {{ 'todo.index.edit'|trans }}
                 </a>
-                <form method="post"
-                      action="{{ path('app_to_do_delete', {'id': task.id}) }}"
-                      style="display:inline;"
-                      onsubmit="return confirm('{{ 'todo.index.delete_confirm'|trans }}');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button style="background:none; border:none; cursor:pointer;">
-                        {{ 'todo.index.delete'|trans }}
-                    </button>
-                </form>
+                <a href="{{ path('app_to_do_delete', {'id': task.id}) }}" style="margin-left:.5rem;">
+                    {{ 'todo.index.delete'|trans }}
+                </a>
             </div>
 
             {% if task.shareToken %}

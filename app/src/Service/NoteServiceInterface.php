@@ -13,72 +13,77 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Contract for note-related business operations.
+ * Interface defining domain operations for managing notes.
  */
 interface NoteServiceInterface
 {
     /**
-     * Builds a query for listing notes of a given user with optional filters.
+     * Builds a query listing notes for a given user with optional filters.
      *
-     * @param User                                                                           $user    the owner of the notes.
-     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters filters.
+     * @param User                                                                           $user    Owner of the notes
+     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters Optional filters
      *
-     * @return QueryBuilder
+     * @return QueryBuilder Query builder for further processing (e.g., pagination)
      */
     public function buildListForUser(User $user, array $filters = []): QueryBuilder;
 
     /**
-     * Finds a note by its id but only if it belongs to the given user.
+     * Finds a note by ID only if it is owned by the provided user.
      *
-     * @param int  $id    note id.
-     * @param User $owner expected owner of the note.
+     * @param int  $id    Note identifier
+     * @param User $owner Expected owner
      *
-     * @return Note|null
+     * @return Note|null The note if found and owned by the user, otherwise null
      */
     public function findOwned(int $id, User $owner): ?Note;
 
     /**
-     * Lists all categories owned by the given user.
+     * Lists categories belonging to the given user.
      *
-     * @param User $owner owner of categories.
+     * @param User $owner Category owner
      *
-     * @return Category[]
+     * @return array<int, Category> User's categories
      */
     public function listCategoriesForUser(User $owner): array;
 
     /**
-     * Creates and persists a new note.
+     * Creates and persists a note. Category is resolved by name (find or create).
      *
-     * @param Note              $note            note entity to create.
-     * @param User              $owner           note owner.
-     * @param int|null          $categoryId      existing category id.
-     * @param string|null       $newCategoryName new category name.
-     * @param string|null       $tagsCsv         comma-separated tag names.
-     * @param UploadedFile|null $imageFile       uploaded image file.
+     * @param Note              $note         Note entity carrying form data
+     * @param User              $owner        Owner to assign
+     * @param string|null       $categoryName Category name to assign/create
+     * @param string|null       $tagsCsv      Comma-separated tag list
+     * @param UploadedFile|null $imageFile    Uploaded image file (optional)
      *
-     * @return Note
+     * @return Note Persisted note
      */
-    public function create(Note $note, User $owner, ?int $categoryId, ?string $newCategoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note;
+    public function create(Note $note, User $owner, ?string $categoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note;
 
     /**
-     * Updates an existing note.
+     * Updates an existing note. Category is resolved by name (find or create).
      *
-     * @param Note              $note            note entity to update.
-     * @param int|null          $categoryId      existing category id.
-     * @param string|null       $newCategoryName new category name.
-     * @param string|null       $tagsCsv         comma-separated tag names.
-     * @param UploadedFile|null $imageFile       uploaded image file.
+     * @param Note              $note         Note to update
+     * @param string|null       $categoryName Category name to assign/create
+     * @param string|null       $tagsCsv      Comma-separated tag list
+     * @param UploadedFile|null $imageFile    Uploaded image file (optional)
      *
-     * @return Note
+     * @return Note Persisted note
      */
-    public function update(Note $note, ?int $categoryId, ?string $newCategoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note;
+    public function update(Note $note, ?string $categoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note;
 
     /**
-     * Deletes a note.
+     * Deletes a note (and its associated image file if present).
      *
-     * @param Note $note note to delete
-     *
-     * @return void
+     * @param Note $note Note to delete
      */
     public function delete(Note $note): void;
+
+    /**
+     * Lists tags belonging to the given user (sorted by name).
+     *
+     * @param \App\Entity\User $owner owner of tags
+     *
+     * @return array<int, \App\Entity\Tag> user's tags
+     */
+    public function listTagsForUser(User $owner): array;
 }

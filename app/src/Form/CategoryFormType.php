@@ -29,6 +29,8 @@ class CategoryFormType extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'label' => 'label.category_name',
+            'required' => true,
+            'trim' => true,
             'empty_data' => '',
             'constraints' => [
                 new NotBlank(),

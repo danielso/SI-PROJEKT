@@ -16,11 +16,7 @@
     </div>
 
     <div>
-        {{ form_row(form.category) }}
-    </div>
-
-    <div>
-        {{ form_row(form.newCategory) }}
+        {{ form_row(form.categoryName) }}
     </div>
 
     <div>
@@ -34,7 +30,7 @@
     {{ form_end(form) }}
 
     <hr>
-    {% if app.user and to_do.user and app.user.id == to_do.user.id %}
+    {% if is_granted('TODO_COLLAB_MANAGE', to_do) %}
         <h3>{{ 'todo.collaborators.title'|trans }}</h3>
 
         {% if to_do.collaborators|length %}
@@ -42,12 +38,9 @@
                 {% for u in to_do.collaborators %}
                     <li>
                         {{ u.email }}
-                        <form method="post"
-                              action="{{ path('app_to_do_collaborator_remove', {id: to_do.id, userId: u.id}) }}"
-                              style="display:inline">
-                            <input type="hidden" name="_token" value="{{ csrf_token('rmcollab' ~ to_do.id ~ '-' ~ u.id) }}">
-                            <button class="btn btn-sm btn-outline-danger">{{ 'action.delete'|trans }}</button>
-                        </form>
+                        {{ form_start(remove_forms[u.id]) }}
+                        <button class="btn btn-sm btn-outline-danger">{{ 'action.delete'|trans }}</button>
+                        {{ form_end(remove_forms[u.id]) }}
                     </li>
                 {% endfor %}
             </ul>
@@ -55,11 +48,10 @@
             <p>{{ 'todo.collaborators.empty'|trans }}</p>
         {% endif %}
 
-        <form method="post" action="{{ path('app_to_do_collaborator_add', {id: to_do.id}) }}" style="margin-top:8px">
-            <input type="email" name="email" placeholder="{{ 'todo.collaborators.email_placeholder'|trans }}" required>
-            <input type="hidden" name="_token" value="{{ csrf_token('addcollab' ~ to_do.id) }}">
-            <button class="btn btn-sm btn-outline-success">{{ 'todo.collaborators.add'|trans }}</button>
-        </form>
+        {{ form_start(add_collab_form, { attr: { style: 'margin-top:8px' } }) }}
+        {{ form_row(add_collab_form.email) }}
+        <button class="btn btn-sm btn-outline-success">{{ 'todo.collaborators.add'|trans }}</button>
+        {{ form_end(add_collab_form) }}
     {% endif %}
 
     <p><a href="{{ path('app_to_do_index') }}">{{ 'action.back_to_todo_list'|trans }}</a></p>

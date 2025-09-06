@@ -15,6 +15,7 @@ use App\Repository\NoteRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * NoteService.
@@ -22,24 +23,22 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 final class NoteService implements NoteServiceInterface
 {
     /**
-     * Konstruktor serwisu notatek.
-     *
-     * @param NoteRepository     $noteRepo     repozytorium notatek.
-     * @param CategoryRepository $categoryRepo repozytorium kategorii.
-     * @param TagRepository      $tagRepo      repozytorium tagów.
-     * @param string             $uploadsDir   bezwzględna ścieżka do katalogu uploadów (może być pusty).
+     * @param NoteRepository     $noteRepo     Repozytorium notatek
+     * @param CategoryRepository $categoryRepo Repozytorium kategorii
+     * @param TagRepository      $tagRepo      Repozytorium tagów
+     * @param string             $uploadsDir   Bezwzględna ścieżka do katalogu uploadów (może być pusty)
      */
     public function __construct(private readonly NoteRepository $noteRepo, private readonly CategoryRepository $categoryRepo, private readonly TagRepository $tagRepo, private readonly string $uploadsDir = '')
     {
     }
 
     /**
-     * Buduje zapytanie listujące notatki użytkownika.
+     * Buduje zapytanie listujące notatki dla użytkownika z filtrami.
      *
-     * @param User                                                                           $user    właściciel.
-     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters filtry.
+     * @param User                                                                           $user    Właściciel notatek
+     * @param array{category?: int|string|null, tag?: int|string|null, search?: string|null} $filters Filtry listy
      *
-     * @return QueryBuilder
+     * @return QueryBuilder Query builder do dalszego przetwarzania (paginacja itp.)
      */
     public function buildListForUser(User $user, array $filters = []): QueryBuilder
     {
@@ -47,17 +46,17 @@ final class NoteService implements NoteServiceInterface
     }
 
     /**
-     * Znajduje notatkę po id, ale tylko jeśli należy do podanego użytkownika.
+     * Zwraca notatkę o podanym ID, jeżeli należy do wskazanego właściciela.
      *
-     * @param int  $id    id notatki.
-     * @param User $owner właściciel.
+     * @param int  $id    Identyfikator notatki
+     * @param User $owner Oczekiwany właściciel notatki
      *
-     * @return Note|null
+     * @return Note|null Notatka lub null, gdy nie istnieje lub nie należy do właściciela
      */
     public function findOwned(int $id, User $owner): ?Note
     {
         $note = $this->noteRepo->find($id);
-        if (!$note || $note->getUser() !== $owner) {
+        if (!$note || $note->getUser()?->getId() !== $owner->getId()) {
             return null;
         }
 
@@ -65,11 +64,11 @@ final class NoteService implements NoteServiceInterface
     }
 
     /**
-     * Zwraca listę kategorii należących do użytkownika.
+     * Zwraca listę kategorii użytkownika.
      *
-     * @param User $owner właściciel.
+     * @param User $owner Właściciel kategorii
      *
-     * @return array<Category>
+     * @return array<int, Category> Tablica kategorii użytkownika
      */
     public function listCategoriesForUser(User $owner): array
     {
@@ -79,23 +78,22 @@ final class NoteService implements NoteServiceInterface
     /**
      * Tworzy nową notatkę wraz z kategorią, tagami i obrazem (jeśli podane).
      *
-     * @param Note              $note            nowa notatka (z wypełnionym formularzem).
-     * @param User              $owner           właściciel
-     * @param int|null          $categoryId      istniejąca kategoria (opcjonalnie).
-     * @param string|null       $newCategoryName nazwa nowej kategorii (opcjonalnie).
-     * @param string|null       $tagsCsv         CSV z nazwami tagów (opcjonalnie).
-     * @param UploadedFile|null $imageFile       przesłany plik obrazu (opcjonalnie).
+     * @param Note              $note         Tworzona notatka (z danymi formularza)
+     * @param User              $owner        Właściciel notatki
+     * @param string|null       $categoryName Nazwa kategorii do przypisania/utworzenia
+     * @param string|null       $tagsCsv      Lista tagów w CSV
+     * @param UploadedFile|null $imageFile    Plik obrazu
      *
-     * @return Note
+     * @return Note Zapisana notatka
      */
-    public function create(Note $note, User $owner, ?int $categoryId, ?string $newCategoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note
+    public function create(Note $note, User $owner, ?string $categoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note
     {
         $now = new \DateTimeImmutable();
         $note->setUser($owner);
         $note->setCreatedAt($now);
         $note->setUpdatedAt($now);
 
-        $this->applyCategory($note, $owner, $categoryId, $newCategoryName);
+        $this->applyCategoryByName($note, $owner, $categoryName);
         $this->applyTags($note, $tagsCsv);
         $this->applyImage($note, $imageFile);
 
@@ -107,19 +105,18 @@ final class NoteService implements NoteServiceInterface
     /**
      * Aktualizuje istniejącą notatkę (kategoria, tagi, obraz).
      *
-     * @param Note              $note            notatka do aktualizacji.
-     * @param int|null          $categoryId      istniejąca kategoria (opcjonalnie).
-     * @param string|null       $newCategoryName nazwa nowej kategorii (opcjonalnie).
-     * @param string|null       $tagsCsv         CSV z nazwami tagów (opcjonalnie).
-     * @param UploadedFile|null $imageFile       przesłany plik obrazu (opcjonalnie).
+     * @param Note              $note         Aktualizowana notatka
+     * @param string|null       $categoryName Nazwa kategorii do przypisania/utworzenia
+     * @param string|null       $tagsCsv      Lista tagów w CSV
+     * @param UploadedFile|null $imageFile    Plik obrazu
      *
-     * @return Note
+     * @return Note Zapisana notatka
      */
-    public function update(Note $note, ?int $categoryId, ?string $newCategoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note
+    public function update(Note $note, ?string $categoryName, ?string $tagsCsv, ?UploadedFile $imageFile): Note
     {
         $note->setUpdatedAt(new \DateTimeImmutable());
 
-        $this->applyCategory($note, $note->getUser(), $categoryId, $newCategoryName);
+        $this->applyCategoryByName($note, $note->getUser(), $categoryName);
         $this->applyTags($note, $tagsCsv);
         $this->applyImage($note, $imageFile);
 
@@ -131,52 +128,62 @@ final class NoteService implements NoteServiceInterface
     /**
      * Usuwa notatkę oraz powiązany plik obrazu (jeśli istnieje).
      *
-     * @param Note $note notatka do usunięcia.
-     *
-     * @return void
+     * @param Note $note Notatka do usunięcia
      */
     public function delete(Note $note): void
     {
         if (null !== $note->getImage() && '' !== $this->uploadsDir) {
-            @unlink($this->uploadsDir.'/'.$note->getImage());
+            @unlink(rtrim($this->uploadsDir, '/').'/'.$note->getImage());
         }
         $this->noteRepo->remove($note, true);
     }
 
     /**
-     * Ustawia kategorię notatki: istniejącą po id albo tworzy nową po nazwie.
+     * Zwraca tagi użytkownika (posortowane po nazwie).
      *
-     * @param Note        $note            notatka.
-     * @param User        $owner           właściciel notatki.
-     * @param int|null    $categoryId      id istniejącej kategorii.
-     * @param string|null $newCategoryName nazwa nowej kategorii.
+     * @param \App\Entity\User $owner właściciel tagów
      *
-     * @return void
+     * @return array<int, \App\Entity\Tag> lista tagów użytkownika
      */
-    private function applyCategory(Note $note, User $owner, ?int $categoryId, ?string $newCategoryName): void
+    public function listTagsForUser(User $owner): array
     {
-        $newCategoryName = $newCategoryName ? trim($newCategoryName) : null;
+        return $this->tagRepo->findBy(['user' => $owner], ['name' => 'ASC']);
+    }
 
-        if ($categoryId && ($cat = $this->categoryRepo->find((int) $categoryId))) {
-            $note->setCategory($cat);
+    /**
+     * Ustawia kategorię po nazwie: znajdź istniejącą właściciela lub utwórz nową.
+     *
+     * @param Note        $note         Notatka do modyfikacji
+     * @param User        $owner        Właściciel notatki
+     * @param string|null $categoryName Nazwa kategorii lub null
+     */
+    private function applyCategoryByName(Note $note, User $owner, ?string $categoryName): void
+    {
+        $name = trim((string) $categoryName);
+        if ('' === $name) {
+            return;
+        }
+
+        $existing = $this->categoryRepo->findOneBy(['user' => $owner, 'name' => $name]);
+        if (null !== $existing) {
+            $note->setCategory($existing);
 
             return;
         }
 
-        if ($newCategoryName) {
-            $cat = (new Category())->setName($newCategoryName)->setUser($owner);
-            $this->categoryRepo->save($cat, false);
-            $note->setCategory($cat);
-        }
+        $category = (new Category())
+            ->setName($name)
+            ->setUser($owner);
+
+        $this->categoryRepo->save($category, false);
+        $note->setCategory($category);
     }
 
     /**
-     * Ustawia (nadpisuje) tagi notatki na podstawie CSV.
+     * Zastępuje tagi notatki listą z CSV; tagi są per-user.
      *
-     * @param Note        $note    notatka.
-     * @param string|null $tagsCsv CSV z nazwami tagów.
-     *
-     * @return void
+     * @param Note        $note    Notatka do modyfikacji
+     * @param string|null $tagsCsv Lista tagów jako CSV (lub null, aby nic nie zmieniać)
      */
     private function applyTags(Note $note, ?string $tagsCsv): void
     {
@@ -189,24 +196,35 @@ final class NoteService implements NoteServiceInterface
         }
 
         $names = array_filter(array_map('trim', explode(',', (string) $tagsCsv)));
+        $owner = $note->getUser();
+
         foreach ($names as $name) {
-            $tag = $this->tagRepo->findOneBy(['name' => $name]);
-            if (!$tag) {
-                $tag = (new Tag())->setName($name);
+            if ('' === $name) {
+                continue;
+            }
+            $tag = $this->tagRepo->findOneBy(['name' => $name, 'user' => $owner]);
+            if (null === $tag) {
+                $tag = (new Tag())
+                    ->setName($name)
+                    ->setUser($owner);
                 $this->tagRepo->save($tag, false);
             }
             $note->addTag($tag);
         }
     }
 
+    private const ALLOWED_MIME = [
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/webp' => 'webp',
+        'image/gif'  => 'gif',
+    ];
+
     /**
      * Zapisuje plik obrazu i podmienia ewentualny poprzedni.
      *
-     * @param Note              $note notatka.
-     * @param UploadedFile|null $file przesłany plik.
-     *                                obrazu.
-     *
-     * @return void
+     * @param Note              $note Notatka do modyfikacji
+     * @param UploadedFile|null $file Przesłany plik obrazu lub null
      */
     private function applyImage(Note $note, ?UploadedFile $file): void
     {
@@ -214,13 +232,31 @@ final class NoteService implements NoteServiceInterface
             return;
         }
 
-        if ($note->getImage()) {
-            @unlink($this->uploadsDir.'/'.$note->getImage());
+        if (!$file->isValid()) {
+            throw new \RuntimeException();
         }
 
-        $ext  = $file->guessExtension() ?: 'bin';
-        $name = md5(uniqid('', true)).'.'.$ext;
-        $file->move($this->uploadsDir, $name);
+        if (null !== $note->getImage()) {
+            @unlink(rtrim($this->uploadsDir, '/').'/'.$note->getImage());
+        }
+
+        $mime = (string) $file->getMimeType();
+        $ext  = self::ALLOWED_MIME[$mime] ?? null;
+        if (null === $ext) {
+            throw new \RuntimeException();
+        }
+
+        if (!is_dir($this->uploadsDir)) {
+            @mkdir($this->uploadsDir, 0775, true);
+        }
+
+        $name = bin2hex(random_bytes(16)).'.'.$ext;
+
+        try {
+            $file->move($this->uploadsDir, $name);
+        } catch (FileException $e) {
+            throw new \RuntimeException('Nie udało się zapisać pliku.', 0, $e);
+        }
 
         $note->setImage($name);
     }

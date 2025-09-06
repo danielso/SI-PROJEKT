@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'todo.delete.title'|trans({'%title%': to_do.title|default('')}) }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'todo.delete.title'|trans({'%title%': to_do.title|default('')}) }}</h1>
+    <p>{{ 'todo.delete.confirm_text'|trans }}</p>
+
+    {{ form_start(form) }}
+    <button class="btn btn-danger">{{ 'action.delete'|trans }}</button>
+    <a href="{{ path('app_to_do_index') }}" class="btn btn-secondary" style="margin-left:.5rem">
+        {{ 'action.cancel'|trans }}
+    </a>
+    {{ form_end(form) }}
+{% endblock %}

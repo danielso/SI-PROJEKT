@@ -24,7 +24,7 @@ class SecurityController extends AbstractController
     /**
      * SecurityController constructor.
      *
-     * @param UserRepository $userRepository the user repository.
+     * @param UserRepository $userRepository the user repository
      */
     public function __construct(UserRepository $userRepository)
     {
@@ -34,9 +34,9 @@ class SecurityController extends AbstractController
     /**
      * Handles user login.
      *
-     * @param AuthenticationUtils $authenticationUtils the authentication utils service.
+     * @param AuthenticationUtils $authenticationUtils the authentication utils service
      *
-     * @return Response Rendered login form or redirect on success.
+     * @return Response Rendered login form or redirect on success
      */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -48,7 +48,6 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // Sprawdzenie czy zablokowany
         if ($error instanceof CustomUserMessageAuthenticationException) {
             $this->addFlash('error', $error->getMessage());
         }
@@ -62,11 +61,10 @@ class SecurityController extends AbstractController
     /**
      * Handles user logout.
      *
-     * @throws \LogicException always thrown as Symfony intercepts the logout process.
+     * @throws \LogicException always thrown as Symfony intercepts the logout process
      */
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route('/logout', name: 'app_logout', methods: ['POST'])]
     public function logout(): void
     {
-        throw new \LogicException();
     }
 }

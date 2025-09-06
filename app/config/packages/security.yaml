@@ -14,7 +14,6 @@ security:
             security: false
 
         main:
-            # lazy: true — włącza leniwe ładowanie
             lazy: true
             provider: app_user_provider
             form_login:
@@ -25,7 +24,6 @@ security:
             logout:
                 path: app_logout
                 target: home
-            # Umożliwia dostęp anonimowym użytkownikom (np. do strony logowania)
 
 
     # Kontrola dostępu na podstawie roli

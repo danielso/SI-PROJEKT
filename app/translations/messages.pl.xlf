@@ -267,7 +267,7 @@
       </trans-unit>
       <trans-unit id="action.back_to_notes">
         <source>action.back_to_notes</source>
-        <target>← Wróć do listy notatek</target>
+        <target> Wróć do listy notatek</target>
       </trans-unit>
       <trans-unit id="action.sign_up">
         <source>action.sign_up</source>
@@ -385,7 +385,6 @@
         <source>action.back_to_todo_list</source>
         <target>← Wróć do listy zadań</target>
       </trans-unit>
-
       <trans-unit id="todo.index.title">
         <source>todo.index.title</source>
         <target>Twoja lista do zrobienia</target>
@@ -586,7 +585,107 @@
         <source>label.filter_by_tag</source>
         <target>Filtruj przez tagi</target>
       </trans-unit>
+      <trans-unit id="nav.notes">
+        <source>nav.notes</source>
+        <target>Notatki</target>
+      </trans-unit>
+      <trans-unit id="nav.todos">
+        <source>nav.todos</source>
+        <target>Zadania ToDo</target>
+      </trans-unit>
+      <trans-unit id="nav.categories">
+        <source>nav.categories</source>
+        <target>Kategorie</target>
+      </trans-unit>
+      <trans-unit id="nav.tags">
+        <source>nav.tags</source>
+        <target>Tagi</target>
+      </trans-unit>
+      <trans-unit id="nav.manage_users">
+        <source>nav.manage_users</source>
+        <target>Użytkownicy</target>
+      </trans-unit>
+      <trans-unit id="nav.profile">
+        <source>nav.profile</source>
+        <target>Profil</target>
+      </trans-unit>
+      <trans-unit id="nav.login">
+        <source>nav.login</source>
+        <target>Zaloguj</target>
+      </trans-unit>
+      <trans-unit id="nav.logout">
+        <source>nav.logout</source>
+        <target>Wyloguj</target>
+      </trans-unit>
+      <trans-unit id="todo.delete.title">
+        <source>todo.delete.title</source>
+        <target>Usuwanie zadania %title%</target>
+      </trans-unit>
+      <trans-unit id="todo.delete.confirm_text">
+        <source>todo.delete.confirm_text</source>
+        <target>Czy na pewno chcesz usunąć to zadanie?</target>
+      </trans-unit>
+      <trans-unit id="tag.delete.title">
+        <source>tag.delete.title</source>
+        <target>Usuwanie tagu „%name%”</target>
+      </trans-unit>
+      <trans-unit id="tag.delete.confirm_text">
+        <source>tag.delete.confirm_text</source>
+        <target>Czy na pewno chcesz usunąć tag „%name%”?</target>
+      </trans-unit>
+      <trans-unit id="category.delete.title">
+        <source>category.delete.title</source>
+        <target>Usuwanie kategorii: %name%</target>
+      </trans-unit>
+      <trans-unit id="category.delete.heading">
+        <source>category.delete.heading</source>
+        <target>Usuwanie kategorii „%name%”</target>
+      </trans-unit>
+      <trans-unit id="category.delete.confirm_text">
+        <source>category.delete.confirm_text</source>
+        <target>Czy na pewno chcesz usunąć tę kategorię?</target>
+      </trans-unit>
+      <trans-unit id="message.deleted_successfully">
+         <source>message.deleted_successfully</source>
+         <target>Usuwanie zakończone pomyślnie</target>
+      </trans-unit>
 
+      <trans-unit id="user.delete.confirm_text">
+         <source>user.delete.confirm_text</source>
+         <target>Czy na pewno chcesz usunąć użytkownika?</target>
+      </trans-unit>
+      <trans-unit id="user.delete.title">
+         <source>user.delete.title</source>
+         <target>Usuwanie użytkownika</target>
+      </trans-unit>
+      <trans-unit id="note.delete.confirm_text">
+         <source>note.delete.confirm_text</source>
+         <target>Czy na pewno chcesz usunąć notatkę?</target>
+      </trans-unit>
+      <trans-unit id="title.note_delete">
+         <source>title.note_delete</source>
+         <target>Usuwanie notatki</target>
+      </trans-unit>
+      <trans-unit id="message.category_contains_items">
+         <source>message.category_contains_items</source>
+         <target>Kategoria zawiera przypisane elementy</target>
+      </trans-unit>
+      <trans-unit id="label.categoryName">
+         <source>label.categoryName</source>
+         <target>Kategoria</target>
+      </trans-unit>
+      <trans-unit id="message.record_not_found">
+         <source>message.record_not_found</source>
+         <target>Nie znaleziono</target>
+      </trans-unit>
+      <trans-unit id="message.password_cannot_be_whitespace_only">
+        <source>message.password_cannot_be_whitespace_only</source>
+        <target>Hasło nie może składać się wyłącznie z białych znaków.</target>
+      </trans-unit>
+      <trans-unit id="todo.collaborators.email_label">
+        <source>todo.collaborators.email_label</source>
+        <target>E-mail użytkownika</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
