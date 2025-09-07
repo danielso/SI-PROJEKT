@@ -10,7 +10,6 @@ use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\RegistrationFormType;
 use App\Form\UserFormType;
-use App\Repository\UserRepository;
 use App\Security\Voter\UserVoter;
 use App\Service\RegisterServiceInterface;
 use App\Service\UserServiceInterface;
@@ -81,14 +80,13 @@ class UserController extends AbstractController
     /**
      * Edits a user (admin only).
      *
-     * @param Request        $request        HTTP request with form data
-     * @param User           $user           user being edited
-     * @param UserRepository $userRepository user repository
+     * @param Request $request HTTP request with form data
+     * @param User    $user    user being edited
      *
      * @return Response Rendered edit form or redirect on success
      */
     #[Route('/admin/users/{id}/edit', name: 'user_edit')]
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 

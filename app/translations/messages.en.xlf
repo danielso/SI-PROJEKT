@@ -577,24 +577,23 @@
         <source>action.sign_in</source>
         <target>Sign in</target>
       </trans-unit>
-
       <trans-unit id="nav.notes">
-              <source>nav.notes</source>
-              <target>Notes</target>
-            </trans-unit>
-            <trans-unit id="nav.todos">
-              <source>nav.todos</source>
-              <target>ToDo's</target>
-            </trans-unit>
-            <trans-unit id="nav.categories">
-              <source>nav.categories</source>
-              <target>Categories</target>
-            </trans-unit>
-            <trans-unit id="nav.tags">
-              <source>nav.tags</source>
-              <target>Tag's</target>
-            </trans-unit>
-            <trans-unit id="nav.manage_users">
+        <source>nav.notes</source>
+        <target>Notes</target>
+      </trans-unit>
+      <trans-unit id="nav.todos">
+        <source>nav.todos</source>
+        <target>ToDo's</target>
+      </trans-unit>
+      <trans-unit id="nav.categories">
+        <source>nav.categories</source>
+        <target>Categories</target>
+      </trans-unit>
+      <trans-unit id="nav.tags">
+         <source>nav.tags</source>
+         <target>Tag's</target>
+      </trans-unit>
+      <trans-unit id="nav.manage_users">
               <source>nav.manage_users</source>
               <target>Users</target>
             </trans-unit>
@@ -630,6 +629,14 @@
               <source>todo.collaborators.email_label</source>
               <target>User E-mail</target>
             </trans-unit>
+             <trans-unit id="todo.leave.button">
+                    <source>todo.leave.button</source>
+                    <target>Delete from my taskts</target>
+                  </trans-unit>
+                  <trans-unit id="todo.leave.success">
+                    <source>todo.leave.success</source>
+                    <target>Task was deleted from your tasks.</target>
+                  </trans-unit>
             <trans-unit id="label.categoryName">
                      <source>label.categoryName</source>
                      <target>Category</target>

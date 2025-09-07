@@ -160,4 +160,14 @@ interface ToDoServiceInterface
      * @return ToDo Persisted ToDo
      */
     public function toggleDone(ToDo $toDo, User $actingUser): ToDo;
+
+    /**
+     * Removes the user from the collaborators of a shared ToDo.
+     *
+     * @param ToDo $toDo Target ToDo
+     * @param User $user User leaving collaboration
+     *
+     * @throws \LogicException when the user is the owner of the ToDo
+     */
+    public function leave(ToDo $toDo, User $user): void;
 }

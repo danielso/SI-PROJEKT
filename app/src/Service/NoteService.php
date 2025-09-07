@@ -13,9 +13,21 @@ use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\NoteRepository;
 use App\Repository\TagRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use function array_filter;
+use function array_map;
+use function bin2hex;
+use function explode;
+use function is_dir;
+use function mkdir;
+use function random_bytes;
+use function rtrim;
+use function trim;
+use function unlink;
 
 /**
  * NoteService.
@@ -157,7 +169,7 @@ final class NoteService implements NoteServiceInterface
      * @param User        $owner        Właściciel notatki
      * @param string|null $categoryName Nazwa kategorii lub null
      *
-     * @return void
+     * @return void brak wyników
      */
     private function applyCategoryByName(Note $note, User $owner, ?string $categoryName): void
     {
@@ -235,7 +247,7 @@ final class NoteService implements NoteServiceInterface
         }
 
         if (!$file->isValid()) {
-            throw new \RuntimeException();
+            throw new RuntimeException();
         }
 
         if (null !== $note->getImage()) {
@@ -245,7 +257,7 @@ final class NoteService implements NoteServiceInterface
         $mime = (string) $file->getMimeType();
         $ext  = self::ALLOWED_MIME[$mime] ?? null;
         if (null === $ext) {
-            throw new \RuntimeException();
+            throw new RuntimeException();
         }
 
         if (!is_dir($this->uploadsDir)) {
@@ -257,7 +269,7 @@ final class NoteService implements NoteServiceInterface
         try {
             $file->move($this->uploadsDir, $name);
         } catch (FileException $e) {
-            throw new \RuntimeException('Nie udało się zapisać pliku.', 0, $e);
+            throw new RuntimeException('Nie udało się zapisać pliku.', 0, $e);
         }
 
         $note->setImage($name);

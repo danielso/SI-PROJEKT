@@ -94,7 +94,7 @@ final class TagService implements TagServiceInterface
      *
      * @param Tag $tag Tag to delete
      *
-     * @return void
+     * @return void brak wyniku
      */
     public function delete(Tag $tag): void
     {

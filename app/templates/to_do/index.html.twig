@@ -58,6 +58,7 @@
     {% for task in to_do %}
         <div style="border:1px solid #ccc; border-radius:8px; padding:1rem; margin-bottom:1rem;">
             <h3 style="margin-top:0;">{{ task.title }}</h3>
+            {% set is_owner = app.user and task.user and app.user.id == task.user.id %}
 
             {% if task.user and app.user and app.user.id != task.user.id %}
                 <div style="margin:12px 0; padding:8px 12px; background:#eef5ff; border:1px solid #cfe2ff; border-radius:6px;">
@@ -95,13 +96,29 @@
 
 
             <div style="margin-top:.5rem;">
-                <a href="{{ path('app_to_do_edit', {'id': task.id}) }}" style="margin-right:.5rem;">
-                    {{ 'todo.index.edit'|trans }}
-                </a>
-                <a href="{{ path('app_to_do_delete', {'id': task.id}) }}" style="margin-left:.5rem;">
-                    {{ 'todo.index.delete'|trans }}
-                </a>
+                {# Edit tylko gdy masz uprawnienie #}
+                {% if is_granted('TODO_EDIT', task) %}
+                    <a href="{{ path('app_to_do_edit', {'id': task.id}) }}" style="margin-right:.5rem;">
+                        {{ 'todo.index.edit'|trans }}
+                    </a>
+                {% endif %}
+
+                {# Właściciel widzi tylko "Usuń" #}
+                {% if is_owner and is_granted('TODO_DELETE', task) %}
+                    <a href="{{ path('app_to_do_delete', {'id': task.id}) }}" style="margin-left:.5rem;">
+                        {{ 'todo.index.delete'|trans }}
+                    </a>
+
+                    {# Współpracownik (nie-właściciel) widzi tylko "Usuń z mojej listy" #}
+                {% elseif (not is_owner) and is_granted('TODO_LEAVE', task) and leave_forms[task.id] is defined %}
+                    {{ form_start(leave_forms[task.id], { attr: { style: 'display:inline; margin-left:.5rem;' } }) }}
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        {{ 'todo.leave.button'|trans }}
+                    </button>
+                    {{ form_end(leave_forms[task.id]) }}
+                {% endif %}
             </div>
+
 
             {% if task.shareToken %}
                 <a href="{{ path('app_to_do_share', {'token': task.shareToken}) }}">

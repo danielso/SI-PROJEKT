@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 final class CategoryService implements CategoryServiceInterface
 {
     /**
-     * Konstruktor.
+     * CategoryService constructor.
      *
      * @param CategoryRepository $categoryRepository Repozytorium kategorii
      * @param NoteRepository     $noteRepository     Repozytorium notatek
@@ -81,7 +81,7 @@ final class CategoryService implements CategoryServiceInterface
      * @param Category $category Kategoria do usunięcia
      * @param User     $user     Użytkownik wykonujący operację
      *
-     * @return void
+     * @return void Brak rezultatu
      *
      * @throws AccessDeniedException Gdy użytkownik nie jest właścicielem
      */
@@ -112,7 +112,7 @@ final class CategoryService implements CategoryServiceInterface
      * @param Category $category Kategoria do sprawdzenia
      * @param User     $user     Sprawdzany użytkownik
      *
-     * @return void
+     * @return void Brak rezultatu
      *
      * @throws AccessDeniedException Gdy użytkownik nie jest właścicielem
      */

@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 /**
@@ -19,18 +18,6 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
  */
 class SecurityController extends AbstractController
 {
-    private $userRepository;
-
-    /**
-     * SecurityController constructor.
-     *
-     * @param UserRepository $userRepository the user repository
-     */
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
     /**
      * Handles user login.
      *

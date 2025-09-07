@@ -236,8 +236,9 @@ final class ToDoService implements ToDoServiceInterface
      *
      * @param ToDo   $toDo       Zadanie
      * @param string $email      Adres e-mail dodawanego użytkownika
-     * @param User   $actingUser Użytkownik wykonujący
-     *                           operację
+     * @param User   $actingUser Użytkownik wykonujący operację
+     *
+     * @return void Brak wyniku
      *
      * @throws \LogicException           Gdy wykonujący nie jest właścicielem
      * @throws \InvalidArgumentException Gdy e-mail jest pusty, użytkownik nie istnieje lub jest właścicielem
@@ -306,6 +307,29 @@ final class ToDoService implements ToDoServiceInterface
         $this->toDoRepo->save($toDo, true);
 
         return $toDo;
+    }
+
+    /**
+     * Usuwa użytkownika z listy współpracowników danego ToDo (opuszczenie współdzielonego zadania).
+     *
+     * @param ToDo $toDo Zadanie, z którego użytkownik chce wyjść
+     * @param User $user Użytkownik opuszczający współpracę
+     *
+     * @return void Brak wyniku
+     *
+     * @throws \LogicException Gdy użytkownik jest właścicielem zadania
+     */
+    public function leave(ToDo $toDo, User $user): void
+    {
+        if ($toDo->getUser()?->getId() === $user->getId()) {
+            throw new \LogicException('Owner cannot leave their own ToDo.');
+        }
+        if (!$toDo->getCollaborators()->contains($user)) {
+            return;
+        }
+
+        $toDo->removeCollaborator($user);
+        $this->toDoRepo->save($toDo, true);
     }
 
     /**
