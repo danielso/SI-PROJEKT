@@ -49,7 +49,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'options' => [
-                    'trim' => false, // ← kluczowe
+                    'trim' => false, 
                     'attr' => ['autocomplete' => 'new-password'],
                 ],
                 'constraints' => [
