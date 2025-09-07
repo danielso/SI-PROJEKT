@@ -33,7 +33,6 @@ class NoteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Opcja 'user' może zostać, choć nie jest już używana wewnątrz formularza
         $builder
             ->add('title', TextType::class, [
                 'label' => 'label.title',

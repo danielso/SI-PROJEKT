@@ -1,6 +1,5 @@
 <?php
 
-// src/Security/BlockedUserChecker.php
 
 namespace App\Security;
 
