@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  *  - self::EDIT
  *  - self::DELETE
  *  - self::COLLAB_MANAGE
+ *  - self::LEAVE
  */
 class ToDoVoter extends Voter
 {
@@ -26,6 +27,7 @@ class ToDoVoter extends Voter
     public const EDIT = 'TODO_EDIT';
     public const DELETE = 'TODO_DELETE';
     public const COLLAB_MANAGE = 'TODO_COLLAB_MANAGE';
+    public const LEAVE = 'TODO_LEAVE';
 
     /**
      * Checks whether this voter supports the given attribute and subject.
@@ -37,8 +39,17 @@ class ToDoVoter extends Voter
      */
     protected function supports(string $attribute, $subject): bool
     {
-        return \in_array($attribute, [self::VIEW, self::EDIT, self::DELETE, self::COLLAB_MANAGE], true)
-            && $subject instanceof ToDo;
+        return \in_array(
+            $attribute,
+            [
+                self::VIEW,
+                self::EDIT,
+                self::DELETE,
+                self::COLLAB_MANAGE,
+                self::LEAVE,
+            ],
+            true
+        ) && $subject instanceof ToDo;
     }
 
     /**
@@ -70,6 +81,7 @@ class ToDoVoter extends Voter
         return match ($attribute) {
             self::VIEW, self::EDIT => $isOwner || $isCollaborator,
             self::DELETE, self::COLLAB_MANAGE => $isOwner,
+            self::LEAVE => $isCollaborator && !$isOwner,
             default => false,
         };
     }

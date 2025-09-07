@@ -101,6 +101,14 @@
                 <a href="{{ path('app_to_do_delete', {'id': task.id}) }}" style="margin-left:.5rem;">
                     {{ 'todo.index.delete'|trans }}
                 </a>
+                {% if is_granted('TODO_LEAVE', task) and leave_forms[task.id] is defined %}
+                    {{ form_start(leave_forms[task.id], {attr: {style: 'display:inline; margin-left:.5rem;'} }) }}
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        {{ 'todo.leave.button'|trans }}
+                    </button>
+                    {{ form_end(leave_forms[task.id]) }}
+                {% endif %}
+
             </div>
 
             {% if task.shareToken %}

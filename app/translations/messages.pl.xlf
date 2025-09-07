@@ -686,6 +686,15 @@
         <source>todo.collaborators.email_label</source>
         <target>E-mail użytkownika</target>
       </trans-unit>
+      <trans-unit id="todo.leave.button">
+        <source>todo.leave.button</source>
+        <target>Usuń z mojej listy</target>
+      </trans-unit>
+      <trans-unit id="todo.leave.success">
+        <source>todo.leave.success</source>
+        <target>Zadanie zostało usunięte z Twojej listy.</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

@@ -203,9 +203,9 @@ class ToDo
     }
 
     /**
-     * Zwraca tytuł zadania.
+     * Zwraca tytuł zadania
      *
-     * @return string|null Tytuł
+     * @return string|null tytuł lub null
      */
     public function getTitle(): ?string
     {
@@ -213,11 +213,11 @@ class ToDo
     }
 
     /**
-     * Ustawia tytuł zadania.
+     * Ustawia tytuł zadania
      *
-     * @param string $title Tytuł
+     * @param string $title tytuł zadania
      *
-     * @return self Fluent interface
+     * @return self fluent interface
      */
     public function setTitle(string $title): static
     {
@@ -299,9 +299,9 @@ class ToDo
     }
 
     /**
-     * Zwraca tagi przypisane do zadania.
+     * Zwraca tagi przypisane do zadania
      *
-     * @return Collection<int, Tag> Kolekcja tagów
+     * @return \Doctrine\Common\Collections\Collection<int, \App\Entity\Tag> kolekcja tagów
      */
     public function getTags(): Collection
     {
@@ -309,11 +309,11 @@ class ToDo
     }
 
     /**
-     * Ustawia pełną kolekcję tagów.
+     * Ustawia pełną kolekcję tagów
      *
-     * @param Collection<int, Tag> $tags Kolekcja tagów
+     * @param \Doctrine\Common\Collections\Collection<int, \App\Entity\Tag> $tags kolekcja tagów
      *
-     * @return self Fluent interface
+     * @return self fluent interface
      */
     public function setTags(Collection $tags): static
     {
@@ -323,11 +323,11 @@ class ToDo
     }
 
     /**
-     * Dodaje tag do zadania.
+     * Dodaje tag do zadania
      *
-     * @param Tag $tag Tag do dodania
+     * @param \App\Entity\Tag $tag tag do dodania
      *
-     * @return self
+     * @return self fluent interface
      */
     public function addTag(Tag $tag): self
     {
@@ -339,11 +339,11 @@ class ToDo
     }
 
     /**
-     * Usuwa tag z zadania.
+     * Usuwa tag z zadania
      *
-     * @param Tag $tag Tag do usunięcia
+     * @param \App\Entity\Tag $tag tag do usunięcia
      *
-     * @return self
+     * @return self fluent interface
      */
     public function removeTag(Tag $tag): self
     {
@@ -393,11 +393,11 @@ class ToDo
     }
 
     /**
-     * Sprawdza, czy podany użytkownik jest współpracownikiem tego zadania.
+     * Sprawdza, czy użytkownik jest współpracownikiem
      *
-     * @param User $user Użytkownik do sprawdzenia
+     * @param \App\Entity\User $user użytkownik do sprawdzenia
      *
-     * @return bool True, jeśli jest współpracownikiem
+     * @return bool true gdy jest współpracownikiem
      */
     public function isCollaborator(User $user): bool
     {

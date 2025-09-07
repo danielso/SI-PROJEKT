@@ -9,13 +9,18 @@ namespace App\Controller;
 use App\Entity\ToDo;
 use App\Form\ToDoForm;
 use App\Service\ToDoServiceInterface;
+use App\Security\Voter\ToDoVoter;
+use DateTimeImmutable;
+use InvalidArgumentException;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Security\Voter\ToDoVoter;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 /**
  * Controller for managing ToDo items (listing, CRUD, sharing, collaborators).
@@ -59,6 +64,18 @@ final class ToDoController extends AbstractController
         $categories = $this->toDo->getCategoriesFor($user);
         $tags       = $this->toDo->getAllTags();
 
+        $leaveForms = [];
+        foreach ($toDoList as $t) {
+            if ($this->isGranted(ToDoVoter::LEAVE, $t)) {
+                $leaveForms[$t->getId()] = $this->createFormBuilder(null, [
+                    'action'          => $this->generateUrl('app_to_do_leave', ['id' => $t->getId()]),
+                    'method'          => 'POST',
+                    'csrf_protection' => true,
+                    'csrf_token_id'   => 'todo.leave',
+                ])->getForm()->createView();
+            }
+        }
+
         return $this->render('to_do/index.html.twig', [
             'to_do'            => $toDoList,
             'categories'       => $categories,
@@ -66,6 +83,7 @@ final class ToDoController extends AbstractController
             'selectedCategory' => $filters['category'],
             'selectedTag'      => $filters['tag'],
             'searchTerm'       => $filters['search'],
+            'leave_forms'      => $leaveForms,
         ]);
     }
 
@@ -88,7 +106,7 @@ final class ToDoController extends AbstractController
         $toDo->setUser($user);
         $toDo->setIsDone(false);
         if (null === $toDo->getCreatedAt()) {
-            $toDo->setCreatedAt(new \DateTimeImmutable());
+            $toDo->setCreatedAt(new DateTimeImmutable());
         }
 
         $form = $this->createForm(ToDoForm::class, $toDo, ['user' => $user]);
@@ -117,7 +135,7 @@ final class ToDoController extends AbstractController
      *
      * @return Response Rendered details page
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException When access is denied
+     * @throws AccessDeniedHttpException When access is denied
      */
     #[Route('/{id}', name: 'app_to_do_show', methods: ['GET'], requirements: ['id' => '[1-9]\d*'])]
     public function show(ToDo $toDo): Response
@@ -163,14 +181,14 @@ final class ToDoController extends AbstractController
         }
 
         $addCollabForm = $this->createFormBuilder(null, [
-            'action' => $this->generateUrl('app_to_do_collaborator_add', ['id' => $toDo->getId()]),
-            'method' => 'POST',
-            'translation_domain' => 'messages',
+            'action'              => $this->generateUrl('app_to_do_collaborator_add', ['id' => $toDo->getId()]),
+            'method'              => 'POST',
+            'translation_domain'  => 'messages',
         ])
             ->add('email', EmailType::class, [
                 'required' => true,
-                'label' => 'todo.collaborators.email_label',
-                'attr' => [
+                'label'    => 'todo.collaborators.email_label',
+                'attr'     => [
                     'placeholder' => 'todo.collaborators.email_placeholder',
                 ],
             ])
@@ -228,7 +246,7 @@ final class ToDoController extends AbstractController
         }
 
         return $this->render('to_do/delete.html.twig', [
-            'form' => $form->createView(),
+            'form'  => $form->createView(),
             'to_do' => $toDo,
         ]);
     }
@@ -241,7 +259,7 @@ final class ToDoController extends AbstractController
      *
      * @return Response Rendered share form or redirect on success
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException When the token is invalid
+     * @throws NotFoundHttpException When the token is invalid
      */
     #[Route('/share/{token}', name: 'app_to_do_share', methods: ['GET', 'POST'])]
     public function share(Request $request, string $token): Response
@@ -285,25 +303,24 @@ final class ToDoController extends AbstractController
         $currentUser = $this->getUser();
 
         $form = $this->createFormBuilder(null, [
-            'action' => $this->generateUrl('app_to_do_collaborator_add', ['id' => $toDo->getId()]),
-            'method' => 'POST',
+            'action'             => $this->generateUrl('app_to_do_collaborator_add', ['id' => $toDo->getId()]),
+            'method'             => 'POST',
             'translation_domain' => 'messages',
         ])
             ->add('email', EmailType::class, [
                 'required' => true,
-                'label' => 'todo.collaborators.email_label',
+                'label'    => 'todo.collaborators.email_label',
             ])
             ->getForm();
-
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $email = (string) $form->get('email')->getData();
             try {
                 $this->toDo->addCollaboratorByEmail($toDo, $email, $currentUser);
-            } catch (\InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 $this->addFlash('error', $e->getMessage());
-            } catch (\LogicException $e) {
+            } catch (LogicException $e) {
                 throw $this->createAccessDeniedException($e->getMessage());
             }
         }
@@ -330,18 +347,55 @@ final class ToDoController extends AbstractController
         $form = $this->createFormBuilder(null, [
             'action' => $this->generateUrl('app_to_do_collaborator_remove', ['id' => $toDo->getId(), 'userId' => $userId]),
             'method' => 'POST',
-        ])
-            ->getForm();
+        ])->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->toDo->removeCollaboratorById($toDo, $userId, $currentUser);
-            } catch (\LogicException $e) {
+            } catch (LogicException $e) {
                 throw $this->createAccessDeniedException($e->getMessage());
             }
         }
 
         return $this->redirectToRoute('app_to_do_edit', ['id' => $toDo->getId()]);
+    }
+
+    /**
+     * Removes the current user from a shared ToDo (leave collaboration).
+     *
+     * @param Request             $request    The current HTTP request
+     * @param ToDo                $toDo       The shared ToDo to leave
+     * @param TranslatorInterface $translator Translator for flash messages
+     *
+     * @return Response Redirects to ToDo index on success
+     *
+     * @throws AccessDeniedHttpException When access is denied or the request is invalid
+     */
+    #[Route('/{id}/leave', name: 'app_to_do_leave', methods: ['POST'], requirements: ['id' => '\d+'])]
+    public function leave(Request $request, ToDo $toDo, TranslatorInterface $translator): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $this->denyAccessUnlessGranted(ToDoVoter::LEAVE, $toDo);
+
+        $form = $this->createFormBuilder(null, [
+            'method'          => 'POST',
+            'csrf_protection' => true,
+            'csrf_token_id'   => 'todo.leave',
+        ])->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->toDo->leave($toDo, $user);
+            $this->addFlash('success', $translator->trans('todo.leave.success'));
+
+            return $this->redirectToRoute('app_to_do_index');
+        }
+
+        throw $this->createAccessDeniedException('Invalid request.');
     }
 }
