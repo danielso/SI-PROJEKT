@@ -18,10 +18,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Form type tworzenia/edycji zadań ToDo.
- *
- * Uwaga:
- *  - Tagi są CSV (mapped=false) i przetwarzane w serwisie.
- *  - Pole 'category' pokazuje tylko kategorie właściciela (opcja 'user').
  */
 class ToDoForm extends AbstractType
 {
