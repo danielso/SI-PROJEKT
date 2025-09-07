@@ -1,7 +1,5 @@
 <?php
 
-// src/Security/BlockedUserChecker.php
-
 namespace App\Security;
 
 use App\Entity\User;
